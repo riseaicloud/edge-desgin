@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { KPICard, ResourceChart } from '@edge/ui'
-import { ResourceMetricCard, NodeStatsCards } from '@edge/components'
+import { KPICard, ResourceChart } from '@riseaicloud/ui'
+import { ResourceMetricCard, NodeStatsCards } from '@riseaicloud/components'
 import { Preview } from '../../components/Preview'
 import { Cpu, MemoryStick, HardDrive, Activity } from 'lucide-react'
 
@@ -27,17 +27,17 @@ import { Cpu, MemoryStick, HardDrive, Activity } from 'lucide-react'
 
 | 区域 | 组件 | 来源 |
 |------|------|------|
-| KPI 汇总 | [`KPICard`](/domain/monitoring/metrics-cards) | `@edge/ui` |
-| 节点概况 | [`NodeStatsCards`](/domain/monitoring/metrics-cards) | `@edge/components` |
-| 资源选择器 | [`ResourceMetricCard`](/domain/resource-display) | `@edge/components` |
-| 趋势图表 | [`ResourceChart`](/domain/monitoring/charts) | `@edge/ui` |
+| KPI 汇总 | [`KPICard`](/domain/monitoring/metrics-cards) | `@riseaicloud/ui` |
+| 节点概况 | [`NodeStatsCards`](/domain/monitoring/metrics-cards) | `@riseaicloud/components` |
+| 资源选择器 | [`ResourceMetricCard`](/domain/resource-display) | `@riseaicloud/components` |
+| 趋势图表 | [`ResourceChart`](/domain/monitoring/charts) | `@riseaicloud/ui` |
 
 ## 组合代码示例
 
 ```tsx
 import { useState } from 'react'
-import { KPICard, ResourceChart } from '@edge/ui'
-import { ResourceMetricCard } from '@edge/components'
+import { KPICard, ResourceChart } from '@riseaicloud/ui'
+import { ResourceMetricCard } from '@riseaicloud/components'
 import { Cpu, MemoryStick, HardDrive, Activity } from 'lucide-react'
 
 type MetricType = 'cpu' | 'memory' | 'disk'

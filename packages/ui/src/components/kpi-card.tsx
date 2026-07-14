@@ -32,7 +32,7 @@ export interface KPICardProps {
  *
  * @example
  * ```tsx
- * import { KPICard } from '@edge/ui'
+ * import { KPICard } from '@riseaicloud/ui'
  * import { Activity } from 'lucide-react'
  *
  * <KPICard

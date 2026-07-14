@@ -47,11 +47,11 @@ function formatValue(val: number | string, fmt: MetricFormat): string {
  * 监控指标展示卡片组件（K8s 感知）
  *
  * 用于显示集群、节点、工作负载等监控指标，支持多种数值格式化方式。
- * 属于 Layer 3 (@edge/components)，不直接调用 API。
+ * 属于 Layer 3 (@riseaicloud/components)，不直接调用 API。
  *
  * @example
  * ```tsx
- * import { MetricCard } from '@edge/components'
+ * import { MetricCard } from '@riseaicloud/components'
  * import { Cpu } from 'lucide-react'
  *
  * <MetricCard

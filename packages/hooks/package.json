@@ -1,6 +1,6 @@
 {
-  "name": "@edge/hooks",
-  "version": "0.1.0",
+  "name": "@riseaicloud/hooks",
+  "version": "1.0.0",
   "description": "Reusable React hooks for Edge Design System — state management, UI, and utilities",
   "type": "module",
   "main": "./dist/index.js",
@@ -30,5 +30,14 @@
   "peerDependencies": {
     "react": ">=18.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riseaicloud/edge-desgin.git",
+    "directory": "packages/hooks"
+  }
 }

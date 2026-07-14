@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Info, X } from "lucide-react"
-import { Button } from "@edge/ui"
+import { Button } from "@riseaicloud/ui"
 
 export interface ReplicaConfirmationDialogProps {
   open: boolean

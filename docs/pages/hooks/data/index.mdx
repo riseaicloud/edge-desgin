@@ -1,14 +1,14 @@
 # Data Fetching Hooks
 
-`@edge/hooks` 提供四个数据获取 hooks，专为 Edge Platform 资源设计。这些 hooks 是**框架无关**的纯 React hooks，内部使用 `fetch` + `AbortController`，不依赖 TanStack Query 或其他状态管理库。
+`@riseaicloud/hooks` 提供四个数据获取 hooks，专为 Edge Platform 资源设计。这些 hooks 是**框架无关**的纯 React hooks，内部使用 `fetch` + `AbortController`，不依赖 TanStack Query 或其他状态管理库。
 
 ## 架构定位
 
 ```
 页面层（Page）
-  └─ 调用 @edge/hooks（数据获取）
-       └─ 将 data 作为 props 传入 @edge/components（业务组件）
-                     └─ 使用 @edge/ui 渲染（纯 UI）
+  └─ 调用 @riseaicloud/hooks（数据获取）
+       └─ 将 data 作为 props 传入 @riseaicloud/components（业务组件）
+                     └─ 使用 @riseaicloud/ui 渲染（纯 UI）
 ```
 
 数据流向：hooks 取数 → props 注入 → 组件展示。组件本身不感知数据来源。
@@ -18,7 +18,7 @@
 所有数据 hooks 的第一个参数都是 `ApiClientConfig`：
 
 ```tsx
-import type { ApiClientConfig } from '@edge/hooks'
+import type { ApiClientConfig } from '@riseaicloud/hooks'
 
 const apiConfig: ApiClientConfig = {
   baseUrl: 'https://api.example.com',  // API 服务器基础 URL
@@ -55,8 +55,8 @@ interface UseDataResult<T> {
 ### Import
 
 ```tsx
-import { useClusters } from '@edge/hooks'
-import type { UseClustersOptions, Cluster } from '@edge/hooks'
+import { useClusters } from '@riseaicloud/hooks'
+import type { UseClustersOptions, Cluster } from '@riseaicloud/hooks'
 ```
 
 ### Parameters
@@ -90,8 +90,8 @@ interface Cluster {
 ### Usage
 
 ```tsx
-import { useClusters } from '@edge/hooks'
-import { ClusterSelector } from '@edge/components'
+import { useClusters } from '@riseaicloud/hooks'
+import { ClusterSelector } from '@riseaicloud/components'
 
 function ClusterPickerPage({ apiConfig }) {
   const [selected, setSelected] = useState('')
@@ -122,8 +122,8 @@ function ClusterPickerPage({ apiConfig }) {
 ### Import
 
 ```tsx
-import { useNamespaces } from '@edge/hooks'
-import type { UseNamespacesOptions, Namespace } from '@edge/hooks'
+import { useNamespaces } from '@riseaicloud/hooks'
+import type { UseNamespacesOptions, Namespace } from '@riseaicloud/hooks'
 ```
 
 ### Parameters
@@ -160,8 +160,8 @@ interface Namespace {
 ### Usage
 
 ```tsx
-import { useNamespaces } from '@edge/hooks'
-import { NamespaceSelector } from '@edge/components'
+import { useNamespaces } from '@riseaicloud/hooks'
+import { NamespaceSelector } from '@riseaicloud/components'
 
 function NamespacePicker({ apiConfig, clusterId }) {
   const [selected, setSelected] = useState('')
@@ -189,8 +189,8 @@ function NamespacePicker({ apiConfig, clusterId }) {
 ### Import
 
 ```tsx
-import { useWorkspaces } from '@edge/hooks'
-import type { UseWorkspacesOptions, Workspace } from '@edge/hooks'
+import { useWorkspaces } from '@riseaicloud/hooks'
+import type { UseWorkspacesOptions, Workspace } from '@riseaicloud/hooks'
 ```
 
 ### Parameters
@@ -220,8 +220,8 @@ interface Workspace {
 ### Usage
 
 ```tsx
-import { useWorkspaces } from '@edge/hooks'
-import { WorkspaceSelector } from '@edge/components'
+import { useWorkspaces } from '@riseaicloud/hooks'
+import { WorkspaceSelector } from '@riseaicloud/components'
 
 function WorkspacePicker({ apiConfig, clusterId }) {
   const [selected, setSelected] = useState('')
@@ -249,8 +249,8 @@ function WorkspacePicker({ apiConfig, clusterId }) {
 ### Import
 
 ```tsx
-import { useNodeGroups } from '@edge/hooks'
-import type { UseNodeGroupsOptions, NodeGroup } from '@edge/hooks'
+import { useNodeGroups } from '@riseaicloud/hooks'
+import type { UseNodeGroupsOptions, NodeGroup } from '@riseaicloud/hooks'
 ```
 
 ### Parameters
@@ -280,8 +280,8 @@ interface NodeGroup {
 ### Usage
 
 ```tsx
-import { useNodeGroups } from '@edge/hooks'
-import { NodeGroupSelector } from '@edge/components'
+import { useNodeGroups } from '@riseaicloud/hooks'
+import { NodeGroupSelector } from '@riseaicloud/components'
 
 function NodeGroupPicker({ apiConfig, clusterId }) {
   const [selected, setSelected] = useState('')
@@ -310,9 +310,9 @@ function NodeGroupPicker({ apiConfig, clusterId }) {
 "use client"
 
 import { useState } from 'react'
-import { useClusters, useNamespaces } from '@edge/hooks'
-import { ClusterSelector, NamespaceSelector } from '@edge/components'
-import type { ApiClientConfig } from '@edge/hooks'
+import { useClusters, useNamespaces } from '@riseaicloud/hooks'
+import { ClusterSelector, NamespaceSelector } from '@riseaicloud/components'
+import type { ApiClientConfig } from '@riseaicloud/hooks'
 
 interface ScopeSelectorProps {
   apiConfig: ApiClientConfig

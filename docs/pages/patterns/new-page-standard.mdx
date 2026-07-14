@@ -1,6 +1,6 @@
 # 新页面开发标准
 
-所有新页面必须遵循 **@edge/ui + @edge/components 组合模式**。本文档定义标准架构、代码规范，并提供一个可复制的示范实现。
+所有新页面必须遵循 **@riseaicloud/ui + @riseaicloud/components 组合模式**。本文档定义标准架构、代码规范，并提供一个可复制的示范实现。
 
 ## 架构模型
 
@@ -11,25 +11,25 @@
 │  页面层（Page Layer）                                    │
 │  组合 hooks + 组件，处理路由参数、页面级状态             │
 ├─────────────────────────────────────────────────────────┤
-│  Layer 3: @edge/components（业务领域组件）               │
+│  Layer 3: @riseaicloud/components（业务领域组件）               │
 │  知道 Edge Platform 概念，接受业务数据作为 props         │
 │  ClusterInfoCard, NodeCard, StatCard, MonitoringChart   │
 ├─────────────────────────────────────────────────────────┤
-│  Layer 2: @edge/ui（纯 UI 组件）                        │
+│  Layer 2: @riseaicloud/ui（纯 UI 组件）                        │
 │  无业务逻辑，可在任何项目中使用                          │
 │  Button, Card, Table, Dialog, EmptyState, Spinner       │
 ├─────────────────────────────────────────────────────────┤
-│  Layer 1: @edge/tokens（设计基础）                      │
+│  Layer 1: @riseaicloud/tokens（设计基础）                      │
 │  CSS 变量，Tailwind preset，主题系统                    │
 └─────────────────────────────────────────────────────────┘
          ↑ 数据通过 props 向下传递
-@edge/hooks — 数据获取层（横切关注点）
+@riseaicloud/hooks — 数据获取层（横切关注点）
 useClusters, useNamespaces, useWorkspaces, useNodeGroups
 ```
 
 **关键约束：**
-- @edge/components 不调用 API——数据由页面层通过 props 注入
-- @edge/ui 不依赖任何业务类型——所有 props 用泛型或原始类型表达
+- @riseaicloud/components 不调用 API——数据由页面层通过 props 注入
+- @riseaicloud/ui 不依赖任何业务类型——所有 props 用泛型或原始类型表达
 - hooks 层只做数据获取，不包含 UI 逻辑
 
 ---
@@ -38,12 +38,12 @@ useClusters, useNamespaces, useWorkspaces, useNodeGroups
 
 | 规则 | 说明 |
 |------|------|
-| ✅ 使用 `@edge/hooks` 的 hooks 获取数据 | `useClusters`, `useNamespaces` 等 |
-| ✅ 将数据通过 props 传入 `@edge/components` | 组件纯展示，不自己取数 |
-| ✅ 使用 `@edge/ui` 处理加载/错误/空状态 | `Spinner`, `EmptyState`, `Alert` |
+| ✅ 使用 `@riseaicloud/hooks` 的 hooks 获取数据 | `useClusters`, `useNamespaces` 等 |
+| ✅ 将数据通过 props 传入 `@riseaicloud/components` | 组件纯展示，不自己取数 |
+| ✅ 使用 `@riseaicloud/ui` 处理加载/错误/空状态 | `Spinner`, `EmptyState`, `Alert` |
 | ✅ 将 API 配置统一管理，不在组件内硬编码 URL | 通过 context 或页面层传入 |
-| ❌ 禁止在 `@edge/components` 中调用 `fetch` 或 React Query | 违反分层原则 |
-| ❌ 禁止在 `@edge/ui` 中引用业务类型（如 K8s Resource） | 组件必须保持通用 |
+| ❌ 禁止在 `@riseaicloud/components` 中调用 `fetch` 或 React Query | 违反分层原则 |
+| ❌ 禁止在 `@riseaicloud/ui` 中引用业务类型（如 K8s Resource） | 组件必须保持通用 |
 | ❌ 禁止在页面中直接调用 Kubb 生成的 API（绕过 hooks 层） | 统一经由 hooks 层 |
 
 ---
@@ -62,14 +62,14 @@ app/(workspace)/namespaces/
 
 ### 第一步：数据获取（Hooks 层）
 
-使用 `@edge/hooks` 的 `useNamespaces` hook 获取数据，**不在组件内直接调 fetch**：
+使用 `@riseaicloud/hooks` 的 `useNamespaces` hook 获取数据，**不在组件内直接调 fetch**：
 
 ```tsx
 // app/(workspace)/namespaces/page.tsx
 "use client"
 
-import { useNamespaces } from '@edge/hooks'
-import type { ApiClientConfig } from '@edge/hooks'
+import { useNamespaces } from '@riseaicloud/hooks'
+import type { ApiClientConfig } from '@riseaicloud/hooks'
 
 // API 配置从应用上下文获取（示例）
 const apiConfig: ApiClientConfig = {
@@ -99,15 +99,15 @@ export default function NamespacesPage() {
 
 ### 第二步：Layer 2 + Layer 3 组合展示
 
-在展示层使用 `@edge/ui`（纯 UI）和 `@edge/components`（业务组件）：
+在展示层使用 `@riseaicloud/ui`（纯 UI）和 `@riseaicloud/components`（业务组件）：
 
 ```tsx
 // app/(workspace)/namespaces/namespace-list.tsx
 "use client"
 
-import { Button, Card, CardContent, CardHeader, CardTitle, EmptyState, Spinner, Alert, AlertDescription } from '@edge/ui'
-import { NamespaceStatsCards } from '@edge/components'
-import type { Namespace } from '@edge/hooks'
+import { Button, Card, CardContent, CardHeader, CardTitle, EmptyState, Spinner, Alert, AlertDescription } from '@riseaicloud/ui'
+import { NamespaceStatsCards } from '@riseaicloud/components'
+import type { Namespace } from '@riseaicloud/hooks'
 import { Plus, RefreshCw } from 'lucide-react'
 
 interface NamespaceListViewProps {
@@ -145,7 +145,7 @@ export function NamespaceListView({
         </div>
       </div>
 
-      {/* 错误状态（Layer 2: @edge/ui） */}
+      {/* 错误状态（Layer 2: @riseaicloud/ui） */}
       {error && (
         <Alert variant="destructive">
           <AlertDescription>
@@ -157,14 +157,14 @@ export function NamespaceListView({
         </Alert>
       )}
 
-      {/* 加载状态（Layer 2: @edge/ui） */}
+      {/* 加载状态（Layer 2: @riseaicloud/ui） */}
       {loading && !namespaces.length && (
         <div className="flex justify-center py-16">
           <Spinner size="lg" />
         </div>
       )}
 
-      {/* 统计卡片（Layer 3: @edge/components） */}
+      {/* 统计卡片（Layer 3: @riseaicloud/components） */}
       {namespaces.length > 0 && (
         <NamespaceStatsCards
           namespaces={namespaces.map(ns => ({
@@ -176,7 +176,7 @@ export function NamespaceListView({
 
       {/* 命名空间列表 */}
       {!loading && !error && namespaces.length === 0 ? (
-        // 空状态（Layer 2: @edge/ui）
+        // 空状态（Layer 2: @riseaicloud/ui）
         <EmptyState
           title="暂无命名空间"
           description="在此集群中还没有命名空间，点击「创建命名空间」开始。"
@@ -188,7 +188,7 @@ export function NamespaceListView({
           }
         />
       ) : (
-        // 列表卡片（Layer 2: @edge/ui 布局 + Layer 3 内容）
+        // 列表卡片（Layer 2: @riseaicloud/ui 布局 + Layer 3 内容）
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {namespaces.map(ns => (
             <NamespaceCard key={ns.id} namespace={ns} />
@@ -205,9 +205,9 @@ export function NamespaceListView({
 单个命名空间卡片使用 Layer 2 的 `Card` + `Badge` 组合：
 
 ```tsx
-import { Card, CardContent, CardHeader, Badge } from '@edge/ui'
-import { LabelsDisplay } from '@edge/components'
-import type { Namespace } from '@edge/hooks'
+import { Card, CardContent, CardHeader, Badge } from '@riseaicloud/ui'
+import { LabelsDisplay } from '@riseaicloud/components'
+import type { Namespace } from '@riseaicloud/hooks'
 
 function NamespaceCard({ namespace }: { namespace: Namespace }) {
   return (
@@ -238,18 +238,18 @@ function NamespaceCard({ namespace }: { namespace: Namespace }) {
 ```
 NamespacesPage (page.tsx)
 │
-├── useNamespaces()  ─── @edge/hooks ──→ API 请求
+├── useNamespaces()  ─── @riseaicloud/hooks ──→ API 请求
 │     └── { data, loading, error, refetch }
 │
 └── <NamespaceListView>  ─── 页面层组合
-      ├── <Alert>          ─── @edge/ui (Layer 2)  错误提示
-      ├── <Spinner>        ─── @edge/ui (Layer 2)  加载中
-      ├── <NamespaceStatsCards>  ─── @edge/components (Layer 3)
-      ├── <EmptyState>     ─── @edge/ui (Layer 2)  空状态
+      ├── <Alert>          ─── @riseaicloud/ui (Layer 2)  错误提示
+      ├── <Spinner>        ─── @riseaicloud/ui (Layer 2)  加载中
+      ├── <NamespaceStatsCards>  ─── @riseaicloud/components (Layer 3)
+      ├── <EmptyState>     ─── @riseaicloud/ui (Layer 2)  空状态
       └── <NamespaceCard>  ─── 本地组合
-            ├── <Card>         ─── @edge/ui (Layer 2)
-            ├── <Badge>        ─── @edge/ui (Layer 2)
-            └── <LabelsDisplay> ── @edge/components (Layer 3)
+            ├── <Card>         ─── @riseaicloud/ui (Layer 2)
+            ├── <Badge>        ─── @riseaicloud/ui (Layer 2)
+            └── <LabelsDisplay> ── @riseaicloud/components (Layer 3)
 ```
 
 **数据流向（单向）：**
@@ -261,7 +261,7 @@ API → useNamespaces() → NamespacesPage → props → NamespaceListView → p
 
 ## 反面示例（禁止）
 
-### ❌ 在 @edge/components 内直接调用 API
+### ❌ 在 @riseaicloud/components 内直接调用 API
 
 ```tsx
 // 错误：组件内部调用 fetch
@@ -281,7 +281,7 @@ export function NamespaceSelector({ clusterId }: { clusterId: string }) {
 ✅ **正确写法**：数据由外部注入：
 
 ```tsx
-// @edge/components 中的 NamespaceSelector 接受 props 而非自己取数
+// @riseaicloud/components 中的 NamespaceSelector 接受 props 而非自己取数
 export function NamespaceSelector({
   namespaces,    // 外部传入的数据
   loading,
@@ -305,10 +305,10 @@ export default function Page() {
 }
 ```
 
-✅ **正确写法**：通过 `@edge/hooks` 统一封装：
+✅ **正确写法**：通过 `@riseaicloud/hooks` 统一封装：
 
 ```tsx
-import { useNamespaces } from '@edge/hooks'
+import { useNamespaces } from '@riseaicloud/hooks'
 
 export default function Page() {
   const { data } = useNamespaces(apiConfig, { clusterId })
@@ -341,9 +341,9 @@ function NamespaceCard({ namespace, canDelete }: NamespaceCardProps) {
 
 新页面提交前检查：
 
-- [ ] 数据获取统一使用 `@edge/hooks` 中的 hooks
-- [ ] 业务组件（@edge/components）只接受 props，不调用 API
-- [ ] 加载、错误、空状态均有处理（使用 @edge/ui 的 Spinner / Alert / EmptyState）
+- [ ] 数据获取统一使用 `@riseaicloud/hooks` 中的 hooks
+- [ ] 业务组件（@riseaicloud/components）只接受 props，不调用 API
+- [ ] 加载、错误、空状态均有处理（使用 @riseaicloud/ui 的 Spinner / Alert / EmptyState）
 - [ ] 没有硬编码 API URL 或 token
 - [ ] TypeScript 类型正确，无 `any`
 - [ ] 页面不超过 200 行；超过时拆分为子组件文件
@@ -354,6 +354,6 @@ function NamespaceCard({ namespace, canDelete }: NamespaceCardProps) {
 
 - [Dashboard Layout Pattern](/patterns/dashboard-layout) — 仪表盘页面布局
 - [List + Detail Pattern](/patterns/list-detail) — CRUD 列表详情页面
-- [@edge/hooks 文档](/hooks) — 数据获取 hooks 完整 API
-- [@edge/components 文档](/domain) — 业务领域组件目录
-- [@edge/ui 组件目录](/components) — 纯 UI 组件目录
+- [@riseaicloud/hooks 文档](/hooks) — 数据获取 hooks 完整 API
+- [@riseaicloud/components 文档](/domain) — 业务领域组件目录
+- [@riseaicloud/ui 组件目录](/components) — 纯 UI 组件目录

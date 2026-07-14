@@ -2,7 +2,7 @@
 
 Full-screen YAML editor dialog backed by Monaco Editor. Supports YAML/JSON syntax validation, read-only view mode, and async save. Used wherever resources need to be inspected or edited as raw YAML.
 
-**Layer:** `@edge/ui` generic dialog pattern (heavy — requires Monaco Editor)
+**Layer:** `@riseaicloud/ui` generic dialog pattern (heavy — requires Monaco Editor)
 
 **Source:** `edge-console/src/components/dialogs/YamlEditDialog.tsx`
 
@@ -14,7 +14,7 @@ Full-screen YAML editor dialog backed by Monaco Editor. Supports YAML/JSON synta
 
 ```tsx
 import { useState } from 'react'
-import { YamlEditDialog } from '@edge/ui'
+import { YamlEditDialog } from '@riseaicloud/ui'
 
 function EditDeploymentButton({ deployment }) {
   const [open, setOpen] = useState(false)

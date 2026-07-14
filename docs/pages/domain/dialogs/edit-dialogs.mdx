@@ -2,7 +2,7 @@ import {
   Button,
   Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogClose,
   Input, Textarea, Label,
-} from '@edge/ui'
+} from '@riseaicloud/ui'
 import { Preview } from '../../../components/Preview'
 
 # Edit Dialogs
@@ -20,7 +20,7 @@ Business dialogs for editing Edge Platform resource metadata and configuration.
 ### Import
 
 ```tsx
-import { EditLabelsDialog } from '@edge/components'
+import { EditLabelsDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -74,7 +74,7 @@ import { EditLabelsDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import EditLabelsDialog from '@edge/components'
+import EditLabelsDialog from '@riseaicloud/components'
 
 function NodeDetail({ node, clusterId }) {
   const [open, setOpen] = useState(false)
@@ -130,7 +130,7 @@ function NodeDetail({ node, clusterId }) {
 ### Import
 
 ```tsx
-import { EditAnnotationsDialog } from '@edge/components'
+import { EditAnnotationsDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -179,7 +179,7 @@ import { EditAnnotationsDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import EditAnnotationsDialog from '@edge/components'
+import EditAnnotationsDialog from '@riseaicloud/components'
 
 function NodeDetail({ node, clusterId }) {
   const [open, setOpen] = useState(false)
@@ -236,7 +236,7 @@ function NodeDetail({ node, clusterId }) {
 ### Import
 
 ```tsx
-import { EditQuotaDialog } from '@edge/components'
+import { EditQuotaDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -296,7 +296,7 @@ import { EditQuotaDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import { EditQuotaDialog } from '@edge/components'
+import { EditQuotaDialog } from '@riseaicloud/components'
 
 function NamespaceDetail({ namespace }) {
   const [open, setOpen] = useState(false)
@@ -362,7 +362,7 @@ Dynamic list of resource quotas. Supported resource types:
 ### Import
 
 ```tsx
-import EditRoleInfoDialog from '@edge/components'
+import EditRoleInfoDialog from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -402,7 +402,7 @@ import EditRoleInfoDialog from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import EditRoleInfoDialog from '@edge/components'
+import EditRoleInfoDialog from '@riseaicloud/components'
 
 function RoleManagement({ role }) {
   const [open, setOpen] = useState(false)

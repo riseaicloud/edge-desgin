@@ -19,7 +19,7 @@ interface PreviewProps {
  *
  * Usage in MDX:
  * ```mdx
- * import { Button } from '@edge/ui'
+ * import { Button } from '@riseaicloud/ui'
  * import { Preview } from '../../components/Preview'
  *
  * <Preview>

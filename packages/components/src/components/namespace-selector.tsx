@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SearchableSelect, SearchableSelectOption } from "@edge/ui"
+import { SearchableSelect, SearchableSelectOption } from "@riseaicloud/ui"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

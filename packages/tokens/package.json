@@ -1,6 +1,6 @@
 {
-  "name": "@edge/tokens",
-  "version": "0.1.0",
+  "name": "@riseaicloud/tokens",
+  "version": "1.0.0",
   "description": "Design tokens for Edge Design System — colors, typography, spacing, motion, themes",
   "type": "module",
   "main": "./dist/index.js",
@@ -39,5 +39,14 @@
       "optional": true
     }
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riseaicloud/edge-desgin.git",
+    "directory": "packages/tokens"
+  }
 }

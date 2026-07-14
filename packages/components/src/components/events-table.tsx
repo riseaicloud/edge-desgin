@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Info, AlertTriangle, X } from 'lucide-react'
-import { EmptyState, LoadingOverlay, cn } from '@edge/ui'
+import { EmptyState, LoadingOverlay, cn } from '@riseaicloud/ui'
 
 export interface EventInfo {
   id?: number | string
@@ -90,11 +90,11 @@ function formatTime(timestamp: string) {
  * 标准事件列表组件（Layer 3 - 知道 K8s 事件概念）
  *
  * 用于展示 Kubernetes 资源的事件信息，支持加载状态、错误状态和空状态展示。
- * 属于 @edge/components，因为它理解 K8s 事件类型（Normal/Warning/Error）。
+ * 属于 @riseaicloud/components，因为它理解 K8s 事件类型（Normal/Warning/Error）。
  *
  * @example
  * ```tsx
- * import { EventsTable } from '@edge/components'
+ * import { EventsTable } from '@riseaicloud/components'
  *
  * <EventsTable
  *   events={eventsList}

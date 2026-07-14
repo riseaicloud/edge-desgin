@@ -124,7 +124,7 @@ Edge Design ships with 6 built-in themes that control header, sidebar, and menu 
 ### Using Themes
 
 ```tsx
-import { themes, getTheme } from '@edge/tokens'
+import { themes, getTheme } from '@riseaicloud/tokens'
 
 // Get a theme
 const theme = getTheme('purple')
@@ -138,8 +138,8 @@ const theme = getTheme('purple')
 ### Custom Themes
 
 ```tsx
-import { registerTheme } from '@edge/tokens'
-import type { Theme } from '@edge/tokens'
+import { registerTheme } from '@riseaicloud/tokens'
+import type { Theme } from '@riseaicloud/tokens'
 
 const myTheme: Theme = {
   name: 'custom',
@@ -168,7 +168,7 @@ Override any CSS custom property in your global styles:
 Or extend the Tailwind preset:
 
 ```js
-const edgePreset = require('@edge/tokens/tailwind-preset')
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
 
 module.exports = {
   presets: [edgePreset],

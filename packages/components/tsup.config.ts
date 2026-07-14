@@ -5,6 +5,6 @@ export default defineConfig({
   format: ['cjs', 'esm'],
   dts: true,
   sourcemap: true,
-  external: ['react', 'react-dom', '@edge/ui', '@edge/tokens', '@xyflow/react'],
+  external: ['react', 'react-dom', '@riseaicloud/ui', '@riseaicloud/tokens', '@xyflow/react'],
   clean: true,
 })

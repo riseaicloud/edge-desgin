@@ -1,5 +1,5 @@
-import { KPICard } from '@edge/ui'
-import { MetricCard, NamespaceStatsCards, NodeStatsCards } from '@edge/components'
+import { KPICard } from '@riseaicloud/ui'
+import { MetricCard, NamespaceStatsCards, NodeStatsCards } from '@riseaicloud/components'
 import { Preview } from '../../../components/Preview'
 import { Activity, Cpu, Server } from 'lucide-react'
 
@@ -9,12 +9,12 @@ Components for displaying KPI and monitoring metric values.
 
 ## KPICard
 
-A generic KPI display card from `@edge/ui`. No domain knowledge — accepts any icon, value, and optional trend.
+A generic KPI display card from `@riseaicloud/ui`. No domain knowledge — accepts any icon, value, and optional trend.
 
 ### Import
 
 ```tsx
-import { KPICard } from '@edge/ui'
+import { KPICard } from '@riseaicloud/ui'
 import { Activity } from 'lucide-react'
 ```
 
@@ -64,12 +64,12 @@ import { Activity } from 'lucide-react'
 
 ## MetricCard
 
-A K8s-aware metric display component from `@edge/components`. Supports value format awareness (number, percentage, bytes, rate).
+A K8s-aware metric display component from `@riseaicloud/components`. Supports value format awareness (number, percentage, bytes, rate).
 
 ### Import
 
 ```tsx
-import { MetricCard } from '@edge/components'
+import { MetricCard } from '@riseaicloud/components'
 import { Cpu } from 'lucide-react'
 ```
 
@@ -106,7 +106,7 @@ Namespace-level overview statistics card. Computes totals from a namespace list.
 ### Import
 
 ```tsx
-import { NamespaceStatsCards } from '@edge/components'
+import { NamespaceStatsCards } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -152,7 +152,7 @@ Node statistics overview card. Accepts pre-computed stats.
 ### Import
 
 ```tsx
-import { NodeStatsCards } from '@edge/components'
+import { NodeStatsCards } from '@riseaicloud/components'
 ```
 
 ### Preview

@@ -1,4 +1,4 @@
-import { Badge } from '@edge/ui'
+import { Badge } from '@riseaicloud/ui'
 import { Preview } from '../../../components/Preview'
 
 # Badge
@@ -8,7 +8,7 @@ A small status label used to highlight information such as counts, tags, or stat
 ## Import
 
 ```tsx
-import { Badge, badgeVariants } from '@edge/ui'
+import { Badge, badgeVariants } from '@riseaicloud/ui'
 ```
 
 ## 状态标签
@@ -70,7 +70,7 @@ Use `badgeVariants` to apply badge styles to non-badge elements:
 
 ```tsx
 import Link from 'next/link'
-import { badgeVariants } from '@edge/ui'
+import { badgeVariants } from '@riseaicloud/ui'
 
 <Link href="/boss/users?status=pending" className={badgeVariants({ variant: 'outline' })}>
   待审核

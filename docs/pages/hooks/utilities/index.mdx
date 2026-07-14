@@ -16,7 +16,7 @@
 检测用户点击了指定元素的外部区域，常用于关闭下拉菜单、弹出层。
 
 ```tsx
-import { useClickOutside } from '@edge/hooks'
+import { useClickOutside } from '@riseaicloud/hooks'
 
 function Dropdown() {
   const [open, setOpen] = useState(false)
@@ -38,7 +38,7 @@ function Dropdown() {
 复制文本到剪贴板，返回 `copied` 状态（自动在指定时间后重置）和 `copy` 函数。
 
 ```tsx
-import { useCopyToClipboard } from '@edge/hooks'
+import { useCopyToClipboard } from '@riseaicloud/hooks'
 
 function TokenDisplay({ token }: { token: string }) {
   const { copied, copy } = useCopyToClipboard()
@@ -77,7 +77,7 @@ function TokenDisplay({ token }: { token: string }) {
 注册全局键盘快捷键，支持修饰键组合。
 
 ```tsx
-import { useKeyboardShortcut } from '@edge/hooks'
+import { useKeyboardShortcut } from '@riseaicloud/hooks'
 
 function SearchDialog() {
   const [open, setOpen] = useState(false)
@@ -102,7 +102,7 @@ function SearchDialog() {
 检测 CSS media query 是否匹配，用于响应式条件渲染。
 
 ```tsx
-import { useMediaQuery } from '@edge/hooks'
+import { useMediaQuery } from '@riseaicloud/hooks'
 
 function ResponsiveLayout() {
   const isDesktop = useMediaQuery('(min-width: 1024px)')

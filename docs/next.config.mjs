@@ -10,5 +10,5 @@ export default withNextra({
   typescript: {
     ignoreBuildErrors: true,
   },
-  transpilePackages: ['@xyflow/react', '@edge/components'],
+  transpilePackages: ['@xyflow/react', '@riseaicloud/components'],
 })

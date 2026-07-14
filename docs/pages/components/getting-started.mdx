@@ -3,7 +3,7 @@
 ## 安装
 
 ```bash
-pnpm install @edge/ui
+pnpm install @riseaicloud/ui
 ```
 
 ## 使用
@@ -13,13 +13,13 @@ pnpm install @edge/ui
 在应用入口导入 CSS：
 
 ```tsx
-import '@edge/ui/styles'
+import '@riseaicloud/ui/styles'
 ```
 
 ### 2. 使用组件
 
 ```tsx
-import { Button } from '@edge/ui'
+import { Button } from '@riseaicloud/ui'
 
 export function App() {
   return <Button>Click me</Button>
@@ -29,7 +29,7 @@ export function App() {
 ### 3. 导入工具函数
 
 ```tsx
-import { cn } from '@edge/ui'
+import { cn } from '@riseaicloud/ui'
 
 // 合并 Tailwind 类名
 const className = cn('px-4 py-2', isActive && 'bg-blue-500')

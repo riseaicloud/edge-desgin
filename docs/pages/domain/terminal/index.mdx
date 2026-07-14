@@ -2,7 +2,7 @@
 
 基于 xterm.js + WebSocket 的交互式终端组件，支持节点终端、Pod 终端和设备终端三种场景。
 
-> **注意**：Terminal 组件依赖 xterm.js 运行时和 WebSocket 连接，暂不抽取到 `@edge/components`，仅在 `edge-console` 内部使用。
+> **注意**：Terminal 组件依赖 xterm.js 运行时和 WebSocket 连接，暂不抽取到 `@riseaicloud/components`，仅在 `edge-console` 内部使用。
 
 ---
 
@@ -320,9 +320,9 @@ const TerminalPage = dynamic(
 
 ## 后续计划
 
-Terminal 组件依赖 xterm.js（纯浏览器运行时）和 WebSocket，不满足 `@edge/components` 的 SSR 兼容要求，当前保留在 `edge-console` 内部。
+Terminal 组件依赖 xterm.js（纯浏览器运行时）和 WebSocket，不满足 `@riseaicloud/components` 的 SSR 兼容要求，当前保留在 `edge-console` 内部。
 
 待条件成熟后可考虑：
-1. 将 `TerminalWebSocket`、`types.ts` 提取到 `@edge/utils`
-2. 将 `CommandReference` 提取到 `@edge/components`（无运行时依赖）
+1. 将 `TerminalWebSocket`、`types.ts` 提取到 `@riseaicloud/utils`
+2. 将 `CommandReference` 提取到 `@riseaicloud/components`（无运行时依赖）
 3. `WebTerminal` / `TerminalPage` / `TerminalModal` 以 CSR-only package 形式单独发布

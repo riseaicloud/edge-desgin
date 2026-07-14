@@ -1,4 +1,4 @@
-import { ClusterSelector, WorkspaceSelector, NamespaceSelector, NodeGroupSelector } from '@edge/components'
+import { ClusterSelector, WorkspaceSelector, NamespaceSelector, NodeGroupSelector } from '@riseaicloud/components'
 import { Preview } from '../../../components/Preview'
 
 # Selectors
@@ -13,7 +13,7 @@ import {
   WorkspaceSelector,
   NamespaceSelector,
   NodeGroupSelector,
-} from '@edge/components'
+} from '@riseaicloud/components'
 ```
 
 ## Common Features
@@ -46,7 +46,7 @@ Select clusters with support for alias names.
 </Preview>
 
 ```tsx
-import { ClusterSelector } from '@edge/components'
+import { ClusterSelector } from '@riseaicloud/components'
 
 function ClusterFilter() {
   const [selectedCluster, setSelectedCluster] = useState('all')
@@ -121,7 +121,7 @@ Select workspaces within the platform.
 </Preview>
 
 ```tsx
-import { WorkspaceSelector } from '@edge/components'
+import { WorkspaceSelector } from '@riseaicloud/components'
 
 function WorkspaceFilter() {
   const [selectedWorkspace, setSelectedWorkspace] = useState('all')
@@ -174,7 +174,7 @@ Select Kubernetes namespaces within a cluster or workspace.
 </Preview>
 
 ```tsx
-import { NamespaceSelector } from '@edge/components'
+import { NamespaceSelector } from '@riseaicloud/components'
 
 function NamespaceFilter() {
   const [selectedNamespace, setSelectedNamespace] = useState('all')
@@ -226,7 +226,7 @@ Select edge node groups for edge resource management.
 </Preview>
 
 ```tsx
-import { NodeGroupSelector } from '@edge/components'
+import { NodeGroupSelector } from '@riseaicloud/components'
 
 function NodeGroupFilter() {
   const [selectedNodeGroup, setSelectedNodeGroup] = useState('all')

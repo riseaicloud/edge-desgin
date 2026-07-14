@@ -9,13 +9,13 @@
 
 ```bash
 # Core tokens + UI components
-pnpm add @edge/tokens @edge/ui
+pnpm add @riseaicloud/tokens @riseaicloud/ui
 
 # Domain components (optional)
-pnpm add @edge/edge-components
+pnpm add @riseaicloud/edge-components
 
 # Hooks (optional)
-pnpm add @edge/hooks
+pnpm add @riseaicloud/hooks
 ```
 
 ## Configure Tailwind CSS
@@ -23,13 +23,13 @@ pnpm add @edge/hooks
 Add the Edge Design Tailwind preset to your `tailwind.config.js`:
 
 ```js
-const edgePreset = require('@edge/tokens/tailwind-preset')
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
 
 module.exports = {
   presets: [edgePreset],
   content: [
     './src/**/*.{ts,tsx}',
-    './node_modules/@edge/ui/dist/**/*.{js,mjs}',
+    './node_modules/@riseaicloud/ui/dist/**/*.{js,mjs}',
   ],
 }
 ```
@@ -46,13 +46,13 @@ Import the component styles in your app entry:
 
 ```tsx
 // app/layout.tsx or main.tsx
-import '@edge/ui/styles.css'
+import '@riseaicloud/ui/styles.css'
 ```
 
 ## Verify
 
 ```tsx
-import { Button } from '@edge/ui'
+import { Button } from '@riseaicloud/ui'
 
 export default function App() {
   return <Button variant="default">It works</Button>

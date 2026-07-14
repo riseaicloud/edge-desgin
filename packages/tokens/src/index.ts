@@ -1,5 +1,5 @@
 /**
- * @edge/tokens — Edge Design System Design Tokens
+ * @riseaicloud/tokens — Edge Design System Design Tokens
  *
  * Central source of truth for colors, typography, spacing, motion, and themes.
  * Import individual modules for tree-shaking, or use this barrel export.
