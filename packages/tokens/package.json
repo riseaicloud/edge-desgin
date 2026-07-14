@@ -1,6 +1,6 @@
 {
   "name": "@riseaicloud/tokens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Design tokens for Edge Design System — colors, typography, spacing, motion, themes",
   "type": "module",
   "main": "./dist/index.js",

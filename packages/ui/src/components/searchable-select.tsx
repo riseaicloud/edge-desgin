@@ -10,6 +10,10 @@ import { cn } from "../utils"
 export interface SearchableSelectOption {
   value: string
   label: string
+  /** Optional icon rendered on the left of the option (and the selected value). */
+  icon?: React.ReactNode
+  /** Disable selecting this option. */
+  disabled?: boolean
 }
 
 export interface SearchableSelectProps<T extends SearchableSelectOption = SearchableSelectOption> {
@@ -29,7 +33,19 @@ export interface SearchableSelectProps<T extends SearchableSelectOption = Search
   loading?: boolean
   /** Whether there are more items to load */
   hasMore?: boolean
-  /** Callback when search query changes (debounced by parent) */
+  /** Show the search input. Set false for small fixed-enum selects (styled
+   *  dropdown, no search box). Default true. */
+  searchable?: boolean
+  /** Disable the whole control. */
+  disabled?: boolean
+  /**
+   * Custom local filter. Only used for LOCAL search (i.e. when `onSearch` is not
+   * provided). Return true to keep the option for the given input.
+   * Default: case-insensitive match on `label`.
+   */
+  filterOption?: (input: string, option: T) => boolean
+  /** Callback when search query changes (debounced by parent). Providing this
+   *  switches to REMOTE search — the parent returns the filtered `options`. */
   onSearch?: (query: string) => void
   /** Callback when scroll reaches bottom */
   onLoadMore?: () => void
@@ -62,6 +78,9 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
   className,
   loading = false,
   hasMore = false,
+  searchable = true,
+  disabled = false,
+  filterOption,
   onSearch,
   onLoadMore,
   renderOption,
@@ -130,6 +149,7 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
   )
 
   const handleOpen = () => {
+    if (disabled) return
     setIsOpen(true)
     onOpen?.()
   }
@@ -150,11 +170,21 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
 
   const selectedOption = options.find((opt) => opt.value === value)
 
+  // Local filtering — only when NOT in remote mode (`onSearch` absent) and
+  // search is enabled. Remote mode expects the parent to return filtered options.
+  const isRemote = !!onSearch
+  const displayedOptions = React.useMemo(() => {
+    if (!searchable || isRemote || !searchQuery.trim()) return options
+    const q = searchQuery.trim()
+    const f = filterOption ?? ((input: string, opt: T) => opt.label.toLowerCase().includes(input.toLowerCase()))
+    return options.filter((opt) => f(q, opt as T))
+  }, [options, searchable, isRemote, searchQuery, filterOption])
+
   const getDisplayText = () => {
     if (selectedOption) return selectedOption.label
     return value || placeholder
   }
-  const showClear = clearable && value
+  const showClear = clearable && value && !disabled
 
   return (
     <div
@@ -166,33 +196,37 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
       <div
         onClick={handleOpen}
         className={cn(
-          "min-w-[120px] h-8 px-3 text-sm border border-border rounded bg-background",
-          "hover:border-muted-foreground/50 focus:outline-none",
-          "flex items-center justify-between cursor-pointer"
+          "w-full min-w-[120px] h-8 px-3 text-sm border border-border rounded bg-background",
+          "flex items-center justify-between",
+          disabled
+            ? "opacity-60 cursor-not-allowed"
+            : "hover:border-muted-foreground/50 focus:outline-none cursor-pointer"
         )}
       >
-        {isOpen ? (
+        {isOpen && searchable ? (
           <input
             ref={inputRef}
             type="text"
-            placeholder={value ? selectedOption?.label || value : searchPlaceholder}
+            placeholder={searchPlaceholder}
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value)
               setIsSearchMode(true)
             }}
-            className="flex-1 outline-none bg-transparent text-sm"
+            size={1}
+            className="flex-1 min-w-0 outline-none bg-transparent text-sm"
             autoFocus
             onClick={(e) => e.stopPropagation()}
           />
         ) : (
           <span
             className={cn(
-              "truncate text-left flex-1",
+              "truncate text-left flex-1 flex items-center gap-1.5",
               !value && "text-muted-foreground"
             )}
             title={getDisplayText()}
           >
+            {selectedOption?.icon && <span className="shrink-0 inline-flex">{selectedOption.icon}</span>}
             {getDisplayText()}
           </span>
         )}
@@ -221,25 +255,30 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
             className="max-h-48 overflow-y-auto"
             onScroll={handleScroll}
           >
-            {options.length > 0 ? (
+            {displayedOptions.length > 0 ? (
               <>
-                {options.map((option) => {
+                {displayedOptions.map((option) => {
                   const isSelected = value === option.value
                   return (
                     <button
                       key={option.value}
                       type="button"
-                      onClick={() => handleSelect(option.value)}
+                      disabled={option.disabled}
+                      onClick={() => !option.disabled && handleSelect(option.value)}
                       className={cn(
                         "w-full px-3 py-2 text-sm text-left hover:bg-accent",
-                        "flex items-center justify-between",
-                        isSelected && "bg-accent text-accent-foreground"
+                        "flex items-center justify-between gap-2",
+                        isSelected && "bg-accent text-accent-foreground",
+                        option.disabled && "opacity-50 cursor-not-allowed hover:bg-transparent"
                       )}
                     >
                       {renderOption ? (
                         renderOption(option as T, isSelected)
                       ) : (
-                        <span className="truncate">{option.label}</span>
+                        <span className="truncate flex items-center gap-1.5">
+                          {option.icon && <span className="shrink-0 inline-flex">{option.icon}</span>}
+                          {option.label}
+                        </span>
                       )}
                       {isSelected && <Check className="h-4 w-4 shrink-0" />}
                     </button>
@@ -252,7 +291,7 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
                   </div>
                 )}
 
-                {!hasMore && options.length > 1 && !searchQuery.trim() && (
+                {isRemote && !hasMore && displayedOptions.length > 1 && !searchQuery.trim() && (
                   <div className="px-3 py-2 text-sm text-muted-foreground/60 text-center">
                     {noMoreText}
                   </div>
