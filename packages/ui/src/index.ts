@@ -6,6 +6,9 @@ export { Separator } from './components/separator'
 export { ScrollArea, ScrollBar } from './components/scroll-area'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './components/collapsible'
 
+export { PageHeader } from './components/page-header'
+export type { PageHeaderProps } from './components/page-header'
+
 // ─── General ─────────────────────────────────────────────────────────────────
 export { Button, buttonVariants } from './components/button'
 export type { ButtonProps } from './components/button'
@@ -20,6 +23,9 @@ export { Label } from './components/label'
 // ─── Data Entry ───────────────────────────────────────────────────────────────
 export { SearchableSelect } from './components/searchable-select'
 export type { SearchableSelectProps, SearchableSelectOption } from './components/searchable-select'
+
+export { DateRangePicker } from './components/date-range-picker'
+export type { DateRangePickerProps, DateRange, DateRangePreset } from './components/date-range-picker'
 
 export { Input } from './components/input'
 export type { InputProps } from './components/input'
@@ -66,6 +72,9 @@ export { LabelEditor } from './components/LabelEditor'
 export type { KeyValue, LabelEditorProps } from './components/LabelEditor'
 
 // ─── Data Display ─────────────────────────────────────────────────────────────
+export { DataTable } from './components/data-table'
+export type { DataTableProps, ColumnDef, RowAction, DeleteConfig, ExportConfig, SearchFilter, BatchAction } from './components/data-table'
+
 export { PropertyList } from './components/property-list'
 export type { PropertyListProps, PropertyItem } from './components/property-list'
 
