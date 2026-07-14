@@ -15,5 +15,5 @@ We have a quick list of common questions to get you started engaging with this p
   bumps. Publishing is **manual** (Actions → Release → Run workflow) so nothing ships until the design system
   is ready.
 - **Post-1.0.0:** switch to the standard changeset flow — every change adds a changeset
-  (`pnpm changeset`), a "Version Packages" PR accumulates the bumps, and merging it publishes to GitHub
-  Packages automatically.
+  (`pnpm changeset`), a "Version Packages" PR accumulates the bumps, and merging it publishes to the
+  public npm registry automatically.
