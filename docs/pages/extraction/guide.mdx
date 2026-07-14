@@ -1,6 +1,6 @@
 # 组件提取指南
 
-从 Edge Console 提取组件到 @edge/ui 的规范和流程。
+从 Edge Console 提取组件到 @riseaicloud/ui 的规范和流程。
 
 ## 提取边界
 
@@ -130,7 +130,7 @@ export function EditLabelsDialog({ clusterId, ... }) {
 }
 ```
 
-### 提取后（@edge/ui）
+### 提取后（@riseaicloud/ui）
 ```tsx
 // src/components/LabelEditor.tsx
 interface LabelEditorProps<T> {
@@ -145,7 +145,7 @@ export function LabelEditor<T>({ value, onChange }: LabelEditorProps<T>) {
 
 ### 在 edge-console 中使用
 ```tsx
-import { LabelEditor } from '@edge/ui'
+import { LabelEditor } from '@riseaicloud/ui'
 import { updateClusterResource } from '@/gen/api'
 
 export function EditLabelsDialog({ clusterId, ... }) {

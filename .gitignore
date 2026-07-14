@@ -13,9 +13,6 @@ out/
 # Storybook
 storybook-static/
 
-# Changesets
-.changeset/*.md
-
 # IDE
 .vscode/
 .idea/

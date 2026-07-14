@@ -5,7 +5,7 @@ module.exports = {
     './pages/**/*.{ts,tsx,mdx}',
     './components/**/*.{ts,tsx}',
     './theme.config.tsx',
-    './node_modules/@edge/ui/src/**/*.{ts,tsx}',
+    './node_modules/@riseaicloud/ui/src/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {

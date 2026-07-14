@@ -1,4 +1,4 @@
-import { ResourceChart } from '@edge/ui'
+import { ResourceChart } from '@riseaicloud/ui'
 import { Preview } from '../../../components/Preview'
 
 # Charts
@@ -7,12 +7,12 @@ Time-series area chart for resource usage visualization.
 
 ## ResourceChart
 
-A generic time-series area chart from `@edge/ui`. Displays percentage usage, a progress bar, and an area chart.
+A generic time-series area chart from `@riseaicloud/ui`. Displays percentage usage, a progress bar, and an area chart.
 
 ### Import
 
 ```tsx
-import { ResourceChart } from '@edge/ui'
+import { ResourceChart } from '@riseaicloud/ui'
 ```
 
 ### Preview
@@ -98,7 +98,7 @@ The progress bar color changes automatically based on `percentage`:
 In `edge-console`, `ResourceChart` is used in the telemetry dashboards for CPU, memory, and disk metrics. Data comes from the monitoring service SDK hooks:
 
 ```tsx
-import { ResourceChart } from '@edge/ui'
+import { ResourceChart } from '@riseaicloud/ui'
 
 function CpuChart({ timeSeries, currentUsage, percentage }) {
   return (
@@ -134,8 +134,8 @@ Monitoring pages in Edge Console follow a consistent three-zone layout: KPI summ
 ```
 
 ```tsx
-import { KPICard, ResourceChart } from '@edge/ui'
-import { ResourceMetricCard } from '@edge/components'
+import { KPICard, ResourceChart } from '@riseaicloud/ui'
+import { ResourceMetricCard } from '@riseaicloud/components'
 
 export function NodeMonitoringPage({ node }) {
   const [activeMetric, setActiveMetric] = useState<'cpu' | 'memory' | 'disk'>('cpu')

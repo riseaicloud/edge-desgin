@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Server, Cpu, MemoryStick, Activity, AlertTriangle } from 'lucide-react'
-import { Card, CardContent } from '@edge/ui'
+import { Card, CardContent } from '@riseaicloud/ui'
 
 export interface NodeStats {
   totalNodes: number
@@ -24,11 +24,11 @@ export interface NodeStatsCardsProps {
  * 节点统计卡片组件
  *
  * 展示节点概览统计信息（总节点数、就绪节点数、平均 CPU、平均内存）。
- * 属于 Layer 3 (@edge/components)，不直接调用 API，数据通过 props 传入。
+ * 属于 Layer 3 (@riseaicloud/components)，不直接调用 API，数据通过 props 传入。
  *
  * @example
  * ```tsx
- * import { NodeStatsCards } from '@edge/components'
+ * import { NodeStatsCards } from '@riseaicloud/components'
  *
  * <NodeStatsCards stats={nodeStats} loading={isLoading} />
  * ```

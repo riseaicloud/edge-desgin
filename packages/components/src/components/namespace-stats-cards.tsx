@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Folder, Package, Server, AlertTriangle } from 'lucide-react'
-import { Card, CardContent } from '@edge/ui'
+import { Card, CardContent } from '@riseaicloud/ui'
 
 export interface NamespaceItem {
   status?: string
@@ -36,11 +36,11 @@ function computeStats(namespaces: NamespaceItem[]) {
  * 命名空间统计卡片组件
  *
  * 展示命名空间列表的汇总统计信息（总数、健康数、容器组数、服务数）。
- * 属于 Layer 3 (@edge/components)，不直接调用 API，数据通过 props 传入。
+ * 属于 Layer 3 (@riseaicloud/components)，不直接调用 API，数据通过 props 传入。
  *
  * @example
  * ```tsx
- * import { NamespaceStatsCards } from '@edge/components'
+ * import { NamespaceStatsCards } from '@riseaicloud/components'
  *
  * <NamespaceStatsCards namespaces={namespaceList} loading={isLoading} />
  * ```

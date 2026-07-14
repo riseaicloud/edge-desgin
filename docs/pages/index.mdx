@@ -15,25 +15,25 @@ A comprehensive design system for the Edge Platform — providing a consistent d
 
 | Package | Description |
 |---------|-------------|
-| `@edge/tokens` | Design tokens — CSS variables, Tailwind preset, JS/TS constants |
-| `@edge/ui` | Core UI components — Button, Input, Dialog, Table, Card, etc. |
-| `@edge/edge-components` | Domain components — Selectors, Monitoring, Topology, Terminal |
-| `@edge/hooks` | Shared hooks — State management, UI, DOM utilities |
-| `@edge/icons` | Icon system — Lucide React + custom Edge icons |
+| `@riseaicloud/tokens` | Design tokens — CSS variables, Tailwind preset, JS/TS constants |
+| `@riseaicloud/ui` | Core UI components — Button, Input, Dialog, Table, Card, etc. |
+| `@riseaicloud/edge-components` | Domain components — Selectors, Monitoring, Topology, Terminal |
+| `@riseaicloud/hooks` | Shared hooks — State management, UI, DOM utilities |
+| `@riseaicloud/icons` | Icon system — Lucide React + custom Edge icons |
 
 ## Quick Start
 
 ### Install
 
 ```bash
-pnpm add @edge/ui @edge/tokens
+pnpm add @riseaicloud/ui @riseaicloud/tokens
 ```
 
 ### Use the Tailwind Preset
 
 ```js
 // tailwind.config.js
-const edgePreset = require('@edge/tokens/tailwind-preset')
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
 
 module.exports = {
   presets: [edgePreset],
@@ -44,7 +44,7 @@ module.exports = {
 ### Use Components
 
 ```tsx
-import { Button, Card, Badge } from '@edge/ui'
+import { Button, Card, Badge } from '@riseaicloud/ui'
 
 function App() {
   return (

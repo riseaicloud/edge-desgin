@@ -1,4 +1,4 @@
-import { EventsTable, EventsViewer, AlertList, AlertListContainer } from '@edge/components'
+import { EventsTable, EventsViewer, AlertList, AlertListContainer } from '@riseaicloud/components'
 import { Preview } from '../../../components/Preview'
 
 # Events & Alerts
@@ -7,13 +7,13 @@ Components for displaying Kubernetes events and firing alerts.
 
 ## EventsTable
 
-K8s-aware events table from `@edge/components`. Accepts event data through props — no direct API calls.
+K8s-aware events table from `@riseaicloud/components`. Accepts event data through props — no direct API calls.
 
 ### Import
 
 ```tsx
-import { EventsTable } from '@edge/components'
-import type { EventInfo } from '@edge/components'
+import { EventsTable } from '@riseaicloud/components'
+import type { EventInfo } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -99,18 +99,18 @@ interface EventInfo {
 
 ## EventsViewer
 
-Layer 3 wrapper around `EventsTable` from `@edge/components`. Provides the same interface.
+Layer 3 wrapper around `EventsTable` from `@riseaicloud/components`. Provides the same interface.
 
 ### Import
 
 ```tsx
-import { EventsViewer } from '@edge/components'
+import { EventsViewer } from '@riseaicloud/components'
 ```
 
 ### Usage
 
 ```tsx
-import { EventsViewer } from '@edge/components'
+import { EventsViewer } from '@riseaicloud/components'
 
 function PodEventsTab({ events, loading, error }) {
   return (
@@ -132,13 +132,13 @@ Same as `EventsTable` — see above.
 
 ## AlertList
 
-A list of firing alerts from `@edge/components`. Accepts pre-fetched alert data.
+A list of firing alerts from `@riseaicloud/components`. Accepts pre-fetched alert data.
 
 ### Import
 
 ```tsx
-import { AlertList } from '@edge/components'
-import type { AlertItem } from '@edge/components'
+import { AlertList } from '@riseaicloud/components'
+import type { AlertItem } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -217,7 +217,7 @@ A container component with title bar and optional refresh button.
 ### Import
 
 ```tsx
-import { AlertListContainer } from '@edge/components'
+import { AlertListContainer } from '@riseaicloud/components'
 ```
 
 ### Preview

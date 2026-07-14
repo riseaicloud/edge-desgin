@@ -46,7 +46,7 @@ export interface ResourceChartProps {
  *
  * @example
  * ```tsx
- * import { ResourceChart } from '@edge/ui'
+ * import { ResourceChart } from '@riseaicloud/ui'
  *
  * <ResourceChart
  *   title="CPU 使用率"

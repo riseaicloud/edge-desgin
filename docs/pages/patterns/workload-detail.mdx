@@ -1,11 +1,11 @@
-import { KPICard, ResourceChart } from '@edge/ui'
+import { KPICard, ResourceChart } from '@riseaicloud/ui'
 import {
   ResourceNameDescription,
   ContainerStatus,
   ReplicaAdjustmentCard,
   LabelsDisplay,
   AnnotationsDisplay,
-} from '@edge/components'
+} from '@riseaicloud/components'
 import { Preview } from '../../components/Preview'
 import { Cpu, MemoryStick, Box, RefreshCw } from 'lucide-react'
 
@@ -33,19 +33,19 @@ import { Cpu, MemoryStick, Box, RefreshCw } from 'lucide-react'
 
 | 区域 | 组件 | 来源 |
 |------|------|------|
-| 信息头 | [`ResourceNameDescription`](/domain/resource-display) | `@edge/components` |
-| 副本控制 | [`ReplicaAdjustmentCard`](/domain/resource-display/replica-adjustment) | `@edge/components` |
-| KPI 行 | [`KPICard`](/domain/monitoring/metrics-cards) | `@edge/ui` |
-| 监控图表 | [`ResourceChart`](/domain/monitoring/charts) | `@edge/ui` |
-| 容器状态 | [`ContainerStatus`](/domain/resource-display) | `@edge/components` |
-| 标签 | [`LabelsDisplay`](/domain/metadata) | `@edge/components` |
-| 注解 | [`AnnotationsDisplay`](/domain/metadata) | `@edge/components` |
+| 信息头 | [`ResourceNameDescription`](/domain/resource-display) | `@riseaicloud/components` |
+| 副本控制 | [`ReplicaAdjustmentCard`](/domain/resource-display/replica-adjustment) | `@riseaicloud/components` |
+| KPI 行 | [`KPICard`](/domain/monitoring/metrics-cards) | `@riseaicloud/ui` |
+| 监控图表 | [`ResourceChart`](/domain/monitoring/charts) | `@riseaicloud/ui` |
+| 容器状态 | [`ContainerStatus`](/domain/resource-display) | `@riseaicloud/components` |
+| 标签 | [`LabelsDisplay`](/domain/metadata) | `@riseaicloud/components` |
+| 注解 | [`AnnotationsDisplay`](/domain/metadata) | `@riseaicloud/components` |
 
 ## 组合代码示例
 
 ```tsx
 import { useState } from 'react'
-import { KPICard, ResourceChart } from '@edge/ui'
+import { KPICard, ResourceChart } from '@riseaicloud/ui'
 import {
   ResourceNameDescription,
   ContainerStatus,
@@ -53,7 +53,7 @@ import {
   ReplicaConfirmationDialog,
   LabelsDisplay,
   AnnotationsDisplay,
-} from '@edge/components'
+} from '@riseaicloud/components'
 import { Cpu, MemoryStick, Box, RefreshCw } from 'lucide-react'
 
 export function WorkloadDetailPage({ workload }) {

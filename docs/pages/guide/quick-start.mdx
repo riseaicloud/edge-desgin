@@ -5,7 +5,7 @@ Get from zero to a working UI in under 5 minutes.
 ## 1. Install
 
 ```bash
-pnpm add @edge/tokens @edge/ui
+pnpm add @riseaicloud/tokens @riseaicloud/ui
 ```
 
 ## 2. Configure Tailwind
@@ -13,13 +13,13 @@ pnpm add @edge/tokens @edge/ui
 Add the Edge Design preset to `tailwind.config.js` (or `tailwind.config.ts`):
 
 ```js
-const edgePreset = require('@edge/tokens/tailwind-preset')
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
 
 module.exports = {
   presets: [edgePreset],
   content: [
     './src/**/*.{ts,tsx}',
-    './node_modules/@edge/ui/src/**/*.{ts,tsx}',
+    './node_modules/@riseaicloud/ui/src/**/*.{ts,tsx}',
   ],
 }
 ```
@@ -39,7 +39,7 @@ The Edge Design Tailwind preset injects CSS custom properties (`--background`, `
 ## 4. Use your first component
 
 ```tsx
-import { Button } from '@edge/ui'
+import { Button } from '@riseaicloud/ui'
 
 export default function Page() {
   return (
@@ -54,7 +54,7 @@ export default function Page() {
 ## 5. Add a form
 
 ```tsx
-import { Input, Label, Button } from '@edge/ui'
+import { Input, Label, Button } from '@riseaicloud/ui'
 
 export default function CreateForm() {
   return (

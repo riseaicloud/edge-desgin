@@ -1,4 +1,4 @@
-import { ReplicaAdjustmentCard } from '@edge/components'
+import { ReplicaAdjustmentCard } from '@riseaicloud/components'
 import { Preview } from '../../../components/Preview'
 
 # ReplicaAdjustmentCard
@@ -8,7 +8,7 @@ Dark-theme card for displaying and adjusting workload replica count. Shows curre
 ## Import
 
 ```tsx
-import { ReplicaAdjustmentCard } from '@edge/components'
+import { ReplicaAdjustmentCard } from '@riseaicloud/components'
 ```
 
 ---
@@ -111,7 +111,7 @@ Use `minReplicas` / `maxReplicas` to clamp the adjustment range. The correspondi
 `ReplicaAdjustmentCard` is often paired with `ReplicaConfirmationDialog` to add a 5-second countdown confirmation before committing the scale request.
 
 ```tsx
-import { ReplicaAdjustmentCard, ReplicaConfirmationDialog } from '@edge/components'
+import { ReplicaAdjustmentCard, ReplicaConfirmationDialog } from '@riseaicloud/components'
 
 const [pending, setPending] = useState(desired)
 const [confirmOpen, setConfirmOpen] = useState(false)
@@ -138,7 +138,7 @@ const [confirmOpen, setConfirmOpen] = useState(false)
 The card is used on workload detail pages (Deployments, StatefulSets) where operators need a quick inline scale control without opening a full dialog.
 
 ```tsx
-import { ReplicaAdjustmentCard } from '@edge/components'
+import { ReplicaAdjustmentCard } from '@riseaicloud/components'
 import { useScaleDeployment } from '@/hooks/workloads'
 
 export function DeploymentScalePanel({ deployment }) {

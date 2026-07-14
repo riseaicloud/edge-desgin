@@ -171,7 +171,7 @@ const ClusterTopologyInner = ({
  *
  * @example
  * ```tsx
- * import { ClusterTopology } from '@edge/components'
+ * import { ClusterTopology } from '@riseaicloud/components'
  *
  * const topologyData = {
  *   root: {

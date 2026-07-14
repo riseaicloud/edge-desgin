@@ -1,6 +1,6 @@
 {
-  "name": "@edge/components",
-  "version": "0.1.0",
+  "name": "@riseaicloud/components",
+  "version": "1.0.0",
   "description": "Edge Platform Domain Components (Layer 3)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -27,8 +27,8 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
-    "@edge/tokens": "workspace:*",
-    "@edge/ui": "workspace:*",
+    "@riseaicloud/tokens": "workspace:*",
+    "@riseaicloud/ui": "workspace:*",
     "@xyflow/react": "^12.10.2",
     "lucide-react": "^0.562.0",
     "recharts": "^3.1.2"
@@ -40,6 +40,12 @@
     "typescript": "^5.9.3"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riseaicloud/edge-desgin.git",
+    "directory": "packages/components"
   }
 }

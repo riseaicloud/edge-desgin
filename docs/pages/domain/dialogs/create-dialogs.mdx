@@ -3,7 +3,7 @@ import {
   Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogClose,
   Tabs, TabsList, TabsTrigger, TabsContent,
   Input, Textarea, Label,
-} from '@edge/ui'
+} from '@riseaicloud/ui'
 import { Preview } from '../../../components/Preview'
 
 # Create Dialogs
@@ -21,7 +21,7 @@ Business dialogs for creating Edge Platform resources.
 ### Import
 
 ```tsx
-import { CreateClusterDialog } from '@edge/components'
+import { CreateClusterDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -99,7 +99,7 @@ import { CreateClusterDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import { CreateClusterDialog } from '@edge/components'
+import { CreateClusterDialog } from '@riseaicloud/components'
 
 function ClusterManagement() {
   const [open, setOpen] = useState(false)
@@ -158,7 +158,7 @@ Both modes call `createCluster()` from `@/gen/client` and show `toast.success` o
 ### Import
 
 ```tsx
-import { CreateNamespaceDialog } from '@edge/components'
+import { CreateNamespaceDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -202,7 +202,7 @@ import { CreateNamespaceDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import { CreateNamespaceDialog } from '@edge/components'
+import { CreateNamespaceDialog } from '@riseaicloud/components'
 
 function NamespaceList() {
   const [open, setOpen] = useState(false)
@@ -256,7 +256,7 @@ function NamespaceList() {
 ### Import
 
 ```tsx
-import { CreateUserDialog } from '@edge/components'
+import { CreateUserDialog } from '@riseaicloud/components'
 ```
 
 ### Preview
@@ -308,7 +308,7 @@ import { CreateUserDialog } from '@edge/components'
 
 ```tsx
 import { useState } from 'react'
-import CreateUserDialog from '@edge/components'
+import CreateUserDialog from '@riseaicloud/components'
 
 function UserManagement() {
   const [open, setOpen] = useState(false)

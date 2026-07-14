@@ -17,10 +17,10 @@ importers:
 
   docs:
     dependencies:
-      '@edge/components':
+      '@riseaicloud/components':
         specifier: workspace:*
         version: link:../packages/components
-      '@edge/ui':
+      '@riseaicloud/ui':
         specifier: workspace:*
         version: link:../packages/ui
       next:
@@ -66,10 +66,10 @@ importers:
 
   packages/components:
     dependencies:
-      '@edge/tokens':
+      '@riseaicloud/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@edge/ui':
+      '@riseaicloud/ui':
         specifier: workspace:*
         version: link:../ui
       '@xyflow/react':
@@ -132,9 +132,6 @@ importers:
 
   packages/ui:
     dependencies:
-      '@edge/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@monaco-editor/react':
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -195,6 +192,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.5
         version: 1.2.8(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@riseaicloud/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

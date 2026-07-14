@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const edgePreset = require('@edge/tokens/tailwind-preset')
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
 
 module.exports = {
   presets: [edgePreset],

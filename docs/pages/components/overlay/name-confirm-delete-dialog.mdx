@@ -2,7 +2,7 @@
 
 High-protection deletion dialog that requires the user to type the exact resource identifier before the confirm button becomes enabled. Used for irreversible, high-impact deletions.
 
-**Layer:** `@edge/ui` pattern built on `ConfirmDialog`
+**Layer:** `@riseaicloud/ui` pattern built on `ConfirmDialog`
 
 **Source:** `edge-console/src/components/dialogs/NameConfirmDeleteDialog.tsx`
 
@@ -13,7 +13,7 @@ High-protection deletion dialog that requires the user to type the exact resourc
 ## Usage
 
 ```tsx
-import { ConfirmDialog } from '@edge/ui'
+import { ConfirmDialog } from '@riseaicloud/ui'
 
 // ConfirmDialog covers the name-confirm pattern natively:
 <ConfirmDialog
@@ -33,7 +33,7 @@ import { ConfirmDialog } from '@edge/ui'
 Or use the full `NameConfirmDeleteDialog` from edge-console for the cascade delete option:
 
 ```tsx
-import { NameConfirmDeleteDialog } from '@edge/ui'
+import { NameConfirmDeleteDialog } from '@riseaicloud/ui'
 
 <NameConfirmDeleteDialog
   open={deleteOpen}

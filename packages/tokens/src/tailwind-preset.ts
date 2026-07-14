@@ -1,11 +1,11 @@
 /**
- * @edge/tokens/tailwind-preset
+ * @riseaicloud/tokens/tailwind-preset
  *
  * Drop-in Tailwind CSS preset that wires up all Edge Design tokens.
  *
  * Usage in tailwind.config.js:
  *
- *   const edgePreset = require('@edge/tokens/tailwind-preset')
+ *   const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
  *   module.exports = { presets: [edgePreset], content: [...] }
  */
 

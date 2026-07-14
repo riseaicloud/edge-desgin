@@ -128,11 +128,11 @@ function AlertRow({ alert }: { alert: AlertItem }) {
 /**
  * 告警列表组件
  *
- * 展示持续中的告警列表。属于 Layer 3 (@edge/components)，不直接调用 API。
+ * 展示持续中的告警列表。属于 Layer 3 (@riseaicloud/components)，不直接调用 API。
  *
  * @example
  * ```tsx
- * import { AlertList } from '@edge/components'
+ * import { AlertList } from '@riseaicloud/components'
  *
  * <AlertList alerts={firingAlerts} loading={isLoading} />
  * ```
@@ -188,7 +188,7 @@ export interface AlertListContainerProps {
  *
  * @example
  * ```tsx
- * import { AlertListContainer } from '@edge/components'
+ * import { AlertListContainer } from '@riseaicloud/components'
  *
  * <AlertListContainer
  *   alerts={firingAlerts}

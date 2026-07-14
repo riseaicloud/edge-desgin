@@ -3,8 +3,8 @@
 import React from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
-import { ChartContainer, cn } from "@edge/ui"
-import type { ChartConfig } from "@edge/ui"
+import { ChartContainer, cn } from "@riseaicloud/ui"
+import type { ChartConfig } from "@riseaicloud/ui"
 
 // ==================== Types ====================
 
