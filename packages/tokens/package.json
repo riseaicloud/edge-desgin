@@ -18,6 +18,7 @@
       "require": "./dist/tailwind-preset.js"
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "src"
