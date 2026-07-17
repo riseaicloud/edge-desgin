@@ -50,7 +50,6 @@ const { data } = useClusters({ baseUrl, token })
 |---|---|
 | **依赖 Kubb 生成类型的组件**（引用 `src/gen/*`） | 与某个 OpenAPI 快照紧耦合，消费方版本一变就崩 |
 | **硬编码 baseUrl / token / 鉴权方式的代码** | 见上：连接信息必须注入 |
-| **绑定某个状态管理 / 数据库 / 路由库的组件** | 见「依赖规则」 |
 | **只服务单一消费方的一次性页面** | 设计系统不是代码仓库 |
 
 ## 依赖规则
@@ -62,12 +61,9 @@ const { data } = useClusters({ baseUrl, token })
 
 | | 为什么 |
 |---|---|
-| `@tanstack/react-query` 等数据层 | **应由使用者注入** —— 消费方可能用 SWR、可能用 RSC、可能什么都不用 |
-| **i18n 引擎**（`i18next` / `react-intl` / …） | 同理。组件的内建文案走 `EdgeConfigProvider`（纯 context、零依赖），**不绑引擎** |
-| 路由库（`react-router` / `next/link`） | 导航方式由消费方决定，组件通过 `onNavigate` 之类的 prop 上抛 |
-| Kubb 生成的 API client / `src/gen/*` 的类型 | 见上 |
-
-> 这几条是同一条原则的不同侧面：**框架级选型属于使用者，库不替他们决定**。
+| ❌ `@tanstack/react-query` | **应由使用者注入** —— 消费方可能用 SWR、可能用 RSC、可能什么都不用 |
+| ❌ 任何 Kubb 生成的 API client | 见上 |
+| ❌ `src/gen/*` 中的类型 | 见上 |
 
 ## 类型处理
 
@@ -118,11 +114,3 @@ export function EditLabelsDialog({ clusterId, ... }) {
 }
 ```
 
-## 样式约束
-
-- **颜色一律走语义 token**（`bg-card` / `text-muted-foreground` / `bg-surface-page`），
-  禁止 hex 字面量与固定灰（`text-gray-500` / `bg-blue-600`）—— 它们不跟主题。
-- 遮罩这类**语义上恒定**的颜色例外（`bg-black/80`）：遮罩要压暗背景，跟着 `--background`
-  反转反而会在浅色下变成白色蒙层、形同虚设。**「是不是 token」和「语义对不对」是两件事。**
-- 组件**不自带样式表**：class 由消费方的 Tailwind 扫描生成（见 `docs/guide/installation`），
-  所以消费方必须配 preset + 把本包 `dist` 加进 `content`。

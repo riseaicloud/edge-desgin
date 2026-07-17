@@ -47,7 +47,7 @@ WorkspaceSelector / NodeGroupSelector（均 props 注入，不自己发请求）
 
 | 优先级 | 事项 | 说明 |
 |---|---|---|
-| 中 | **组件 i18n** | 69 个组件里 **22 个硬编码中文**（「确定」「取消」「暂无数据」），且零 i18n 机制。方案：`EdgeConfigProvider`（纯 context、零依赖、**默认中文**）—— **不绑 i18next**，与「react-query 应由使用者注入」同一条原则 |
+| 中 | **组件 i18n** | 69 个组件里 **22 个硬编码中文**（「确定」「取消」「暂无数据」），且零 i18n 机制。**方案待定** —— 需先确定组件库如何暴露 locale（候选方向：ConfigProvider 式的 context 注入，与「react-query 应由使用者注入」同一条原则；但具体契约未定，不写进 EXTRACTION_GUIDE） |
 | 中 | **组件去硬编码色** | 残留 `text-gray-700` / `bg-blue-600` / `border-gray-200` 等固定色，不跟主题。**与组件 i18n 是同一批文件，应在同一批 PR 做完** |
 | 中 | **视觉回归** | 改 69 个组件的颜色 × 明暗两套，没有视觉回归就是盲改。已有 `.stories.tsx` 打底 |
 | 中 | `sideEffects: false` + monaco 改 dynamic import | 包无 `sideEffects` 声明且 `dist/index.mjs` static import `@monaco-editor/react`，barrel import 可能拉入整个编辑器 |
