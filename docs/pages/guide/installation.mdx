@@ -40,14 +40,28 @@ The preset automatically:
 - Sets up border radius, shadows, z-index, and animation tokens
 - Adds base styles for `body` and border colors
 
-## Import Styles
+## Styles
 
-Import the component styles in your app entry:
+**No stylesheet import is needed.** The package ships Tailwind class names, not a
+compiled stylesheet — your own Tailwind build generates the CSS. Two things make
+that work, both configured above:
 
-```tsx
-// app/layout.tsx or main.tsx
-import '@riseaicloud/ui/styles.css'
-```
+1. **`presets: [edgePreset]`** — injects every CSS custom property (`:root` / `.dark`)
+   and maps semantic utilities to `hsl(var(--token))`.
+2. **`content` includes `./node_modules/@riseaicloud/ui/dist/**`** — without this the
+   component class names are never scanned and their CSS is silently dropped.
+
+<Callout type="warning">
+  Skipping the `content` entry usually *appears* to work: any class your own code also
+  uses gets generated anyway. The ones only the library uses (`bg-card`,
+  `hover:bg-primary/80`, …) go missing — the failure is partial and easy to miss.
+</Callout>
+
+<Callout type="info">
+  **Dark mode:** the `.dark` block is only emitted when the string `dark` appears
+  somewhere in your scanned `content`. If you toggle the class purely from JS and never
+  write a `dark:` utility in source, add `safelist: ['dark']` to your Tailwind config.
+</Callout>
 
 ## Verify
 

@@ -37,7 +37,8 @@ export function Pagination({
 
   return (
     <div className={className}>
-      <div className="p-3" style={{ backgroundColor: "#F9FBFD" }}>
+      {/* 分页条底色走 surface token（原为 inline style 硬编码 #F9FBFD，不跟主题） */}
+      <div className="p-3 bg-surface-toolbar">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center space-x-4 text-muted-foreground">
             {onPageSizeChange && (

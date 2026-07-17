@@ -32,12 +32,27 @@ export const lightColors = {
   border: '214.3 31.8% 91.4%',
   input: '214.3 31.8% 91.4%',
   ring: '221.2 83.2% 53.3%',
+
+  // ── Surface scale ────────────────────────────────────────────────────────
+  // 页面 chrome 的层次：page（内容区底，最暗）< section < toolbar < card（浮起，最亮）。
+  // 这就是 Edge Console 的核心视觉语言——「灰底 + 白卡浮起」。
+  // 值 = surfaceColors 的 hex 机械转 HSL，浅色视觉零变化：
+  //   page #EFF4F9 / toolbar #F9FBFD / section #F5F7FA / dialog-header #F9FBFF
+  // 这三个色在 console 里有 650+ 处硬编码内联样式，token 化后才可能跟主题。
+  'surface-page': '210 45.5% 95.7%',
+  'surface-toolbar': '210 50% 98.4%',
+  'surface-section': '216 33.3% 97.1%',
+  'surface-dialog-header': '220 100% 98.8%',
 } as const
 
 export const darkColors = {
   background: '222.2 84% 4.9%',
   foreground: '210 40% 98%',
-  card: '222.2 84% 4.9%',
+  // 卡片比页面底亮 = 浮起。原值与 background 同为 4.9%（shadcn 的扁平模型，
+  // 靠 border 区分层次），与浅色的「灰底 + 白卡浮起」不是同一套设计语言，
+  // 且会导致 card 比 surface-page 更暗的倒挂。改为镜像浅色的层次模型。
+  // 安全性：改动时暗色实质 0% 落地（全仓库仅 2 文件用 dark:），无存量受影响。
+  card: '217 33% 13%',
   'card-foreground': '210 40% 98%',
   popover: '222.2 84% 4.9%',
   'popover-foreground': '210 40% 98%',
@@ -54,6 +69,16 @@ export const darkColors = {
   border: '217.2 32.6% 17.5%',
   input: '217.2 32.6% 17.5%',
   ring: '224.3 76.3% 94.1%',
+
+  // ── Surface scale（暗色）─────────────────────────────────────────────────
+  // 镜像浅色的相对层次：page < section < toolbar < card。
+  // 色相保持 217–222 冷蓝灰（浅色的品牌感）；饱和度压到 33%（暗色高饱和显脏）。
+  // 浅色： page 95.7% < section 97.1% < toolbar 98.4% < card 100%
+  // 暗色： page 6%    < section 9%    < toolbar 11%   < card 13%
+  'surface-page': '222 47% 6%',
+  'surface-toolbar': '217 33% 11%',
+  'surface-section': '217 33% 9%',
+  'surface-dialog-header': '217 33% 11%',
 } as const
 
 // ---------------------------------------------------------------------------
@@ -115,15 +140,22 @@ export const statusColors = {
 // These are the high-frequency background colors used across edge-console.
 // #EFF4F9 (page), #F9FBFD (toolbar/form), #F5F7FA (section) account for 650+
 // hardcoded inline styles in the console codebase.
+//
+// ⚠️ @deprecated — 这些 hex 常量只能用于 inline style，不跟主题（切暗色/换色不变）。
+// 请改用 lightColors/darkColors 里的 `surface-*` 语义 token，它们经 preset 注入
+// CSS 变量并生成 Tailwind 类：
+//     style={{ backgroundColor: surfaceColors.page }}   ❌ 不跟主题
+//     className="bg-surface-page"                        ✅ 跟主题
+// 保留导出仅为向后兼容，将在 2.0 移除。
 
 export const surfaceColors = {
-  /** Primary page background — cool blue-gray wash */
+  /** @deprecated 用 `bg-surface-page` 代替 */
   page: '#EFF4F9',
-  /** Toolbar / form-section background */
+  /** @deprecated 用 `bg-surface-toolbar` 代替 */
   toolbar: '#F9FBFD',
-  /** Content-section / divider background */
+  /** @deprecated 用 `bg-surface-section` 代替 */
   section: '#F5F7FA',
-  /** Dialog-header background */
+  /** @deprecated 用 `bg-surface-dialog-header` 代替 */
   dialogHeader: '#F9FBFF',
   /** System base background (same as cockpitColors.bg) */
   base: '#F8FAFC',

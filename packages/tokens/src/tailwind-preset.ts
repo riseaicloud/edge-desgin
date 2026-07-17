@@ -77,6 +77,12 @@ function buildTopologyCSSVars(tokens: Record<string, string>): Record<string, st
 
 const edgePreset = {
   darkMode: ['class'] as const,
+  // Tailwind content-matches even the class selectors that `addBase` emits: if the
+  // string "dark" never appears in the consumer's scanned content, the whole `.dark`
+  // block is dropped and dark mode silently does nothing. Apps that toggle the class
+  // from JS without writing a single `dark:` utility would hit exactly that. Pinning
+  // it here means every consumer of the preset is immune by default.
+  safelist: ['dark'],
   theme: {
     container: {
       center: true,
