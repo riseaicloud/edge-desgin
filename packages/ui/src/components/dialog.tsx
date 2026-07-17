@@ -20,7 +20,10 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-background/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      // 遮罩恒定用黑色半透明，与 alert-dialog / sheet 一致（也是 shadcn 的基准）。
+      // 曾是 bg-background/80 —— 那在浅色下算出来是 hsl(0 0% 100% / .8)，白色半透明，
+      // 等于没有遮罩。遮罩的语义是「压暗背景」，不该跟随 --background 反转。
+      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
