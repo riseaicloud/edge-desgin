@@ -127,6 +127,10 @@ export interface DataTableProps<T = any> {
   batchActions?: BatchAction<T>[]
 
   // ── Toolbar slots ──
+  // Rendered BEFORE the built-in search bar. For context filters that scope
+  // the whole list (cluster / tenant selectors), which read left-to-right
+  // ahead of search. Regular actions belong in toolbarLeft / toolbarRight.
+  toolbarPrefix?: React.ReactNode
   toolbarLeft?: React.ReactNode
   toolbarRight?: React.ReactNode
   toolbarExtra?: React.ReactNode
@@ -237,6 +241,7 @@ export function DataTable<T = any>({
   stickyActions = true,
   actionsWidth = 120,
   batchActions,
+  toolbarPrefix,
   toolbarLeft,
   toolbarRight,
   toolbarExtra,
@@ -542,7 +547,7 @@ export function DataTable<T = any>({
   }, [visibleColumns, showSelection, showActionsColumn, actionsWidth])
 
   const hasSearch = searchableColumns.length > 0
-  const hasToolbar = !!(batchActions || toolbarLeft || toolbarRight || toolbarExtra || showRefresh || showColumnToggle || exportConfig || hasSearch)
+  const hasToolbar = !!(batchActions || toolbarPrefix || toolbarLeft || toolbarRight || toolbarExtra || showRefresh || showColumnToggle || exportConfig || hasSearch)
 
   // All searchable columns — re-selecting a field replaces its existing chip
   const availableFields = searchableColumns
@@ -563,6 +568,13 @@ export function DataTable<T = any>({
         {hasToolbar && (
           <div style={{ backgroundColor: '#F9FBFD' }}>
             <div className="p-4 flex items-center gap-3">
+              {/* Prefix slot — context filters (cluster / tenant), before search */}
+              {toolbarPrefix && (
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  {toolbarPrefix}
+                </div>
+              )}
+
               {/* Built-in search bar */}
               {hasSearch && (
                 <div className="flex-1 min-w-0">
