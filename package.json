@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "pnpm --filter @riseaicloud/ui dev",
     "build": "pnpm --filter @riseaicloud/ui build && pnpm --filter @riseaicloud/components build",
-    "build:docs": "pnpm --filter docs build",
+    "build:docs": "pnpm --filter edge-design-docs build",
     "storybook": "pnpm --filter @riseaicloud/ui storybook",
-    "docs:dev": "pnpm --filter docs dev",
+    "docs:dev": "pnpm --filter edge-design-docs dev",
     "lint": "pnpm --filter @riseaicloud/ui lint",
     "typecheck": "pnpm --filter @riseaicloud/ui typecheck",
     "changeset": "changeset",

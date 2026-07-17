@@ -1,59 +1,19 @@
+/**
+ * @riseaicloud/ui — Storybook / 开发用样式入口
+ *
+ * ⚠️ 这里**不要**再定义 :root / .dark 的颜色变量。
+ *
+ * 变量的唯一真源是 @riseaicloud/tokens 的 colors.ts，经 tailwind-preset 的
+ * addBase 注入（本包 tailwind.config.js 已 presets: [edgePreset]）。
+ *
+ * 此文件曾硬编码一整套 :root/.dark 变量（从 shadcn 模板抄来），与 tokens 漂移
+ * 了 8 项且从未同步 —— 最显著的是 ring(dark)：这里写 48%，tokens 是 94.1%。
+ * 因为它只被 .storybook/preview.ts import、从未编译进 dist，消费方拿的一直是
+ * preset 的值，所以线上没出事；但 Storybook 渲染在漂移值下 = 视觉基线是错的。
+ * 做暗色 / 视觉回归前必须只有一个真源，故删除。
+ *
+ * body / border-color 的 base 样式同样由 preset 的 addBase 提供，不在此重复。
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}

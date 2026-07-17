@@ -54,6 +54,51 @@ All semantic colors are defined as HSL channel values on `:root` and `.dark`, en
   </table>
 </div>
 
+### Surface Scale
+
+Page chrome uses a four-step surface scale. The order is the design language:
+**page (lowest, darkest) < section < toolbar < card (raised, lightest)** — a gray page
+wash with white cards floating on top. Dark mode mirrors the same relative order rather
+than flattening everything to one value.
+
+<div className="overflow-x-auto my-4 not-prose">
+  <table className="w-full text-sm border-collapse">
+    <thead>
+      <tr className="border-b border-border">
+        <th className="px-3 py-2 text-left font-semibold">Token</th>
+        <th className="px-3 py-2 text-left font-semibold">Light</th>
+        <th className="px-3 py-2 text-left font-semibold">Dark</th>
+        <th className="px-3 py-2 text-left font-semibold">Usage</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-border">
+      <SemanticTokenRow token="surface-page" light="210 45.5% 95.7%" dark="222 47% 6%" usage="List/detail page content wash" />
+      <SemanticTokenRow token="surface-section" light="216 33.3% 97.1%" dark="217 33% 9%" usage="Content section / tab strip" />
+      <SemanticTokenRow token="surface-toolbar" light="210 50% 98.4%" dark="217 33% 11%" usage="Toolbar / pagination / form section" />
+      <SemanticTokenRow token="surface-dialog-header" light="220 100% 98.8%" dark="217 33% 11%" usage="Dialog header" />
+      <SemanticTokenRow token="card" light="0 0% 100%" dark="217 33% 13%" usage="Raised surface — cards, tables" />
+    </tbody>
+  </table>
+</div>
+
+```tsx
+// ✅ Follows the theme in both light and dark
+<div className="bg-surface-page">
+  <div className="bg-card border rounded">
+    <div className="bg-surface-toolbar p-4">…</div>
+  </div>
+</div>
+
+// ❌ Frozen — ignores dark mode and theme switches
+<div style={{ backgroundColor: '#EFF4F9' }}>
+```
+
+<Callout type="warning">
+  The `surfaceColors` **hex** export (`surfaceColors.page` etc.) is **deprecated**. It can
+  only be used in inline styles, which never follow the theme. Use the `bg-surface-*`
+  utilities instead. The hex export stays for backward compatibility until 2.0.
+</Callout>
+
 ### Cockpit Colors
 
 The cockpit (monitoring dashboard) uses a separate set of hex-based color tokens:
