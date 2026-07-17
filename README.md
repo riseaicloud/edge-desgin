@@ -1,65 +1,71 @@
 # Edge Design System
 
-> Edge Platform 统一设计系统
+> Edge 系产品的统一设计系统。`tokens` + `ui` 两层不含业务，任何项目可用；
+> `components` + `hooks` 知道 Edge 的资源概念与 API 契约。
 
-## 项目结构
+发布在公有 npm，安装无需 token。
 
+## 包
+
+| 包 | 内容 | 依赖 |
+|---|---|---|
+| [`@riseaicloud/tokens`](./packages/tokens) | 颜色 / 间距 / 字体 / 动效 token + Tailwind preset | 无（peer: tailwindcss） |
+| [`@riseaicloud/ui`](./packages/ui) | 通用 UI 组件（只吃 props） | tokens |
+| [`@riseaicloud/components`](./packages/components) | 业务组件（知道 Edge 概念，**不自己发请求**） | ui + tokens |
+| [`@riseaicloud/hooks`](./packages/hooks) | 数据 hooks（知道 API 契约，**连接信息由使用者注入**）+ 通用 hooks | 无 |
+
+归属判断见 [EXTRACTION_GUIDE.md](./EXTRACTION_GUIDE.md)。
+
+## 消费
+
+```bash
+pnpm add @riseaicloud/tokens @riseaicloud/ui
 ```
-edge-design/
-├── packages/
-│   ├── ui/              # @edge/ui - 组件库
-│   └── tokens/          # @edge/tokens - Design tokens（可选）
-├── docs/                # Nextra 文档站点
-└── .changeset/          # Changesets 配置
+
+```js
+// tailwind.config.js
+const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
+
+module.exports = {
+  presets: [edgePreset],
+  content: [
+    './src/**/*.{ts,tsx}',
+    './node_modules/@riseaicloud/ui/dist/**/*.{js,mjs}',   // ← 缺这条组件样式会静默丢失
+  ],
+}
 ```
 
-## 快速开始
+**本包不自带样式表**，class 由消费方自己的 Tailwind 生成。漏配 `content` 通常*看起来*没事 ——
+消费方自己也用到的 class 照样会生成，只有库独有的（`bg-card`、`hover:bg-primary/80`…）会缺失。
+完整说明见 [docs/guide/installation](./docs/pages/guide/installation.mdx)。
 
-### 安装依赖
+## 开发
 
 ```bash
 pnpm install
+pnpm storybook      # 组件开发（6006）
+pnpm docs:dev       # 文档站（3030）
+pnpm build          # 构建所有包
 ```
 
-### 开发
+> **改了 tokens 要重启 Storybook**：Tailwind preset 在启动时加载，不热重载。改完 token 后
+> Storybook 里看到的仍是旧值 —— 视觉回归尤其要注意这点。
+
+## 发布
+
+Changesets 管版本，发布到公有 npmjs。
 
 ```bash
-# 启动 Storybook（组件文档）
-pnpm storybook
-
-# 启动文档站点
-pnpm docs:dev
+pnpm changeset          # 记录变更（每个 PR 都要带）
+pnpm changeset version  # bump 版本 + 生成 CHANGELOG
 ```
 
-### 构建
-
-```bash
-# 构建组件库
-pnpm build
-
-# 构建文档站点
-pnpm build:docs
-```
+**pre-1.0 手动发布**：Actions → Release → Run workflow。合并 PR 不会自动发版。
+post-1.0 的自动化流程见 [`.github/workflows/release.yml`](./.github/workflows/release.yml) 注释。
 
 ## 技术栈
 
-- **Monorepo**: pnpm workspace
-- **组件库**: React + TypeScript + Tailwind CSS
-- **文档**: Nextra (Next.js) + Storybook
-- **构建**: tsup
-- **版本管理**: Changesets
-
-## 工作流
-
-1. 从 edge-console 提取组件到 `packages/ui/src/components/`
-2. 在 `packages/ui/src/index.ts` 导出组件
-3. 在 Storybook 中编写组件文档（`*.stories.tsx`）
-4. 运行 `pnpm changeset` 记录变更
-5. 发布新版本
-
-## 组件提取边界
-
-详见 [docs/EXTRACTION_GUIDE.md](./docs/EXTRACTION_GUIDE.md)
+pnpm workspace · React + TypeScript + Tailwind · tsup · Storybook · Nextra · Changesets
 
 ## License
 

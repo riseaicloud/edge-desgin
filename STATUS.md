@@ -1,116 +1,66 @@
-# Edge Design System - 状态追踪
+# Edge Design System — 状态
 
-## 架构状态
+> 最后更新 2026-07-17。
 
-### 三层架构模型 ✅ 已建立
-
-```
-@edge/tokens          ← Layer 1: Design Tokens (CSS vars + JS + Tailwind preset)
-@edge/ui              ← Layer 2: Pure UI (无业务依赖，通用组件)
-@edge/components      ← Layer 3: Business components (知道 Edge 概念，不调 API)
-```
-
-## Phase 1 完成状态 (2026-03-29)
-
-### ✅ 已完成
-
-#### 1. @edge/tokens 包
-- Design token 体系建立
-- Colors, Typography, Spacing, Shadows, Breakpoints
-- cockpitColors, topologyColors, statusColors
-- 支持浅色/深色主题
-
-#### 2. @edge/ui 包 (Layer 2)
-从 edge-console 提炼的通用 UI 组件:
-- **SearchableSelect<T>** - 支持搜索、异步加载、滚动分页的泛型下拉选择器
-- **StatusIndicator** - 通用状态指示器 (success/warning/error/info, 支持动画)
-- **ConfirmDialog** - 通用确认对话框 (支持输入文本确认)
-- **ProgressRing** - 通用环形进度 (SVG)
-- **CollapsibleSection** - 带标题的可折叠面板
-
-基础 UI 组件 (Button, Badge, Card, Dialog, Table, Tabs, Select, Input, Checkbox, Form, Spinner, EmptyState, Pagination, LabelEditor, Alert, Sheet, ScrollArea, Collapsible, Toggle, Separator, Tooltip, DropdownMenu, Progress, Avatar, RadioGroup, Switch, Textarea, Label)
-
-#### 3. @edge/components 包 (Layer 3)
-从 edge-console 提取的业务组件:
-- **ContainerStatus** - 容器状态显示 (Pod Phase、容器就绪数、状态详情)
-- **ResourceNameDescription** - 资源名称描述 (支持别名、描述、图标)
-- **ReplicaAdjustmentCard** - 副本调整卡片 (圆环进度、增减按钮)
-- **ReplicaConfirmationDialog** - 副本确认对话框 (倒计时自动确认)
-- **MonitoringChart** - 监控图表 (知道时序数据格式、zh-CN locale)
-
-#### 4. 文档站点
-- Nextra 3.3.1 配置完成
-- 运行在端口 3030 (supervisor 管理)
-- 组件文档、Storybook 集成
-- 无 hydration 错误
-
-## Phase 2 进行中
-
-### ✅ Phase 2.1 完成 (2026-03-30)
-
-**EDG-47** - @edge/components Layer 2/3 分离重构：
-- ClusterSelector、NamespaceSelector、WorkspaceSelector、NodeGroupSelector 均通过 props 接收数据，不直接调 API
-- @edge/ui 的 `SearchableSelect<T>` 作为 Layer 2 纯 UI 底座
-- @edge/hooks 提供 `useClusters`、`useNamespaces`、`useWorkspaces`、`useNodeGroups` 数据获取层
-- 新增 `docs/pages/hooks/data/index.mdx`：四个数据 hooks 完整文档（参数、返回值、组合示例）
-- 子任务 EDG-23（组件）、EDG-24（hooks）、EDG-25（edge-console 迁移）全部完成
-
-### ✅ Phase 2.2 完成 (2026-03-29)
-
-**EDG-48** - edge-console selector 组件迁移到 @edge/components（见 commit e4c3bc9）
-
-### ✅ Phase 2.3 完成 (2026-03-30)
-
-**EDG-49** - 新页面开发标准文档：
-- 创建 `docs/pages/patterns/new-page-standard.mdx`：完整的新页面开发标准
-  - 四层架构模型说明（tokens → @edge/ui → @edge/components → 页面层）
-  - @edge/ui + @edge/components 组合模式规范
-  - 完整示范实现（Namespace 列表页面）
-  - 反面示例（禁止模式）
-  - 快速检查清单
-- 更新 `docs/pages/patterns/_meta.ts`：将「新页面开发标准」置于 Patterns 首位
-
-### ✅ 子任务（全部完成）
-
-1. **EDG-23** ✅ - ClusterSelector, NamespaceSelector, WorkspaceSelector, NodeGroupSelector 已在 @edge/components
-2. **EDG-24** ✅ - useClusters, useNamespaces, useWorkspaces, useNodeGroups 已在 @edge/hooks
-3. **EDG-25** ✅ - edge-console selector 迁移完成
-
-### 需要重构的 selector 组件
-
-发现的 edge-console selector (均有直接调 API 的问题):
-- cluster-selector.tsx (280行) - 调用 getCluster(), listClusters()
-- namespace-selector.tsx (354行) - 调用 listNamespaces()
-- workspace-selector.tsx - 调用 listWorkspaces()
-- nodegroup-selector.tsx - 调用 tenantListNodegroups()
-- workspace-namespace-selector.tsx
-- namespace-creation-selector.tsx
-- node-selector.tsx
-
-## Phase 3 (后续)
-
-- 老页面逐步迁移到新组件
-- 完整的 Storybook 覆盖
-- 文档站点与 live examples
-
-## 技术债务
-
-### 当前 edge-console 中的问题
-- Selector 组件直接调用 API，违反分层架构
-- UI 和业务逻辑混合，无法复用
-- 数据获取逻辑分散在各个组件中
-- 测试困难
-
-### 设计待完善
-- edge-console CLAUDE.md 中的硬编码色值 (#EFF4F9, #F9FBFD, #F5F7FA) 需要提取到 tokens
-- cockpitColors 和 topologyColors (hex) 与 semantic tokens (HSL) 需要统一
-- 间距规范 (p-4, gap-3) 和字体规则 (table text-xs) 需要进入 tokens
-
-## 包依赖关系
+## 架构
 
 ```
-@edge/tokens        ← 无依赖
-@edge/ui            ← 依赖 @edge/tokens
-@edge/components    ← 依赖 @edge/ui + @edge/tokens
-edge-console        ← 依赖以上三个 + API hooks
+@riseaicloud/tokens       Layer 1 — CSS 变量 + JS 常量 + Tailwind preset
+@riseaicloud/ui           Layer 2 — 通用 UI（只吃 props）
+@riseaicloud/components   Layer 3 — 业务组件（知道 Edge 概念，不自己发请求）
+@riseaicloud/hooks        数据 hooks（知道 API 契约，连接信息由使用者注入）+ 通用 hooks
 ```
+
+依赖：`tokens ← ui ← components`；`hooks` 独立无依赖。归属规则见 [EXTRACTION_GUIDE.md](./EXTRACTION_GUIDE.md)。
+
+> **包名**：早期文档写的 `@edge/*` 已全部改为 `@riseaicloud/*`（发公有 npm）。
+
+## 消费方
+
+| 项目 | 用了哪些层 |
+|---|---|
+| edge-console | 四层 |
+| rise-global | **仅 tokens + ui**（自己的 scope 模型是 Workspace/Project，与 `components`/`hooks` 假设的 Cluster/Namespace 对不上） |
+
+## 已完成
+
+**Layer 1 · tokens**
+- 语义 token（`:root` / `.dark` 双套，HSL 通道值）+ Tailwind preset
+- **surface scale**（`bg-surface-page` / `-toolbar` / `-section` / `-dialog-header`）——
+  对应 edge-console 里 `#EFF4F9`/`#F9FBFD`/`#F5F7FA` 那 650+ 处硬编码
+- cockpit / topology / status / chart 调色板，**含暗色覆盖**
+- 6 套 chrome 主题（`getTheme` / `registerTheme`）
+
+**Layer 2 · ui** — 69 个组件。SearchableSelect / StatusIndicator / ConfirmDialog / ProgressRing /
+CollapsibleSection / DataTable / PageHeader / DateRangePicker + 完整 shadcn 基座。
+
+**Layer 3 · components** — ContainerStatus / ResourceNameDescription / ReplicaAdjustmentCard /
+ReplicaConfirmationDialog / MonitoringChart / ClusterSelector / NamespaceSelector /
+WorkspaceSelector / NodeGroupSelector（均 props 注入，不自己发请求）。
+
+**hooks** — `useClusters` / `useNamespaces` / `useWorkspaces` / `useNodeGroups`（`ApiClientConfig`
+注入连接信息）+ `useWizard` / `useLocalStorage` / `useDebouncedValue` / `useAutoRefresh` 等。
+
+**基建** — Storybook、Nextra 文档站（3030）、Changesets、CI 发布（手动触发）。
+
+## 待办
+
+| 优先级 | 事项 | 说明 |
+|---|---|---|
+| 中 | **组件 i18n** | 69 个组件里 **22 个硬编码中文**（「确定」「取消」「暂无数据」），且零 i18n 机制。方案：`EdgeConfigProvider`（纯 context、零依赖、**默认中文**）—— **不绑 i18next**，与「react-query 应由使用者注入」同一条原则 |
+| 中 | **组件去硬编码色** | 残留 `text-gray-700` / `bg-blue-600` / `border-gray-200` 等固定色，不跟主题。**与组件 i18n 是同一批文件，应在同一批 PR 做完** |
+| 中 | **视觉回归** | 改 69 个组件的颜色 × 明暗两套，没有视觉回归就是盲改。已有 `.stories.tsx` 打底 |
+| 中 | `sideEffects: false` + monaco 改 dynamic import | 包无 `sideEffects` 声明且 `dist/index.mjs` static import `@monaco-editor/react`，barrel import 可能拉入整个编辑器 |
+| 低 | `docs/tailwind.config.js` 改用 preset | 文档站自己没用 preset，手写了一份 extend —— 教别人配 preset，自己不用 |
+| 低 | `themes.ts` v2 | 6 套 chrome 主题目前是 Tailwind class 串（`bg-[#1e293b]`），与 CSS 变量体系并行。折叠进变量时**它是公开 API，须走 deprecate 路径** |
+| 低 | 源码 `"use client"` 补齐 | 整包已由 tsup `onSuccess` 统一加 banner；源码指令只影响直接 import `src/` 的场景 |
+
+## 踩过的坑（避免重复发现）
+
+| 坑 | 说明 |
+|---|---|
+| **Tailwind 会 content-match `addBase` 里的类选择器** | content 中没有 `dark` 字样时，整个 `.dark` 块被丢弃、暗色静默失效。preset 已内置 `safelist: ['dark']` |
+| **打包会丢弃模块级指令** | 源码里 30 个组件写了 `"use client"`，产物里一个都没有。tsup 的 `banner` 也不行 —— `treeshake: true` 让 rollup 接手后处理，rollup 明确忽略模块级指令。只能构建后写回（见 `packages/ui/tsup.config.ts`） |
+| **Storybook 不热重载 Tailwind preset** | 改完 token 后 Storybook 显示的仍是旧值，必须重启。视觉回归尤其致命 —— 基线可能整个是错的 |
+| **`bg-background/80` 当遮罩 = 没有遮罩** | 浅色下算出来是 `hsl(0 0% 100% / .8)` 白色半透明。遮罩要压暗背景，不该跟随 `--background` 反转。暗色下 `--background` 变暗、遮罩反而"正常"，**恰好掩盖了浅色下的问题** |
+| **变量定义复制一份必然漂移** | `ui/src/styles.css` 曾硬编码一套 `:root`/`.dark`，与 tokens 漂移 8 项且从未同步（`ring`(dark) 48% vs 94.1%）。现已删除，变量只从 preset 来 |
