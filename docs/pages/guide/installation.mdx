@@ -23,7 +23,12 @@ pnpm add @riseaicloud/hooks
 Add the Edge Design Tailwind preset to your `tailwind.config.js`:
 
 ```js
-const edgePreset = require('@riseaicloud/tokens/tailwind-preset')
+// @riseaicloud/tokens is an ESM package, so CJS `require()` returns the module
+// namespace ({ default, edgePreset }) — the preset itself lives on `.default`.
+// Hand the namespace object straight to `presets` and Tailwind reads
+// `preset.theme` as `undefined`: the preset silently does nothing.
+const presetModule = require('@riseaicloud/tokens/tailwind-preset')
+const edgePreset = presetModule.default ?? presetModule
 
 module.exports = {
   presets: [edgePreset],
@@ -31,6 +36,24 @@ module.exports = {
     './src/**/*.{ts,tsx}',
     './node_modules/@riseaicloud/ui/dist/**/*.{js,mjs}',
   ],
+}
+```
+
+<Callout type="warning">
+  **Don't skip the `.default`.** Without it there is no error — the preset is simply ignored,
+  and every semantic utility (`bg-card`, `text-muted-foreground`, …) plus the whole `.dark`
+  block disappears from your CSS. The failure looks like "the design system doesn't work"
+  rather than a crash.
+</Callout>
+
+If your config is ESM (`tailwind.config.mjs` / `.ts`), import it directly — no `.default` dance:
+
+```js
+import edgePreset from '@riseaicloud/tokens/tailwind-preset'
+
+export default {
+  presets: [edgePreset],
+  content: [/* … */],
 }
 ```
 
