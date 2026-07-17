@@ -9,7 +9,14 @@
  *   module.exports = { presets: [edgePreset], content: [...] }
  */
 
-import { lightColors, darkColors, cockpitColors, topologyColors } from './colors'
+import {
+  lightColors,
+  darkColors,
+  cockpitColors,
+  topologyColors,
+  darkCockpitColors,
+  darkTopologyColors,
+} from './colors'
 import { fontFamily } from './typography'
 import { radius, shadows, zIndex, breakpoints } from './spacing'
 import { keyframes, animation } from './motion'
@@ -124,6 +131,19 @@ const edgePreset = {
         },
         '.dark': {
           ...buildCSSVars(darkColors as unknown as Record<string, string>),
+          // 此前 .dark 只覆盖语义 token，--cockpit-* / --topology-* 只在 :root 定义过 ——
+          // 暗色下监控面板与拓扑图纹丝不动，且因为 cockpit.bg 是 #F8FAFC（近白），
+          // 整个面板在暗色主题下仍是白底黑字。
+          ...buildCockpitCSSVars(darkCockpitColors as unknown as Record<string, string>),
+          ...buildTopologyCSSVars({
+            'topology-bg': darkTopologyColors.bg,
+            cluster: darkTopologyColors.cluster,
+            'cluster-foreground': darkTopologyColors.clusterForeground,
+            'node-group': darkTopologyColors.nodeGroup,
+            'node-group-foreground': darkTopologyColors.nodeGroupForeground,
+            node: darkTopologyColors.node,
+            'node-foreground': darkTopologyColors.nodeForeground,
+          }),
         },
       })
 

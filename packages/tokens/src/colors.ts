@@ -123,6 +123,55 @@ export const topologyColors = {
 } as const
 
 // ---------------------------------------------------------------------------
+// Dark-mode counterparts for the hex palettes above
+// ---------------------------------------------------------------------------
+// preset 此前只在 `:root` 注入 --cockpit-* / --topology-*，`.dark` 块里没有对应覆盖，
+// 于是暗色下监控面板与拓扑图**纹丝不动** —— 注意这不只是"图表配色没跟上"：
+// cockpitColors.bg 是 #F8FAFC（近白）、text 是 #1E293B（近黑），不覆盖就意味着
+// 整个面板在暗色主题下仍是白底黑字。
+//
+// 两类值的处理方式不同：
+//   - 表面 / 文字 / 边框：随主题反转，取值对齐 slate 家族与 surface scale 的暗色层次
+//   - 强调色（accent/success/warning/danger/purple）：暗色下**提亮一档**（Tailwind 500 → 400）。
+//     暗背景上原色会显得发闷，提亮才有同等的视觉权重。
+//   - muted 变体：不透明度 .1 → .15。10% 的色在暗底上几乎看不出来。
+
+export const darkCockpitColors = {
+  bg: '#0F172A',
+  bgSecondary: '#1E293B',
+  bgTertiary: '#172033',
+  bgElevated: '#1E293B',
+  border: '#334155',
+  borderSubtle: '#1E293B',
+  borderHover: '#475569',
+  text: '#F1F5F9',
+  textSecondary: '#CBD5E1',
+  textMuted: '#94A3B8',
+  accent: '#60A5FA',
+  accentMuted: 'rgba(96, 165, 250, 0.15)',
+  success: '#2DD4BF',
+  successMuted: 'rgba(45, 212, 191, 0.15)',
+  warning: '#FBBF24',
+  warningMuted: 'rgba(251, 191, 36, 0.15)',
+  danger: '#F87171',
+  dangerMuted: 'rgba(248, 113, 113, 0.15)',
+  purple: '#A78BFA',
+  purpleMuted: 'rgba(167, 139, 250, 0.15)',
+} as const
+
+export const darkTopologyColors = {
+  bg: '#0F172A',
+  // 浅色下 cluster 是深灰底 + 白字；暗色下深灰会与背景糊在一起，故提亮到 slate-600。
+  cluster: '#475569',
+  clusterForeground: '#F1F5F9',
+  // 节点在暗底上要"发光"：亮绿底 + 深绿字，与浅色 node 的（中绿底 + 深绿字）同构。
+  nodeGroup: '#34D399',
+  nodeGroupForeground: '#052E16',
+  node: '#34D399',
+  nodeForeground: '#052E16',
+} as const
+
+// ---------------------------------------------------------------------------
 // Status colors (semantic)
 // ---------------------------------------------------------------------------
 

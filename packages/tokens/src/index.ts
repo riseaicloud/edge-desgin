@@ -11,6 +11,8 @@ export {
   darkColors,
   cockpitColors,
   topologyColors,
+  darkCockpitColors,
+  darkTopologyColors,
   statusColors,
   surfaceColors,
   chartColors,
