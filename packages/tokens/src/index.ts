@@ -63,6 +63,11 @@ export {
 } from './motion'
 export type { DurationKey, EasingKey, AnimationKey } from './motion'
 
+// Primary theme builder —— 由品牌色算出明暗两态的主色与前景色。
+// 只给算法不给目录:「提供哪几个主题」是产品决策,固化成公开 API 会让加删主题变成版本事件。
+export { buildPrimaryTheme, hexToHslChannels } from './primary-theme'
+export type { PrimaryTheme } from './primary-theme'
+
 // Themes
 export {
   themes,
