@@ -10,7 +10,7 @@ Edge Design is the design system for Edge Platform — a Kubernetes-based cloud-
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Layer 4: Patterns & Templates              │
+│  Layer 4: Patterns & Templates（文档配方）  │
 │  (Wizards, CRUD Flows, Dashboard Layouts)   │
 ├─────────────────────────────────────────────┤
 │  Layer 3: Domain Components                 │
@@ -25,7 +25,7 @@ Edge Design is the design system for Edge Platform — a Kubernetes-based cloud-
 └─────────────────────────────────────────────┘
 ```
 
-Consumers can adopt any layer independently. Use `@riseaicloud/tokens` alone for design tokens, add `@riseaicloud/ui` for core components, or go all-in with `@riseaicloud/edge-components` for the full Edge Platform experience.
+Consumers can adopt any layer independently. Use `@riseaicloud/tokens` alone for design tokens, add `@riseaicloud/ui` for core components, or go all-in with `@riseaicloud/components` for the full Edge Platform experience.
 
 **Accessibility-first.** Core components are built on [Radix UI](https://www.radix-ui.com/) primitives, providing WAI-ARIA compliant keyboard navigation, focus management, and screen reader support out of the box.
 
@@ -37,9 +37,9 @@ Consumers can adopt any layer independently. Use `@riseaicloud/tokens` alone for
 |---------|---------|-------|
 | `@riseaicloud/tokens` | Design tokens, Tailwind preset, theme system | 1 — Foundations |
 | `@riseaicloud/ui` | Core UI components | 2 — Components |
-| `@riseaicloud/edge-components` | Edge Platform domain components | 3 — Domain |
+| `@riseaicloud/components` | Edge Platform domain components | 3 — Domain |
 | `@riseaicloud/hooks` | Shared React hooks | Cross-cutting |
-| `@riseaicloud/icons` | Icon system | 1 — Foundations |
+| `@riseaicloud/icons` | Icon system —— **规划中，尚未发布**；当前直接用 `lucide-react` | 1 — Foundations |
 
 ## Tech Stack
 
@@ -49,7 +49,7 @@ Consumers can adopt any layer independently. Use `@riseaicloud/tokens` alone for
 - **class-variance-authority** for component variants
 - **Recharts** for data visualization
 - **@xyflow/react** for topology visualization
-- **xterm.js** for terminal components
+- **xterm.js** for terminal components —— *规划中，当前版本未包含*
 
 ## Inspired By
 

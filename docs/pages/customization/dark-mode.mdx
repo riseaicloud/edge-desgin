@@ -127,5 +127,6 @@ function ThemeToggle() {
 ## 注意事项
 
 - 图片和图表需要额外的深色适配（如 Recharts 轴线颜色）
-- 硬编码 hex 色值（cockpitColors、topologyColors）不支持主题切换，这是已知技术债务
-- Storybook 内置 `.dark` 切换支持，可在开发时预览两种主题
+- `cockpitColors` / `topologyColors` 虽是 hex，但 preset 已在 `.dark` 下注入对应的暗色覆盖
+  （`darkCockpitColors` / `darkTopologyColors`），监控面板与拓扑图会跟随主题
+- Storybook 工具栏的 Theme 开关会把 `.dark` 打到 `<html>` 上，可在开发时预览两种主题

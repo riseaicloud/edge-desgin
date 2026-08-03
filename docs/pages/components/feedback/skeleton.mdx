@@ -1,0 +1,67 @@
+# Skeleton 骨架屏
+
+`Skeleton` 是最小化的骨架屏占位块，用于数据加载期间以灰色脉冲动画占据将要渲染内容的位置，减少布局跳动。它本质是一个带 `animate-pulse rounded-md bg-muted` 的 `div`，尺寸/形状完全由外部 `className` 控制，通过组合多个 `Skeleton` 拼出卡片、列表、表格行等骨架。
+
+## 引入
+
+```tsx
+import { Skeleton } from '@riseaicloud/ui'
+import type { SkeletonProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+`Skeleton` 继承 `div` 的全部原生属性（`React.HTMLAttributes<HTMLDivElement>`）。
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `className` | `string` | — | 控制尺寸/形状（宽高、圆角），叠加在默认 `animate-pulse rounded-md bg-muted` 之上 |
+| `...props` | `HTMLAttributes<HTMLDivElement>` | — | 透传所有原生 div 属性（`style`、`id`、事件等） |
+
+### 类型
+
+```typescript
+interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
+```
+
+## 示例
+
+### 文本行占位
+
+```tsx
+<div className="space-y-2">
+  <Skeleton className="h-4 w-3/4" />
+  <Skeleton className="h-4 w-1/2" />
+</div>
+```
+
+### 头像 + 标题卡片
+
+```tsx
+<div className="flex items-center gap-3">
+  <Skeleton className="h-10 w-10 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-32" />
+    <Skeleton className="h-3 w-20" />
+  </div>
+</div>
+```
+
+### 表格加载骨架
+
+```tsx
+{loading &&
+  Array.from({ length: 5 }).map((_, i) => (
+    <div key={i} className="flex gap-4 py-3">
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-4 w-40" />
+      <Skeleton className="h-4 w-16" />
+    </div>
+  ))}
+```
+
+## 注意事项
+
+- `Skeleton` 不自带尺寸，务必通过 `className` 指定 `h-*` / `w-*`，否则会塌陷为 0 高度。
+- 圆形（头像）用 `rounded-full` 覆盖默认 `rounded-md`。
+- 骨架屏适合结构稳定、可预知布局的加载；不定形/短时的加载用 `Spinner` 或 `Loading` 更合适。

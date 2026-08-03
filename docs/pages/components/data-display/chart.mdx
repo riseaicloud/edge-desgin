@@ -1,0 +1,113 @@
+# Chart 图表容器
+
+`Chart` 是一组对 [recharts](https://recharts.org/) 的轻量封装，提供统一的图表容器样式与 Tooltip 视觉规范：
+
+- `ChartContainer` — 图表外层容器，注入配色 CSS 变量与 recharts 元素的样式覆盖。
+- `ChartTooltip` — Tooltip 包裹壳（透传 children）。
+- `ChartTooltipContent` — 标准化的 Tooltip 内容卡片（圆角、边框、阴影、指示器）。
+
+配色与序列元数据通过 `ChartConfig` 类型集中声明。多数业务场景不必直接使用这些底层组件，可优先用封装好的 [`ResourceChart`](./resource-chart)。
+
+## 引入
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@riseaicloud/ui'
+import type { ChartConfig } from '@riseaicloud/ui'
+```
+
+## Props
+
+### ChartContainer
+
+继承原生 `div` 的全部属性，另加：
+
+| Prop | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `config` | `ChartConfig` | 是 | 各序列的 label / 图标 / 配色，用于生成 `.color-{key}` CSS 变量 |
+| `children` | `ReactNode` | 是 | recharts 图表（通常包一层 `ResponsiveContainer`） |
+| `className` | `string` | 否 | 附加类名。默认高度 `h-[200px]`、宽度 `w-full` |
+
+### ChartTooltip
+
+| Prop | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `children` | `ReactNode` | 是 | 一般包裹 `ChartTooltipContent`。组件仅透传 children |
+
+### ChartTooltipContent
+
+在 recharts Tooltip 的 `active` / `payload` / `label` 注入基础上，扩展如下定制项：
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `active` | `boolean` | — | 由 recharts 注入，非激活时不渲染 |
+| `payload` | `any[]` | — | 由 recharts 注入的数据项，空数组时不渲染 |
+| `label` | `string` | — | 由 recharts 注入的标签 |
+| `indicator` | `"line" \| "dot" \| "dashed"` | `"dot"` | 序列色块指示器形状 |
+| `hideLabel` | `boolean` | `false` | 隐藏顶部标签行 |
+| `hideIndicator` | `boolean` | `false` | 隐藏每行的颜色指示器 |
+| `labelFormatter` | `(value, payload) => ReactNode` | — | 自定义标签渲染 |
+| `labelClassName` | `string` | — | 标签行附加类名 |
+| `formatter` | `(value, name, props) => ReactNode` | — | 自定义数值渲染（如加单位、保留小数） |
+| `color` | `string` | — | 覆盖指示器颜色 |
+| `nameKey` | `string` | — | 从 `item.payload` 取名称的字段名，替代默认的 `item.name` |
+| `labelKey` | `string` | — | 标签取值字段名 |
+
+### 类型
+
+```typescript
+type ChartConfig = Record<
+  string,
+  {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<string, string> }
+  )
+>
+```
+
+每个 key 对应一个数据序列：`color` 直接给色值，或用 `theme`（`{ light, dark }`）按主题给色，二者互斥。
+
+## 示例
+
+### 面积图 + 标准 Tooltip
+
+```tsx
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from 'recharts'
+
+const chartConfig: ChartConfig = {
+  value: { label: 'CPU 使用率', color: '#3b82f6' },
+}
+
+<ChartContainer config={chartConfig} className="h-[220px] w-full">
+  <ResponsiveContainer width="100%" height="100%">
+    <AreaChart data={timeSeries}>
+      <XAxis dataKey="time" tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }} />
+      <YAxis tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }} />
+      <ChartTooltip>
+        <ChartTooltipContent formatter={(v) => `${Number(v).toFixed(2)}%`} />
+      </ChartTooltip>
+      <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.2} />
+    </AreaChart>
+  </ResponsiveContainer>
+</ChartContainer>
+```
+
+### 多序列 Tooltip 自定义指示器
+
+```tsx
+const chartConfig: ChartConfig = {
+  used: { label: '已用', color: '#3b82f6' },
+  free: { label: '空闲', color: '#e5e7eb' },
+}
+
+<ChartTooltip>
+  <ChartTooltipContent indicator="line" formatter={(v) => `${v} GB`} />
+</ChartTooltip>
+```
+
+## 注意事项
+
+- `ChartTooltipContent` 依赖 recharts 注入的 `active` / `payload`，只应作为 recharts `<Tooltip content={...}>` 的内容使用，不要脱离图表单独渲染。
+- 若只需展示单一资源的使用率曲线，优先用 [`ResourceChart`](./resource-chart)，它已内置进度条 + 面积图 + Tooltip。

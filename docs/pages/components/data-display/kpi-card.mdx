@@ -1,0 +1,76 @@
+# KPICard 指标卡片
+
+`KPICard` 是仪表盘 / 概览页的关键指标卡片，统一了「图标 + 数值 + 单位 + 标题 + 趋势」的展示结构。适合展示算力用量、活跃节点数、账单金额、在线实例数等核心 KPI，多张卡片常以栅格并排组成概览区。
+
+## 引入
+
+```tsx
+import { KPICard } from '@riseaicloud/ui'
+import type { KPICardProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `icon` | `LucideIcon` | 必填 | 左上角图标，传 Lucide 图标组件本身（非元素） |
+| `title` | `string` | 必填 | 指标标题（卡片底部灰字） |
+| `value` | `number \| string` | 必填 | 主数值（大号加粗） |
+| `unit` | `string` | — | 数值单位，紧跟数值右侧显示 |
+| `trend` | `{ value: number; isPositive: boolean }` | — | 变化趋势，见下 |
+| `iconBgColor` | `string` | `'bg-primary/10'` | 图标背景色类名 |
+| `iconColor` | `string` | `'text-primary'` | 图标颜色类名 |
+| `className` | `string` | — | 卡片容器附加类名 |
+
+### trend 字段
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `value` | `number` | 变化百分比数值（渲染时取绝对值） |
+| `isPositive` | `boolean` | `true` 显示绿色 `↑`，`false` 显示红色 `↓` |
+
+卡片容器固定样式：`bg-card border border-border rounded p-4`；数值 `text-2xl font-semibold`。
+
+## 示例
+
+### 算力概览四联卡
+
+```tsx
+import { KPICard } from '@riseaicloud/ui'
+import { Cpu, Server, Activity, Wallet } from 'lucide-react'
+
+<div className="grid grid-cols-4 gap-4">
+  <KPICard icon={Server} title="活跃节点" value={42} trend={{ value: 5, isPositive: true }} />
+  <KPICard icon={Cpu} title="GPU 使用率" value={78} unit="%" iconBgColor="bg-purple-50" iconColor="text-purple-600" />
+  <KPICard icon={Activity} title="运行实例" value={156} />
+  <KPICard
+    icon={Wallet}
+    title="本月费用"
+    value="12,480"
+    unit="元"
+    trend={{ value: 8, isPositive: false }}
+    iconBgColor="bg-amber-50"
+    iconColor="text-amber-600"
+  />
+</div>
+```
+
+### 单张卡片（带下降趋势）
+
+```tsx
+import { Gauge } from 'lucide-react'
+
+<KPICard
+  icon={Gauge}
+  title="集群负载"
+  value={63}
+  unit="%"
+  trend={{ value: 12, isPositive: false }}
+/>
+```
+
+## 注意事项
+
+- `icon` 传的是 Lucide 图标组件引用（如 `Server`），不是 JSX 元素（不要写 `<Server />`）；组件内部会以 `h-5 w-5` 渲染。
+- `trend.isPositive` 只控制箭头方向与颜色，`value` 请传正数（内部已 `Math.abs`）。
+- 大数值建议在传入前先做千分位格式化（如 `value="12,480"`），组件不做格式化。

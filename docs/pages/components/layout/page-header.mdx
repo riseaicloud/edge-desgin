@@ -1,0 +1,83 @@
+# PageHeader 页面标题栏
+
+`PageHeader` 是列表页、创建页等标准页面顶部的标题栏组件，统一了白色背景、底部分隔线、图标 + 标题的视觉规范。
+
+## 引入
+
+```tsx
+import { PageHeader } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `title` | `string` | 是 | 页面标题文字 |
+| `icon` | `ReactNode` | 否 | 标题左侧图标，建议 `h-5 w-5 text-muted-foreground` |
+| `onBack` | `() => void` | 否 | 有值时显示返回箭头，点击触发 |
+| `extra` | `ReactNode` | 否 | 右侧插槽，用于放置计数、状态徽标等次要信息 |
+
+## 使用示例
+
+### 基础用法（图标 + 标题）
+
+```tsx
+<PageHeader
+  title="容器实例"
+  icon={
+    <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+    </svg>
+  }
+/>
+```
+
+### 详情 / 创建页（带返回按钮）
+
+```tsx
+<PageHeader
+  title="创建实例"
+  onBack={() => navigate('/containers')}
+/>
+```
+
+`onBack` 有值时，标题左侧自动出现 `←` 返回箭头。
+
+### 带右侧内容
+
+```tsx
+<PageHeader
+  title="节点管理"
+  icon={<HardDrive className="h-5 w-5 text-muted-foreground" />}
+  extra={
+    <span className="text-xs text-amber-600 flex items-center gap-1">
+      <AlertTriangle className="h-3.5 w-3.5" />
+      1 个节点异常
+    </span>
+  }
+/>
+```
+
+## 页面布局配合
+
+`PageHeader` 配合标准列表页布局使用：
+
+```tsx
+export default function MyListPage() {
+  return (
+    <div className="h-full flex flex-col">
+      <PageHeader title="资源列表" icon={<MyIcon />} />
+
+      <div className="flex-1 p-4 overflow-auto" className="bg-surface-page">
+        {/* 表格内容 */}
+      </div>
+    </div>
+  )
+}
+```
+
+## 注意事项
+
+- `PageHeader` 自带 `flex-shrink-0`，不会在 flex 容器中被压缩
+- 详情页的顶部导航（面包屑 + 实例名 + 状态徽标）属于定制布局，不适合用 `PageHeader`
+- `icon` 直接传 `ReactNode`，Lucide 图标和内联 SVG 均可

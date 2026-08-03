@@ -6,4 +6,10 @@ export default {
   tooltip: 'Tooltip',
   'empty-state': 'Empty',
   progress: 'Progress',
+  'data-table': 'DataTable',
+  'chart': 'Chart',
+  'kpi-card': 'KPICard',
+  'progress-ring': 'ProgressRing',
+  'resource-chart': 'ResourceChart',
+  'status-indicator': 'StatusIndicator',
 }
