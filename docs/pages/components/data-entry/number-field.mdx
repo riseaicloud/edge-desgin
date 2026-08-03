@@ -1,0 +1,63 @@
+import { useState } from 'react'
+import { NumberField } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# NumberField
+
+数字步进器：居中数值 + 左右两侧的减 / 加按钮。用于**值有明确上下界、按固定步长调整**的场景。
+
+相比滑块能看到精确值；相比分段器（ToggleGroup）不必把连续区间硬切成几档。
+
+## 引入
+
+```tsx
+import { NumberField } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| `value` | `number` | — | 当前值（受控） |
+| `onValueChange` | `(value: number) => void` | — | 值提交时触发。点按钮、按 ↑↓、blur、回车都会触发 |
+| `min` | `number` | — | 下界。到界时减号按钮禁用 |
+| `max` | `number` | — | 上界。到界时加号按钮禁用 |
+| `step` | `number` | `1` | 步长 |
+| `disabled` | `boolean` | `false` | 整体禁用 |
+| `className` | `string` | — | 加在外层定位容器上 |
+
+其余属性透传给内部 `<input>`。
+
+## 用法
+
+```tsx
+function FontSizeField() {
+  const [size, setSize] = useState(16)
+  return (
+    <div className="flex items-center gap-2">
+      <NumberField value={size} onValueChange={setSize} min={15} max={22} className="w-full" />
+      <span className="whitespace-nowrap text-xs text-muted-foreground">px</span>
+    </div>
+  )
+}
+```
+
+单位（`px` / `%` / `个`）**不放进组件**——它随场景变化，放在组件外一个 `<span>` 里更灵活，
+也避免为了一个后缀给组件加 prop。
+
+## 行为说明
+
+**输入采取「编辑时不拦、提交时钳制」。** 直接在 `onChange` 里钳制会让用户从 `16` 删到空、
+想重新输 `9` 都做不到——删成空的瞬间就被拉回 `min`。所以输入过程保留原始文本，
+blur / 回车时才归一到 `[min, max]`。
+
+**键盘**：`↑` / `↓` 按 `step` 增减，`Enter` 提交当前输入。加减按钮 `tabIndex={-1}`，
+Tab 键直接落在输入框上，不会在三个元素间反复停留。
+
+**无障碍**：输入框带 `role="spinbutton"` 与 `aria-valuenow/min/max`，按钮带中文 `aria-label`。
+
+## 使用建议
+
+- 上下界差距很大时（比如 0–1000）不适合用它，用普通 `Input` + 校验
+- 只有三五个合法值时用 `ToggleGroup` 更直观，不用步进器
+- 需要单位换算（如 rem ↔ px）在调用方做，组件只认数字

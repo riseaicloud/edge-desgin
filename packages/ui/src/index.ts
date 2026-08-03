@@ -98,6 +98,9 @@ export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './comp
 export { EmptyState } from './components/empty-state'
 export type { EmptyStateProps } from './components/empty-state'
 
+export { NumberField } from './components/number-field'
+export type { NumberFieldProps } from './components/number-field'
+
 export { Progress } from './components/progress'
 
 // ─── Feedback ────────────────────────────────────────────────────────────────
