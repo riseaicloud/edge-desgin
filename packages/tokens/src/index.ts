@@ -30,6 +30,7 @@ export type {
 export {
   fontFamily,
   fontSize,
+  fontSizeBase,
   fontWeight,
   letterSpacing,
 } from './typography'
