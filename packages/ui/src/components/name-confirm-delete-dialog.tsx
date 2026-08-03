@@ -100,8 +100,8 @@ export function NameConfirmDeleteDialog({
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center space-x-2">
-            <div className="h-6 w-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-              <svg className="h-4 w-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="h-6 w-6 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
+              <svg className="h-4 w-4 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
@@ -111,11 +111,11 @@ export function NameConfirmDeleteDialog({
 
         <div className="space-y-4 my-4">
           {extraDescription && (
-            <p className="text-sm text-gray-600">{extraDescription}</p>
+            <p className="text-sm text-muted-foreground">{extraDescription}</p>
           )}
 
           {showCascadeOption && (
-            <div className="flex items-start space-x-2 p-3 bg-gray-50 border border-gray-200 rounded">
+            <div className="flex items-start space-x-2 p-3 bg-muted border border-border rounded">
               <Checkbox
                 id="cascade-delete"
                 checked={cascade}
@@ -123,10 +123,10 @@ export function NameConfirmDeleteDialog({
                 disabled={isLoading}
               />
               <div className="flex-1">
-                <Label htmlFor="cascade-delete" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="cascade-delete" className="text-sm font-medium text-foreground cursor-pointer">
                   同时删除关联资源
                 </Label>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   勾选此项将删除所有关联的项目、成员等资源，不勾选则保留这些资源
                 </p>
               </div>
@@ -134,9 +134,9 @@ export function NameConfirmDeleteDialog({
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="name-confirm-input" className="text-sm font-medium text-gray-700">
+            <Label htmlFor="name-confirm-input" className="text-sm font-medium text-foreground">
               请输入{resourceType}名称{" "}
-              <span className="font-mono bg-gray-100 px-2 py-0.5 rounded">{resourceIdentifier}</span>{" "}
+              <span className="font-mono bg-muted px-2 py-0.5 rounded">{resourceIdentifier}</span>{" "}
               以确认：
             </Label>
             <Input
@@ -150,7 +150,7 @@ export function NameConfirmDeleteDialog({
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm bg-red-50 border border-red-200 rounded p-3">
+            <div className="text-destructive text-sm bg-destructive/10 border border-destructive/30 rounded p-3">
               {error}
             </div>
           )}
@@ -163,7 +163,7 @@ export function NameConfirmDeleteDialog({
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isConfirmDisabled}
-            className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
+            className="bg-destructive hover:bg-destructive/90 text-destructive-foreground disabled:opacity-50"
           >
             {isLoading ? `${titlePrefix}中...` : `确认${titlePrefix}`}
           </AlertDialogAction>

@@ -69,7 +69,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
 ]
 
 const inputCls =
-  "h-8 px-2 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+  "h-8 px-2 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:border-ring"
 
 function mergeDateTime(date: Date, time: string): Date {
   const [h = 0, m = 0, s = 0] = time.split(":").map(Number)
@@ -144,7 +144,7 @@ export function DateRangePicker({
     const NavBtn = ({ onClick, children }: any) => (
       <button
         onClick={onClick}
-        className="h-6 w-6 inline-flex items-center justify-center text-gray-400 hover:text-gray-700 rounded"
+        className="h-6 w-6 inline-flex items-center justify-center text-muted-foreground hover:text-foreground rounded"
       >
         {children}
       </button>
@@ -155,7 +155,7 @@ export function DateRangePicker({
           <NavBtn onClick={() => setMonth(subYears(month, 1))}>«</NavBtn>
           <NavBtn onClick={() => setMonth(subMonths(month, 1))}>‹</NavBtn>
         </div>
-        <span className="text-sm font-medium text-gray-800">
+        <span className="text-sm font-medium text-foreground">
           {d.getFullYear()} 年 {d.getMonth() + 1} 月
         </span>
         <div className="flex gap-0.5">
@@ -179,14 +179,14 @@ export function DateRangePicker({
         className={cn(
           "h-9 w-9 text-sm inline-flex items-center justify-center transition-colors",
           isEnd
-            ? "bg-gray-900 text-white rounded-full font-medium"
+            ? "bg-foreground text-background rounded-full font-medium"
             : isMiddle
-              ? "text-gray-900"
+              ? "text-foreground"
               : modifiers.disabled
-                ? "text-gray-300 cursor-not-allowed"
+                ? "text-muted-foreground/50 cursor-not-allowed"
                 : modifiers.outside
-                  ? "text-gray-300"
-                  : "text-gray-700 hover:bg-gray-100 rounded"
+                  ? "text-muted-foreground/50"
+                  : "text-foreground hover:bg-accent rounded"
         )}
       >
         {day.date.getDate()}
@@ -196,12 +196,12 @@ export function DateRangePicker({
 
   return (
     <div className={cn("relative flex items-center gap-2", className)} ref={ref}>
-      {label && <span className="text-xs text-gray-500 whitespace-nowrap">{label}</span>}
+      {label && <span className="text-xs text-muted-foreground whitespace-nowrap">{label}</span>}
       <button
         onClick={() => (open ? setOpen(false) : openPanel())}
-        className="h-8 pl-2.5 pr-3 inline-flex items-center gap-2 bg-background border border-border rounded text-xs text-gray-800 hover:border-gray-400"
+        className="h-8 pl-2.5 pr-3 inline-flex items-center gap-2 bg-background border border-border rounded text-xs text-foreground hover:border-muted-foreground"
       >
-        <Calendar className="h-4 w-4 text-gray-400" />
+        <Calendar className="h-4 w-4 text-muted-foreground" />
         <span className="tabular-nums">{triggerText}</span>
       </button>
 
@@ -211,12 +211,12 @@ export function DateRangePicker({
           style={{ minWidth: numberOfMonths > 1 ? 720 : 380 }}
         >
           {shownPresets.length > 0 && (
-            <div className="w-28 border-r border-gray-100 py-2 max-h-[360px] overflow-y-auto">
+            <div className="w-28 border-r border-border/50 py-2 max-h-[360px] overflow-y-auto">
               {shownPresets.map((p) => (
                 <button
                   key={p.label}
                   onClick={() => applyPreset(p.ms)}
-                  className="w-full text-left px-4 py-1.5 text-xs text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  className="w-full text-left px-4 py-1.5 text-xs text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                 >
                   {p.label}
                 </button>
@@ -236,7 +236,7 @@ export function DateRangePicker({
                   placeholder="HH:mm:ss"
                 />
               )}
-              <span className="text-gray-400">›</span>
+              <span className="text-muted-foreground">›</span>
               <input readOnly className={`${inputCls} w-24 text-center`} value={format(to, "MM-dd")} />
               {showTime && (
                 <input
@@ -272,19 +272,19 @@ export function DateRangePicker({
                 month: "",
                 month_grid: "border-collapse",
                 weekdays: "",
-                weekday: "text-xs text-gray-400 font-normal w-9 h-8 text-center",
+                weekday: "text-xs text-muted-foreground font-normal w-9 h-8 text-center",
                 week: "",
                 day: "p-0 text-center align-middle",
-                range_middle: "bg-blue-50",
-                range_start: "bg-blue-50 rounded-l-full",
-                range_end: "bg-blue-50 rounded-r-full",
+                range_middle: "bg-primary/10",
+                range_start: "bg-primary/10 rounded-l-full",
+                range_end: "bg-primary/10 rounded-r-full",
               }}
             />
 
             <div className="flex justify-end mt-2">
               <button
                 onClick={confirm}
-                className="h-8 px-5 text-sm rounded bg-gray-900 text-white hover:bg-gray-800"
+                className="h-8 px-5 text-sm rounded bg-foreground text-background hover:bg-foreground/90"
               >
                 确定
               </button>

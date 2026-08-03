@@ -120,14 +120,14 @@ export function LabelEditor({
       {/* 键值对列表 */}
       <div className="border rounded">
         {/* 表头 */}
-        <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 border-b text-sm font-medium text-gray-700">
+        <div className="grid grid-cols-2 gap-4 p-3 bg-muted border-b text-sm font-medium text-foreground">
           <div>{placeholderKey}</div>
           <div>{placeholderValue}</div>
         </div>
 
         {/* 内容 */}
         {value.length === 0 ? (
-          <div className="text-gray-500 text-sm py-8 text-center">
+          <div className="text-muted-foreground text-sm py-8 text-center">
             {emptyText}
           </div>
         ) : (
@@ -152,7 +152,7 @@ export function LabelEditor({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 hover:text-red-600 border-gray-300"
+                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive border-input"
                     onClick={() => handleRemove(index)}
                     disabled={disabled}
                   >
@@ -166,7 +166,7 @@ export function LabelEditor({
       </div>
 
       {/* 添加新项 */}
-      <div className="border-2 border-dashed border-gray-300 rounded p-4">
+      <div className="border-2 border-dashed border-input rounded p-4">
         <div className="grid grid-cols-2 gap-3">
           <Input
             value={newItem.key}
@@ -197,7 +197,7 @@ export function LabelEditor({
 
       {/* 变化检测提示 */}
       {showChangeDetection && hasChanges() && (
-        <div className="text-sm text-blue-600">
+        <div className="text-sm text-primary">
           有未保存的更改
         </div>
       )}

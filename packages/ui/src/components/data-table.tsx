@@ -520,8 +520,8 @@ export function DataTable<T = any>({
     const pin = pinnedOffsets[col.key]
     if (!pin) return ''
     return cn(
-      'sticky bg-white z-10',
-      hover && 'group-hover:bg-gray-50',
+      'sticky bg-card z-10',
+      hover && 'group-hover:bg-muted/50',
     )
   }
   const pinnedCellStyle = (col: ColumnDef<T>): React.CSSProperties => {
@@ -549,12 +549,12 @@ export function DataTable<T = any>({
 
   return (
     <TooltipProvider>
-      <div className={cn("bg-white border border-gray-200 rounded shadow-sm overflow-hidden", className)}>
+      <div className={cn("bg-card border border-border rounded shadow-sm overflow-hidden", className)}>
 
         {/* ── Card title (optional) ── */}
         {title && (
-          <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-3">
-            <span className="text-sm font-medium text-gray-700">{title}</span>
+          <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between gap-3">
+            <span className="text-sm font-medium text-foreground">{title}</span>
             {titleExtra}
           </div>
         )}
@@ -569,9 +569,9 @@ export function DataTable<T = any>({
                   {isSingleSearch ? (
                     // ── Single field: live text search ──
                     <div className="relative">
-                      <Search className="absolute left-2.5 top-2 h-4 w-4 text-gray-400 pointer-events-none" />
+                      <Search className="absolute left-2.5 top-2 h-4 w-4 text-muted-foreground pointer-events-none" />
                       <input
-                        className="w-full h-8 pl-8 pr-7 text-xs border border-gray-200 rounded bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full h-8 pl-8 pr-7 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-ring focus:border-ring"
                         placeholder={`搜索 ${searchableColumns[0].title}...`}
                         value={singleValue}
                         onChange={e => setSingleValue(e.target.value)}
@@ -579,7 +579,7 @@ export function DataTable<T = any>({
                       {singleValue && (
                         <button
                           onClick={() => setSingleValue('')}
-                          className="absolute right-2 top-2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-2 top-2 text-muted-foreground hover:text-muted-foreground"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -591,12 +591,12 @@ export function DataTable<T = any>({
                       {/* Trigger bar */}
                       <div
                         className={cn(
-                          "flex items-center flex-wrap gap-1 min-h-8 px-2 py-1 border rounded bg-white cursor-text",
-                          dropdownOpen ? "border-blue-500 ring-1 ring-blue-500" : "border-gray-200"
+                          "flex items-center flex-wrap gap-1 min-h-8 px-2 py-1 border rounded bg-background cursor-text",
+                          dropdownOpen ? "border-ring ring-1 ring-ring" : "border-border"
                         )}
                         onClick={() => { setDropdownOpen(true); setTimeout(() => searchInputRef.current?.focus(), 0) }}
                       >
-                        <Search className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                        <Search className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
 
                         {/* Active filter chips */}
                         {activeFilters.map(f => {
@@ -605,12 +605,12 @@ export function DataTable<T = any>({
                           return (
                             <span
                               key={f.key}
-                              className="inline-flex items-center gap-1 h-5 px-1.5 text-xs bg-blue-50 text-blue-700 rounded border border-blue-200 flex-shrink-0"
+                              className="inline-flex items-center gap-1 h-5 px-1.5 text-xs bg-primary/10 text-primary rounded border border-primary/30 flex-shrink-0"
                             >
                               {col?.title}: {displayVal}
                               <button
                                 onMouseDown={e => { e.stopPropagation(); removeFilter(f.key) }}
-                                className="hover:text-blue-900"
+                                className="hover:text-primary/80"
                               >
                                 <X className="h-3 w-3" />
                               </button>
@@ -620,14 +620,14 @@ export function DataTable<T = any>({
 
                         {/* Placeholder */}
                         {activeFilters.length === 0 && (
-                          <span className="text-xs text-gray-400">搜索...</span>
+                          <span className="text-xs text-muted-foreground">搜索...</span>
                         )}
 
                         {/* Clear all */}
                         {activeFilters.length > 0 && (
                           <button
                             onMouseDown={e => { e.stopPropagation(); clearAllFilters() }}
-                            className="ml-auto flex-shrink-0 text-gray-400 hover:text-gray-600"
+                            className="ml-auto flex-shrink-0 text-muted-foreground hover:text-muted-foreground"
                           >
                             <X className="h-4 w-4" />
                           </button>
@@ -636,9 +636,9 @@ export function DataTable<T = any>({
 
                       {/* Dropdown panel */}
                       {dropdownOpen && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-lg z-50">
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded shadow-lg z-50">
                           {/* Field tabs */}
-                          <div className="flex items-center gap-1 px-2 pt-2 pb-1.5 border-b border-gray-100 flex-wrap">
+                          <div className="flex items-center gap-1 px-2 pt-2 pb-1.5 border-b border-border/50 flex-wrap">
                             {searchableColumns.map(col => (
                               <button
                                 key={col.key}
@@ -646,13 +646,13 @@ export function DataTable<T = any>({
                                 className={cn(
                                   "px-2 py-0.5 text-xs rounded border transition-colors",
                                   pendingField === col.key
-                                    ? "bg-blue-50 text-blue-700 border-blue-200"
-                                    : "text-gray-600 border-transparent hover:bg-gray-50"
+                                    ? "bg-primary/10 text-primary border-primary/30"
+                                    : "text-muted-foreground border-transparent hover:bg-muted/50"
                                 )}
                               >
                                 {col.title}
                                 {activeFilters.find(f => f.key === col.key) && (
-                                  <span className="ml-1 inline-block w-1.5 h-1.5 bg-blue-500 rounded-full align-middle" />
+                                  <span className="ml-1 inline-block w-1.5 h-1.5 bg-primary rounded-full align-middle" />
                                 )}
                               </button>
                             ))}
@@ -667,10 +667,10 @@ export function DataTable<T = any>({
                                     key={o.value}
                                     onMouseDown={() => { commitFilter(pendingField, o.value); setDropdownOpen(false) }}
                                     className={cn(
-                                      "w-full text-left px-2 py-1.5 text-xs rounded hover:bg-gray-50",
+                                      "w-full text-left px-2 py-1.5 text-xs rounded hover:bg-muted/50",
                                       activeFilters.find(f => f.key === pendingField && f.value === o.value)
-                                        ? "text-blue-700 bg-blue-50"
-                                        : "text-gray-700"
+                                        ? "text-primary bg-primary/10"
+                                        : "text-foreground"
                                     )}
                                   >
                                     {o.label}
@@ -693,7 +693,7 @@ export function DataTable<T = any>({
                                   }
                                 }}
                                 placeholder={`输入${pendingFieldDef?.title ?? ''}，Enter 确认`}
-                                className="w-full h-7 px-2 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full h-7 px-2 text-xs border border-border rounded focus:outline-none focus:ring-1 focus:ring-ring focus:border-ring"
                                 autoFocus
                               />
                             )}
@@ -715,7 +715,7 @@ export function DataTable<T = any>({
               {/* Batch actions — after toolbarLeft, visible only when rows selected */}
               {batchActions && selected.size > 0 && (
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="text-xs text-gray-500 whitespace-nowrap">已选 {selected.size} 项</span>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">已选 {selected.size} 项</span>
                   {batchActions.map((action, i) => {
                     const isDisabled = action.disabled?.(selectedRows) ?? false
                     return (
@@ -803,9 +803,9 @@ export function DataTable<T = any>({
             style={{ tableLayout: 'fixed', minWidth: minWidth ?? tableMinWidth }}
           >
             <thead>
-              <tr className="h-12 border-b border-gray-200 bg-white">
+              <tr className="h-12 border-b border-border bg-card">
                 {showSelection && (
-                  <th className={cn("w-10 px-4", hasLeftFixed && "sticky left-0 bg-white z-10")}>
+                  <th className={cn("w-10 px-4", hasLeftFixed && "sticky left-0 bg-card z-10")}>
                     <Checkbox
                       checked={someSelected ? 'indeterminate' : allSelected}
                       onCheckedChange={toggleAll}
@@ -816,7 +816,7 @@ export function DataTable<T = any>({
                 {visibleColumns.map(col => (
                   <th
                     key={col.key}
-                    className={cn("px-3 text-left font-medium text-gray-700 whitespace-nowrap", pinnedCellClass(col, false))}
+                    className={cn("px-3 text-left font-medium text-foreground whitespace-nowrap", pinnedCellClass(col, false))}
                     style={{
                       // table-layout:fixed needs every column to have a width, or width-less
                       // columns collapse and overlap in a horizontally-scrollable table.
@@ -832,8 +832,8 @@ export function DataTable<T = any>({
                 {showActionsColumn && (
                   <th
                     className={cn(
-                      "px-3 text-left font-medium text-gray-700 whitespace-nowrap",
-                      stickyActions && "sticky right-0 bg-white z-10 border-l border-gray-100"
+                      "px-3 text-left font-medium text-foreground whitespace-nowrap",
+                      stickyActions && "sticky right-0 bg-card z-10 border-l border-border/50"
                     )}
                     style={{ width: actionsWidth }}
                   >
@@ -856,9 +856,9 @@ export function DataTable<T = any>({
                 const more = moreActions(row)
 
                 return (
-                  <tr key={rowId || index} className="h-12 border-b border-gray-100 hover:bg-gray-50 group">
+                  <tr key={rowId || index} className="h-12 border-b border-border/50 hover:bg-muted/50 group">
                     {showSelection && (
-                      <td className={cn("px-4", hasLeftFixed && "sticky left-0 bg-white z-10 group-hover:bg-gray-50")}>
+                      <td className={cn("px-4", hasLeftFixed && "sticky left-0 bg-card z-10 group-hover:bg-muted/50")}>
                         <Checkbox
                           checked={selected.has(rowId)}
                           disabled={!canSelect(row)}
@@ -870,14 +870,14 @@ export function DataTable<T = any>({
                     {visibleColumns.map(col => (
                       <td
                         key={col.key}
-                        className={cn("px-3 text-gray-700 overflow-hidden", pinnedCellClass(col, true), col.className)}
+                        className={cn("px-3 text-foreground overflow-hidden", pinnedCellClass(col, true), col.className)}
                         style={pinnedCellStyle(col)}
                       >
                         {col.render
                           ? col.render(row, index)
                           : ((row as any)[col.key] !== undefined && (row as any)[col.key] !== null)
                             ? String((row as any)[col.key])
-                            : <span className="text-gray-400">-</span>
+                            : <span className="text-muted-foreground">-</span>
                         }
                       </td>
                     ))}
@@ -885,8 +885,8 @@ export function DataTable<T = any>({
                     {showActionsColumn && (
                       <td
                         className={cn(
-                          "px-3 group-hover:bg-gray-50",
-                          stickyActions && "sticky right-0 bg-white z-10 border-l border-gray-100"
+                          "px-3 group-hover:bg-muted/50",
+                          stickyActions && "sticky right-0 bg-card z-10 border-l border-border/50"
                         )}
                         onClick={e => e.stopPropagation()}
                       >
@@ -900,8 +900,8 @@ export function DataTable<T = any>({
                                 disabled={isDisabled}
                                 onClick={() => !isDisabled && action.onClick(row, index)}
                                 className={cn(
-                                  "h-6 px-2 text-xs rounded hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed",
-                                  action.danger ? "text-red-600 hover:text-red-700" : "text-blue-600 hover:text-blue-700"
+                                  "h-6 px-2 text-xs rounded hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed",
+                                  action.danger ? "text-destructive hover:text-destructive/80" : "text-primary hover:text-primary/80"
                                 )}
                               >
                                 {action.label}
@@ -921,8 +921,8 @@ export function DataTable<T = any>({
                           {more.length > 0 && (
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <button className="h-6 w-6 p-0 inline-flex items-center justify-center rounded hover:bg-gray-100">
-                                  <MoreHorizontal className="h-4 w-4 text-gray-500" />
+                                <button className="h-6 w-6 p-0 inline-flex items-center justify-center rounded hover:bg-accent">
+                                  <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                                 </button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
@@ -934,7 +934,7 @@ export function DataTable<T = any>({
                                       <DropdownMenuItem
                                         disabled={isDisabled}
                                         onClick={() => !isDisabled && action.onClick(row, index)}
-                                        className={action.danger ? "text-red-600 focus:text-red-600" : ""}
+                                        className={action.danger ? "text-destructive focus:text-destructive" : ""}
                                       >
                                         {action.label}
                                       </DropdownMenuItem>

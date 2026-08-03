@@ -21,8 +21,8 @@ const variantColors: Record<StatusVariant, { dot: string; ping: string }> = {
   warning: { dot: "bg-yellow-500", ping: "bg-yellow-400" },
   error: { dot: "bg-red-500", ping: "bg-red-400" },
   info: { dot: "bg-blue-500", ping: "bg-blue-400" },
-  neutral: { dot: "bg-gray-400", ping: "bg-gray-300" },
-  default: { dot: "bg-gray-400", ping: "bg-gray-300" },
+  neutral: { dot: "bg-muted-foreground", ping: "bg-muted-foreground/60" },
+  default: { dot: "bg-muted-foreground", ping: "bg-muted-foreground/60" },
 }
 
 const sizeMap: Record<"sm" | "md" | "lg", string> = {
