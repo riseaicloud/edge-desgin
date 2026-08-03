@@ -61,17 +61,17 @@ export function ConfirmDeleteDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <div className="flex items-center space-x-2">
-            <AlertTriangle className="h-5 w-5 text-red-500" />
-            <DialogTitle className="text-red-600">{title}</DialogTitle>
+            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <DialogTitle className="text-destructive">{title}</DialogTitle>
           </div>
           <DialogDescription className="text-left">{description}</DialogDescription>
         </DialogHeader>
 
         <div className="py-4">
-          <p className="text-sm font-medium text-gray-900 mb-2">将要删除的项目：</p>
-          <div className="max-h-32 overflow-y-auto border rounded p-2 bg-gray-50">
+          <p className="text-sm font-medium text-foreground mb-2">将要删除的项目：</p>
+          <div className="max-h-32 overflow-y-auto border rounded p-2 bg-muted">
             {itemNames.map((name, index) => (
-              <div key={index} className="text-sm text-gray-700 py-1">
+              <div key={index} className="text-sm text-foreground py-1">
                 • {name}
               </div>
             ))}

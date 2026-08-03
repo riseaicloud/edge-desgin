@@ -49,12 +49,12 @@ export function KPICard({
   value,
   unit,
   trend,
-  iconBgColor = 'bg-blue-50',
-  iconColor = 'text-blue-600',
+  iconBgColor = 'bg-primary/10',
+  iconColor = 'text-primary',
   className,
 }: KPICardProps) {
   return (
-    <div className={cn('bg-white border border-gray-200 rounded p-4', className)}>
+    <div className={cn('bg-card border border-border rounded p-4', className)}>
       {/* Icon + Trend row */}
       <div className="flex items-center justify-between mb-3">
         <div className={cn('p-2 rounded', iconBgColor)}>
@@ -64,7 +64,7 @@ export function KPICard({
           <div
             className={cn(
               'text-xs font-medium',
-              trend.isPositive ? 'text-green-600' : 'text-red-600'
+              trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-destructive'
             )}
           >
             {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
@@ -74,12 +74,12 @@ export function KPICard({
 
       {/* Value */}
       <div className="mb-1">
-        <span className="text-2xl font-semibold text-gray-900">{value}</span>
-        {unit && <span className="text-sm text-gray-500 ml-1">{unit}</span>}
+        <span className="text-2xl font-semibold text-foreground">{value}</span>
+        {unit && <span className="text-sm text-muted-foreground ml-1">{unit}</span>}
       </div>
 
       {/* Title */}
-      <div className="text-sm text-gray-600">{title}</div>
+      <div className="text-sm text-muted-foreground">{title}</div>
     </div>
   )
 }

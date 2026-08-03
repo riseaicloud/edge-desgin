@@ -76,29 +76,29 @@ export function ResourceChart({
   }
 
   return (
-    <div className={cn('bg-white border border-gray-200 rounded p-4', className)}>
+    <div className={cn('bg-card border border-border rounded p-4', className)}>
       {/* Header */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium text-gray-700">{title}</h3>
+          <h3 className="text-sm font-medium text-foreground">{title}</h3>
           <div className="text-right">
-            <span className="text-2xl font-semibold text-gray-900">
+            <span className="text-2xl font-semibold text-foreground">
               {percentage.toFixed(1)}{unit}
             </span>
-            <div className="text-xs text-gray-500 mt-1">{currentValue}</div>
+            <div className="text-xs text-muted-foreground mt-1">{currentValue}</div>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="w-full bg-gray-100 rounded-full h-2">
+        <div className="w-full bg-muted rounded-full h-2">
           <div
             className={cn(
               'h-2 rounded-full transition-all duration-300',
               percentage > 80
-                ? 'bg-red-500'
+                ? 'bg-destructive'
                 : percentage > 60
-                ? 'bg-yellow-500'
-                : 'bg-blue-500'
+                ? 'bg-yellow-500 dark:bg-yellow-400'
+                : 'bg-primary'
             )}
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />

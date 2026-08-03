@@ -129,21 +129,21 @@ export function YamlEditDialog({
   return (
     <Dialog open={open} onOpenChange={!isProcessing ? onOpenChange : undefined}>
       <DialogPortal>
-        <DialogOverlay className="bg-gray-900/80" />
+        <DialogOverlay className="bg-black/80" />
         <DialogContent className="max-w-[calc(100vw-2rem)] w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] h-[calc(100vh-2rem)] p-0 gap-0">
           <div className="h-full flex flex-col">
             {/* Header */}
             <div
-              className="px-6 py-3 border-b border-gray-200 flex-shrink-0"
+              className="px-6 py-3 border-b border-border flex-shrink-0"
               style={{ backgroundColor: "#F9FBFF" }}
             >
               <div className="flex items-baseline space-x-2">
-                <FileText className="h-5 w-5 text-gray-600 flex-shrink-0" />
-                <DialogTitle className="text-lg font-medium text-gray-900 leading-none">
+                <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                <DialogTitle className="text-lg font-medium text-foreground leading-none">
                   {title}
                 </DialogTitle>
                 {description && (
-                  <DialogDescription className="text-xs text-gray-500 leading-none">
+                  <DialogDescription className="text-xs text-muted-foreground leading-none">
                     {description}
                   </DialogDescription>
                 )}
@@ -155,9 +155,9 @@ export function YamlEditDialog({
               className="flex-1 overflow-auto p-4"
               style={{ backgroundColor: "#EFF4F9" }}
             >
-              <div className="bg-white rounded border border-gray-200 h-full flex flex-col">
+              <div className="bg-card rounded border border-border h-full flex flex-col">
                 <div className="flex-1 p-4 flex flex-col space-y-4">
-                  <div className="flex-1 border border-gray-200 rounded overflow-hidden">
+                  <div className="flex-1 border border-border rounded overflow-hidden">
                     <Editor
                       height="100%"
                       defaultLanguage="yaml"
@@ -165,7 +165,7 @@ export function YamlEditDialog({
                       onChange={handleEditorChange}
                       theme="vs-dark"
                       loading={
-                        <div className="flex items-center justify-center h-full text-gray-400">
+                        <div className="flex items-center justify-center h-full text-muted-foreground">
                           加载编辑器...
                         </div>
                       }
@@ -204,7 +204,7 @@ export function YamlEditDialog({
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 bg-white flex-shrink-0">
+            <div className="px-6 py-4 border-t border-border bg-card flex-shrink-0">
               <DialogFooter className="flex justify-end gap-3 m-0">
                 {readOnly ? (
                   <Button variant="outline" onClick={handleCancel} className="h-8">
