@@ -1,5 +1,39 @@
 # @riseaicloud/tokens
 
+## 1.2.0
+
+### Minor Changes
+
+- 7a12f1a: 新增 `buildPrimaryTheme(light, dark?)` —— 由品牌色算出明暗两态的主色与前景色
+
+  换主色的机制是覆盖 `--primary`，但一个主色不是一个 hex：它是四个值（浅色主色、暗色主色、
+  以及两种模式下**各自**的前景色）。后两个最容易做错 —— `darkColors['primary-foreground']`
+  是近黑（因为 tokens 的暗色 `--primary` 是亮蓝），一旦把暗色主色换成偏深的彩色，近黑前景
+  就读不了了。这部分交给本包算，消费方只给色值。
+
+  前景色判据是阈值而非取最大对比度：白字对比度 < 3.5 才翻深字。取最大会把常规品牌蓝也判成
+  深字（白 4.81 / 深 4.34，两者接近），而蓝底黑字不是任何设计系统的做法。
+
+  **只给算法、不给主题目录**：「对外提供哪几个主题、叫什么名」是产品决策，随时增删；固化成
+  公开 API 会让加删主题变成版本事件。同仓 `themes.ts` 即前车之鉴 —— 6 套皮肤发成公开 API、
+  库内零引用，现在想折叠进变量体系必须走 deprecate。目录留在消费方，加主题改一行不发包。
+
+  一并导出 `hexToHslChannels` 与 `PrimaryTheme` 类型 —— 算出的值不满意可直接给字面量完全手控。
+
+- 7a12f1a: 新增 `--font-size-base` 正文基准字号 token
+
+  与 `--radius` 同性质的可覆盖杠杆：消费方在 `:root` 或 `<html>` 上改一个值，正文字号跟随，
+  用于支撑"字号偏好"这类用户可调项。preset 在 `:root` 注入默认值并在 base 层作用到 `body`。
+
+  刻意只作用 `body`、不动根 `font-size` —— Tailwind 的间距与字号刻度全是 rem，动根字号会把
+  整套布局一起缩放。组件自身的 `text-xs` / `text-sm` 是绝对 rem 值，不受影响。
+
+  默认 `16px` = `fontSize.base`(1rem) = 浏览器默认，所以现有消费方视觉零变化。
+  同时导出 `fontSizeBase` 常量。
+
+  另修 preset 里 `--radius` 硬写字面量 `'0.5rem'` 的问题 —— `radiusBase` 常量早已存在但没被
+  引用，改 token 会漏掉注入点。现改为引用常量。
+
 ## 1.1.0
 
 ### Minor Changes
