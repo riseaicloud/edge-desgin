@@ -17,8 +17,8 @@ import {
   darkCockpitColors,
   darkTopologyColors,
 } from './colors'
-import { fontFamily } from './typography'
-import { radius, shadows, zIndex, breakpoints } from './spacing'
+import { fontFamily, fontSizeBase } from './typography'
+import { radius, radiusBase, shadows, zIndex, breakpoints } from './spacing'
 import { keyframes, animation } from './motion'
 
 /**
@@ -116,7 +116,8 @@ const edgePreset = {
     function ({ addBase }: { addBase: (styles: Record<string, Record<string, string>>) => void }) {
       addBase({
         ':root': {
-          '--radius': '0.5rem',
+          '--radius': radiusBase,
+          '--font-size-base': fontSizeBase,
           ...buildCSSVars(lightColors as unknown as Record<string, string>),
           ...buildCockpitCSSVars(cockpitColors as unknown as Record<string, string>),
           ...buildTopologyCSSVars({
@@ -153,6 +154,9 @@ const edgePreset = {
         body: {
           'background-color': 'hsl(var(--background))',
           color: 'hsl(var(--foreground))',
+          // 正文基准字号的落点。默认 16px = 浏览器默认,接入 preset 不产生视觉变化;
+          // 消费方覆盖 --font-size-base 即可实现"字号偏好"。见 typography.ts 的注释。
+          'font-size': 'var(--font-size-base)',
         },
       })
     },
