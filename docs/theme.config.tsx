@@ -4,9 +4,11 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 const config: DocsThemeConfig = {
   logo: <span>Edge Design</span>,
   project: {
-    link: 'https://github.com/theriseunion/edge-platform',
+    link: 'https://github.com/riseaicloud/edge-desgin',
   },
-  docsRepositoryBase: 'https://github.com/theriseunion/edge-platform/tree/master/design',
+  // 设计系统早期住在 theriseunion/edge-platform 的 design/ 目录下，独立成仓后这个路径没跟着改，
+  // 导致每页的「Edit this page」都指向一个不存在的位置。
+  docsRepositoryBase: 'https://github.com/riseaicloud/edge-desgin/tree/main/docs',
   footer: {
     text: 'Edge Design System',
   },

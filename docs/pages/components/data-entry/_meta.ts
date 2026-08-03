@@ -7,4 +7,8 @@ export default {
   switch: 'Switch',
   toggle: 'Toggle / ToggleGroup',
   form: 'Form',
+  'date-range-picker': 'DateRangePicker',
+  'searchable-select': 'SearchableSelect',
+  'toggle-group': 'ToggleGroup',
+  'label-editor': 'LabelEditor',
 }

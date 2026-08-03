@@ -1,0 +1,125 @@
+# ConfirmDialog 通用确认对话框
+
+`ConfirmDialog` 是平台的通用确认对话框，基于 `AlertDialog` 构建，用于「执行前需要用户二次确认」的操作。它既能做普通确认（直接点确认即可），也能通过 `confirmText` 开启「输入指定文本才能确认」的高危模式，并用 `destructive` 切换成危险按钮样式。
+
+> **选型**：删除类操作有三个专用对话框，按危险程度递增选择：
+> - **ConfirmDialog**：通用确认（本页），适合任意需要二次确认的操作。
+> - [**ConfirmDeleteDialog**](./confirm-delete-dialog)：简单（批量）删除，列出待删项 + 红色告警样式。
+> - [**NameConfirmDeleteDialog**](./name-confirm-delete-dialog)：需输入资源名二次确认的高危删除（删集群、删工作空间等不可逆操作）。
+
+## 引入
+
+```tsx
+import { ConfirmDialog } from '@riseaicloud/ui'
+import type { ConfirmDialogProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `open` | `boolean` | 是 | 是否打开 |
+| `onOpenChange` | `(open: boolean) => void` | 是 | 打开状态变化回调 |
+| `title` | `string` | 是 | 对话框标题 |
+| `description` | `string` | 否 | 描述文字 |
+| `confirmText` | `string` | 否 | 传值后开启「输入校验」模式：用户须输入与之完全一致的文本才能启用确认按钮 |
+| `confirmPlaceholder` | `string` | 否 | 输入框占位文字，默认回退为 `confirmText` |
+| `confirmLabel` | `string` | 否 | 确认按钮文案，默认 `"Confirm"` |
+| `cancelLabel` | `string` | 否 | 取消按钮文案，默认 `"Cancel"` |
+| `destructive` | `boolean` | 否 | 是否危险操作，为 `true` 时确认按钮用 `destructive` 红色样式，默认 `false` |
+| `loading` | `boolean` | 否 | 是否处理中，为 `true` 时禁用按钮并显示 `"..."`，默认 `false` |
+| `onConfirm` | `() => void` | 是 | 用户确认时回调（同步签名，异步进度由 `loading` 外部控制） |
+| `onCancel` | `() => void` | 否 | 用户取消时回调 |
+
+### 类型
+
+```typescript
+export interface ConfirmDialogProps {
+  /** Whether the dialog is open */
+  open: boolean
+  /** Callback when open state changes */
+  onOpenChange: (open: boolean) => void
+  /** Dialog title */
+  title: string
+  /** Dialog description */
+  description?: string
+  /** Text the user must type to confirm (for destructive actions) */
+  confirmText?: string
+  /** Placeholder for the confirmation input */
+  confirmPlaceholder?: string
+  /** Label for the confirm button */
+  confirmLabel?: string
+  /** Label for the cancel button */
+  cancelLabel?: string
+  /** Whether the action is destructive (changes confirm button style) */
+  destructive?: boolean
+  /** Whether a confirmation is in progress */
+  loading?: boolean
+  /** Callback when user confirms */
+  onConfirm: () => void
+  /** Callback when user cancels */
+  onCancel?: () => void
+}
+```
+
+## 示例
+
+### 普通确认（禁用插件）
+
+```tsx
+function DisablePluginButton({ plugin }: { plugin: Plugin }) {
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleConfirm = async () => {
+    setLoading(true)
+    try {
+      await disablePlugin(plugin.name)
+      setOpen(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>禁用</Button>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="禁用插件"
+        description={`确定要禁用「${plugin.title}」吗？禁用后前端将不再加载该插件，Helm release 保留。`}
+        confirmLabel="禁用"
+        cancelLabel="取消"
+        loading={loading}
+        onConfirm={handleConfirm}
+      />
+    </>
+  )
+}
+```
+
+### 输入校验的危险确认
+
+```tsx
+<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="卸载插件"
+  description="卸载会删除 Plugin CR 并执行 Helm uninstall，此操作不可恢复。"
+  confirmText={plugin.name}
+  confirmPlaceholder={`请输入 ${plugin.name}`}
+  confirmLabel="卸载"
+  destructive
+  loading={loading}
+  onConfirm={handleUninstall}
+/>
+```
+
+传入 `confirmText` 后，只有输入框内容与之完全相同，确认按钮才会启用；关闭对话框会自动清空已输入内容。
+
+## 注意事项
+
+- `onConfirm` 是同步签名，组件本身不管理异步进度；异步请求的 loading 需由父组件用 `loading` prop 控制。
+- 默认按钮文案是英文（`Confirm` / `Cancel`），中文场景请显式传 `confirmLabel` / `cancelLabel`。
+- 需要展示「将要删除哪些项」时优先用 [`ConfirmDeleteDialog`](./confirm-delete-dialog)；本组件不渲染待操作项列表。

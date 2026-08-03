@@ -1,0 +1,75 @@
+# LabelEditor 键值对编辑器
+
+`LabelEditor` 是通用的键值对编辑组件，适用于 Kubernetes Labels、Annotations、环境变量等「一组 key-value」的编辑场景。它渲染一个带表头的列表（每行两列 key / value + 删除按钮）和一个虚线框的「添加新项」区域，并可选地检测与初始值相比是否存在未保存改动。是受控组件——列表数据由外部 `value` 提供，任何增删改都通过 `onChange` 回传完整数组。
+
+## 引入
+
+```tsx
+import { LabelEditor } from '@riseaicloud/ui'
+import type { KeyValue, LabelEditorProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `value` | `KeyValue[]` | 必填 | 当前键值对列表（受控） |
+| `onChange` | `(value: KeyValue[]) => void` | 必填 | 任意增删改后回传完整数组 |
+| `initialValue` | `KeyValue[]` | `value` | 初始值，用于变化检测的基线；变化时会同步更新基线 |
+| `disabled` | `boolean` | `false` | 禁用所有输入与按钮 |
+| `placeholderKey` | `string` | `'键'` | key 列表头与输入框占位；添加区占位为 `新{placeholderKey}` |
+| `placeholderValue` | `string` | `'值'` | value 列表头与输入框占位；添加区占位为 `新{placeholderValue}` |
+| `emptyText` | `string` | `'暂无标签'` | 列表为空时的提示文字 |
+| `addButtonText` | `string` | `'添加'` | 添加按钮文字 |
+| `showChangeDetection` | `boolean` | `false` | 是否显示「有未保存的更改」提示 |
+| `maxHeight` | `string` | `'15rem'` | 列表区最大高度，超出滚动 |
+
+### 类型
+
+```typescript
+interface KeyValue {
+  key: string
+  value: string
+}
+```
+
+## 示例
+
+### 编辑资源 Labels
+
+```tsx
+const [labels, setLabels] = useState<KeyValue[]>([
+  { key: 'app', value: 'inference' },
+  { key: 'theriseunion.io/workspace', value: 'team-a' },
+])
+
+<LabelEditor value={labels} onChange={setLabels} />
+```
+
+### 编辑 Annotations（自定义占位 + 变化检测）
+
+```tsx
+<LabelEditor
+  value={annotations}
+  onChange={setAnnotations}
+  initialValue={originalAnnotations}
+  placeholderKey="注解键"
+  placeholderValue="注解值"
+  emptyText="暂无注解"
+  showChangeDetection
+/>
+```
+
+开启 `showChangeDetection` 后，当前值与 `initialValue` 不一致时底部显示「有未保存的更改」，可据此启用「保存」按钮。
+
+### 只读展示
+
+```tsx
+<LabelEditor value={labels} onChange={() => {}} disabled />
+```
+
+## 注意事项
+
+- 添加区的「添加」按钮仅在 key 与 value 均非空时可用；提交后自动清空输入。
+- 组件不做 key 去重或 K8s 标签格式校验，需要时在 `onChange` 回调中自行处理。
+- 变化检测基于 key→value 的 Map 比较（顺序无关，key 数量与值需一致）；`initialValue` 变化会重置基线。

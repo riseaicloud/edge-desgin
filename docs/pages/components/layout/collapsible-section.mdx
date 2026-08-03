@@ -1,0 +1,99 @@
+# CollapsibleSection 折叠分区
+
+`CollapsibleSection` 是一个开箱即用的折叠分区块：带边框圆角外框、可点击的标题栏（图标 + 标题 + 右侧插槽 + 自动旋转的箭头）、以及展开时的内容区。用于把详情页 / 表单里的次要信息分组收纳（如「高级配置」「资源限额」「标签与注解」），默认展开。
+
+它同时支持**非受控**（内部自己记状态，传 `defaultExpanded`）和**受控**（外部传 `expanded` + `onToggle`）两种模式。相比无样式的 [`Collapsible`](./collapsible) 原语，它已经封装好视觉规范，直接用即可。
+
+## 引入
+
+```tsx
+import { CollapsibleSection } from '@riseaicloud/ui'
+import type { CollapsibleSectionProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `title` | `string` | 必填 | 分区标题文字 |
+| `icon` | `ReactNode` | — | 标题左侧图标 |
+| `extra` | `ReactNode` | — | 标题右侧插槽（放徽标 / 计数等） |
+| `defaultExpanded` | `boolean` | `true` | 非受控模式的初始展开状态 |
+| `expanded` | `boolean` | — | 受控展开状态。**一旦传入即切受控模式**，需自行配合 `onToggle` |
+| `onToggle` | `(expanded: boolean) => void` | — | 展开状态变化回调（受控/非受控都会触发） |
+| `children` | `ReactNode` | 必填 | 折叠内容 |
+| `className` | `string` | — | 外框附加类名 |
+| `contentClassName` | `string` | — | 内容区附加类名 |
+
+判据：**传了 `expanded` 就是受控模式**（组件不再维护内部状态，展开与否完全由父组件的 `expanded` 决定，你必须在 `onToggle` 里回写）；未传则内部自管，仅用 `defaultExpanded` 定初值。
+
+### 类型
+
+```typescript
+interface CollapsibleSectionProps {
+  title: string
+  icon?: React.ReactNode
+  extra?: React.ReactNode
+  defaultExpanded?: boolean
+  expanded?: boolean
+  onToggle?: (expanded: boolean) => void
+  children: React.ReactNode
+  className?: string
+  contentClassName?: string
+}
+```
+
+## 示例
+
+### 基础（非受控，默认展开）
+
+```tsx
+import { Cpu } from 'lucide-react'
+
+<CollapsibleSection title="资源限额" icon={<Cpu className="h-4 w-4" />}>
+  <div className="space-y-2 text-sm">
+    <div>CPU：4 核</div>
+    <div>内存：16 GiB</div>
+    <div>GPU：1 × A100</div>
+  </div>
+</CollapsibleSection>
+```
+
+### 默认收起 + 右侧计数
+
+```tsx
+<CollapsibleSection
+  title="标签与注解"
+  defaultExpanded={false}
+  extra={<span className="text-xs text-muted-foreground">3 项</span>}
+>
+  {/* 标签列表 */}
+</CollapsibleSection>
+```
+
+### 受控（多个分区互斥展开）
+
+```tsx
+const [openKey, setOpenKey] = useState<string>('basic')
+
+<CollapsibleSection
+  title="基础信息"
+  expanded={openKey === 'basic'}
+  onToggle={(v) => setOpenKey(v ? 'basic' : '')}
+>
+  {/* ... */}
+</CollapsibleSection>
+<CollapsibleSection
+  title="高级配置"
+  expanded={openKey === 'advanced'}
+  onToggle={(v) => setOpenKey(v ? 'advanced' : '')}
+>
+  {/* ... */}
+</CollapsibleSection>
+```
+
+## 注意事项
+
+- 传了 `expanded` 后组件变受控，若不实现 `onToggle` 回写，点击标题栏将「点不动」。
+- 标题栏整行可点击（内部是 `<button>`），不要在 `title` / `extra` 里再嵌套可交互按钮，避免点击冲突。
+- 箭头图标固定为 `ChevronDown`，展开时旋转 180°，无需自行处理。

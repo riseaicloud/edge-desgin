@@ -1,0 +1,102 @@
+# DateRangePicker 日期区间选择器
+
+`DateRangePicker` 是平台统一的**日期时间区间**选择器：一个触发按钮 + 展开的面板（左侧快捷预设 + 右侧双月日历 + 顶部日期/时间输入 + 「确定」缓冲提交）。基于 `react-day-picker` 渲染日历，用 date-fns 处理时间，全程 Tailwind 定制样式。
+
+面板是**内联绝对定位**（不走 portal），因此在没有 portal 挂载点的宿主环境里也能正常渲染。
+
+> **交互特点**：日历里点选只更新面板内的临时状态；点「确定」才通过 `onChange` 提交（缓冲提交，避免拖选过程中反复触发）。预设点一下会预填区间，仍需「确定」。
+
+## 引入
+
+```tsx
+import { DateRangePicker } from '@riseaicloud/ui'
+import type { DateRange, DateRangePreset, DateRangePickerProps } from '@riseaicloud/ui'
+```
+
+## Props
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `value` | `DateRange` | 必填 | 当前区间，`{ start, end }` 为 **epoch 毫秒** |
+| `onChange` | `(range: DateRange) => void` | 必填 | 提交回调（点「确定」/预设+确定时触发，非每次点选） |
+| `maxDays` | `number` | `0` | 跨度上限（天），`0` = 不限。同时会过滤掉超过上限的预设 |
+| `label` | `string` | — | 左侧标签文字；不传则不渲染标签 |
+| `presets` | `DateRangePreset[]` | 1小时→3个月 阶梯 | 快捷预设；传 `[]` 隐藏左侧预设栏 |
+| `showTime` | `boolean` | `true` | 显示 `HH:mm:ss` 时间输入；`false` 时为纯日期模式，提交按当日 `00:00:00` / `23:59:59` |
+| `numberOfMonths` | `number` | `2` | 日历面板月份数 |
+| `allowFuture` | `boolean` | `false` | 是否允许选今天之后；默认禁用未来 |
+| `displayFormat` | `string` | `MM-dd HH:mm:ss`（`showTime=false` 时 `yyyy-MM-dd`） | 触发按钮文字的 date-fns 格式 |
+| `className` | `string` | — | 外层容器附加类名 |
+
+### 类型
+
+```typescript
+interface DateRange {
+  start: number   // epoch 毫秒
+  end: number
+}
+
+interface DateRangePreset {
+  label: string   // 如 "前一周"
+  ms: number      // 区间跨度毫秒；点击后设为 [now - ms, now]
+}
+```
+
+## 示例
+
+### 基础（带跨度上限）
+
+```tsx
+const [range, setRange] = useState<DateRange>({
+  start: Date.now() - 7 * 864e5,
+  end: Date.now(),
+})
+
+<DateRangePicker value={range} onChange={setRange} maxDays={60} />
+```
+
+`maxDays={60}` 对齐 CAMP 的 `ValidateTimelineDuration`：拖选不能超过 60 天，且「前三个月」这类超限预设会被自动隐藏。
+
+### 纯日期（无时间输入）
+
+```tsx
+<DateRangePicker
+  value={range}
+  onChange={setRange}
+  showTime={false}          // 只选日期，提交按 当日 00:00:00 / 23:59:59
+  displayFormat="yyyy-MM-dd"
+/>
+```
+
+### 自定义预设 / 无标签 / 允许未来
+
+```tsx
+<DateRangePicker
+  value={range}
+  onChange={setRange}
+  label={undefined}
+  allowFuture
+  presets={[
+    { label: '近 24 小时', ms: 864e5 },
+    { label: '近 7 天', ms: 7 * 864e5 },
+    { label: '近 30 天', ms: 30 * 864e5 },
+  ]}
+/>
+```
+
+### 隐藏预设栏、单月面板
+
+```tsx
+<DateRangePicker
+  value={range}
+  onChange={setRange}
+  presets={[]}              // 不显示左侧预设
+  numberOfMonths={1}
+/>
+```
+
+## 注意事项
+
+- `value` / `onChange` 用的是 **epoch 毫秒**（`number`），不是 `Date` —— 便于放进 URL / 组件 state / 请求参数。需要 `Date` 自行 `new Date(range.start)`。
+- 面板不走 portal：如果外层容器有 `overflow: hidden` 且空间不足，面板可能被裁剪；把选择器放在有足够展开空间的工具栏里即可。
+- `react-day-picker` / `date-fns` 是本包的依赖，由宿主统一提供；在微前端 / 插件化场景里，子应用不应重复打包这两个库（会出现两份 context）。
