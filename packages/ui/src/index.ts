@@ -21,8 +21,10 @@ export { Avatar, AvatarImage, AvatarFallback } from './components/avatar'
 export { Label } from './components/label'
 
 // ─── Data Entry ───────────────────────────────────────────────────────────────
-export { SearchableSelect } from './components/searchable-select'
-export type { SearchableSelectProps, SearchableSelectOption } from './components/searchable-select'
+// ── 下拉：唯一推荐入口是门面 Select（一行用，单选/多选/搜索/滚动分页全在 props）──
+// SearchableSelect 已内化为门面的 combobox 引擎，不再公开导出（2026-08，当时采用数为 0）。
+export { Select } from './components/select-facade'
+export type { SelectProps, SelectOption } from './components/select-facade'
 
 export { DateRangePicker } from './components/date-range-picker'
 export type { DateRangePickerProps, DateRange, DateRangePreset } from './components/date-range-picker'
@@ -33,8 +35,9 @@ export type { InputProps } from './components/input'
 export { Textarea } from './components/textarea'
 export type { TextareaProps } from './components/textarea'
 
+// 组合式积木（深度定制逃生门）。原 `Select` 已改名 `SelectRoot`，把好名字让给门面。
 export {
-  Select,
+  SelectRoot,
   SelectGroup,
   SelectValue,
   SelectTrigger,

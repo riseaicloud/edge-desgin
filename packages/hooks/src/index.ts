@@ -1,4 +1,6 @@
 // State Management
+export { useSelectOptions } from './data/useSelectOptions'
+export type { SelectOptionsPage, SelectOptionsResult, UseSelectOptionsReturn } from './data/useSelectOptions'
 export { useLocalStorage } from './state/useLocalStorage'
 export { useDebouncedValue } from './state/useDebouncedValue'
 export { useAutoRefresh } from './state/useAutoRefresh'

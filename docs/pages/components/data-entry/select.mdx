@@ -1,202 +1,164 @@
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, SelectSeparator } from '@riseaicloud/ui'
+import { Select, SelectRoot, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from '@riseaicloud/ui'
 import { Preview } from '../../../components/Preview'
 
-# Select
+# Select 下拉选择
 
-A dropdown selection control with keyboard navigation, built on Radix UI Select.
+平台下拉的**唯一推荐入口**。一行用法，单选 / 多选 / 搜索 / 远程分页全部在 props 上，
+内部按 props 自动路由到合适的引擎（固定枚举走 Radix，数据型走 combobox）。
 
-## Import
+**选型口诀**：固定枚举（≤10 项写死的）直接用；选项多或来自接口，加 `searchable`；
+业务选择器（选集群 / 镜像 / 用户）用 `@riseaicloud/components` 的成品，别在页面里拼。
 
-```tsx
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-  SelectLabel,
-  SelectSeparator,
-} from '@riseaicloud/ui'
-```
+## 基本用法
 
-## Usage
-
-监控页面时间范围筛选。
-
-<Preview bgColor="#EFF4F9">
-  <Select>
-    <SelectTrigger className="w-40">
-      <SelectValue placeholder="选择时间范围" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="1h">最近 1 小时</SelectItem>
-      <SelectItem value="24h">最近 24 小时</SelectItem>
-      <SelectItem value="7d">最近 7 天</SelectItem>
-      <SelectItem value="all">全部时间</SelectItem>
-    </SelectContent>
-  </Select>
+<Preview>
+  <Select
+    options={[
+      { value: '1h', label: '最近 1 小时' },
+      { value: '24h', label: '最近 24 小时' },
+      { value: '7d', label: '最近 7 天' },
+      { value: 'all', label: '全部时间' },
+    ]}
+    placeholder="选择时间范围"
+    width={200}
+  />
 </Preview>
 
 ```tsx
-{/* 监控页面 — 时间范围筛选 */}
-<Select>
-  <SelectTrigger className="w-40">
-    <SelectValue placeholder="选择时间范围" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="1h">最近 1 小时</SelectItem>
-    <SelectItem value="24h">最近 24 小时</SelectItem>
-    <SelectItem value="7d">最近 7 天</SelectItem>
-    <SelectItem value="all">全部时间</SelectItem>
-  </SelectContent>
-</Select>
+<Select
+  options={[
+    { value: '1h', label: '最近 1 小时' },
+    { value: '24h', label: '最近 24 小时' },
+  ]}
+  value={range}
+  onValueChange={setRange}
+  placeholder="选择时间范围"
+/>
 ```
 
-## With groups
+## 可搜索
 
-状态筛选 + 日志级别分组，用于 OTA 任务列表和日志查看器。
+选项超过 ~10 个就该加 `searchable`（本地过滤）。`clearable` 提供清空按钮。
 
-<Preview bgColor="#EFF4F9">
-  <Select>
-    <SelectTrigger className="w-40">
-      <SelectValue placeholder="全部状态" />
+<Preview>
+  <Select
+    searchable
+    clearable
+    options={[
+      { value: 'nginx', label: 'nginx' },
+      { value: 'redis', label: 'redis' },
+      { value: 'postgres', label: 'postgres' },
+      { value: 'etcd', label: 'etcd' },
+      { value: 'kafka', label: 'kafka' },
+    ]}
+    placeholder="选择镜像"
+    width={220}
+  />
+</Preview>
+
+## 远程搜索 + 滚动分页
+
+提供 `onSearch` 切换为远程模式（内部防抖 300ms），`onLoadMore`/`hasMore`/`loading`
+组成滚动分页。**不要手写这套状态机**——用 `@riseaicloud/hooks` 的 `useSelectOptions`
+一行接入，翻页、搜索重置、竞态丢弃都在 hook 里：
+
+```tsx
+const users = useSelectOptions((p) =>
+  api.listUsers({ page: p.page, pageSize: p.pageSize, keyword: p.query })
+)
+
+<Select searchable placeholder="选择用户" value={v} onValueChange={setV} {...users.selectProps} />
+```
+
+fetcher 参数字典（前后端约定）：
+
+| 模式 | 请求 | 响应 | hasMore |
+| --- | --- | --- | --- |
+| 常规 BFF（默认） | `page`(1 起) / `pageSize` / `keyword` | `{ items, total }` | `page × pageSize < total` |
+| K8s 风格 | `limit` / `continue` / `keyword` | `{ items, continue }` | `continue` 非空 |
+
+## 多选
+
+<Preview>
+  <Select
+    multiple
+    searchable
+    clearable
+    options={[
+      { value: 'a', label: '租户 A' },
+      { value: 'b', label: '租户 B' },
+      { value: 'c', label: '租户 C' },
+    ]}
+    placeholder="选择租户"
+    width={220}
+  />
+</Preview>
+
+```tsx
+<Select multiple values={vs} onValuesChange={setVs} options={opts} searchable clearable />
+```
+
+## 选项 icon 与对钩位置
+
+`options[].icon` 支持 icon+文本；`checkAlign="right"` 把选中对钩挪到最右（默认在左）。
+
+```tsx
+<Select options={[{ value: 'gpu', label: 'GPU 节点', icon: <Dot /> }]} checkAlign="right" … />
+```
+
+## 联动（级联）
+
+联动是页面层的接线，组件零专用 API：下游的 fetcher 闭包引用上游的值；
+上游变化时**清空下游选中 + `reload()`**。
+
+```tsx
+const pools = useSelectOptions((p) => api.listPools({ cluster, ...p }))
+
+<Select options={clusters} value={cluster}
+        onValueChange={(v) => { setCluster(v); setPool(''); pools.reload() }} />
+<Select searchable value={pool} onValueChange={setPool} {...pools.selectProps} />
+```
+
+## 深度定制：组合式积木
+
+需要自定义 trigger、选项分组、塞进复杂表单布局时，用 `SelectRoot` 家族
+（就是 shadcn 的组合式 Select，原 `Select` 已让名给上面的门面）：
+
+<Preview>
+  <SelectRoot>
+    <SelectTrigger className="w-44">
+      <SelectValue placeholder="选择节点" />
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>
-        <SelectLabel>执行状态</SelectLabel>
-        <SelectItem value="all">全部状态</SelectItem>
-        <SelectItem value="success">成功</SelectItem>
-        <SelectItem value="failed">失败</SelectItem>
+        <SelectLabel>GPU</SelectLabel>
+        <SelectItem value="gpu-01">gpu-01</SelectItem>
+        <SelectItem value="gpu-02">gpu-02</SelectItem>
       </SelectGroup>
-    </SelectContent>
-  </Select>
-  <Select>
-    <SelectTrigger className="w-40">
-      <SelectValue placeholder="所有级别" />
-    </SelectTrigger>
-    <SelectContent>
       <SelectGroup>
-        <SelectLabel>日志级别</SelectLabel>
-        <SelectItem value="all">所有级别</SelectItem>
-        <SelectItem value="error">错误</SelectItem>
-        <SelectItem value="warn">警告</SelectItem>
-        <SelectItem value="info">信息</SelectItem>
-        <SelectItem value="debug">调试</SelectItem>
+        <SelectLabel>CPU</SelectLabel>
+        <SelectItem value="master-01">master-01</SelectItem>
       </SelectGroup>
     </SelectContent>
-  </Select>
+  </SelectRoot>
 </Preview>
-
-```tsx
-{/* OTA 任务列表 — 状态筛选 */}
-<Select>
-  <SelectTrigger className="w-40">
-    <SelectValue placeholder="全部状态" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectLabel>执行状态</SelectLabel>
-      <SelectItem value="all">全部状态</SelectItem>
-      <SelectItem value="success">成功</SelectItem>
-      <SelectItem value="failed">失败</SelectItem>
-    </SelectGroup>
-  </SelectContent>
-</Select>
-
-{/* 日志查看器 — 级别筛选 */}
-<Select>
-  <SelectTrigger className="w-40">
-    <SelectValue placeholder="所有级别" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectLabel>日志级别</SelectLabel>
-      <SelectItem value="all">所有级别</SelectItem>
-      <SelectItem value="error">错误</SelectItem>
-      <SelectItem value="warn">警告</SelectItem>
-      <SelectItem value="info">信息</SelectItem>
-      <SelectItem value="debug">调试</SelectItem>
-    </SelectGroup>
-  </SelectContent>
-</Select>
-```
-
-## Controlled
-
-```tsx
-import { useState } from 'react'
-
-function TimeRangeSelect() {
-  const [value, setValue] = useState('24h')
-  return (
-    <Select value={value} onValueChange={setValue}>
-      <SelectTrigger className="w-40">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="1h">最近 1 小时</SelectItem>
-        <SelectItem value="24h">最近 24 小时</SelectItem>
-        <SelectItem value="7d">最近 7 天</SelectItem>
-        <SelectItem value="all">全部时间</SelectItem>
-      </SelectContent>
-    </Select>
-  )
-}
-```
-
-## Disabled
-
-<Preview bgColor="#EFF4F9">
-  <Select disabled>
-    <SelectTrigger className="w-40">
-      <SelectValue placeholder="全部状态" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="all">全部状态</SelectItem>
-    </SelectContent>
-  </Select>
-</Preview>
-
-```tsx
-<Select disabled>
-  <SelectTrigger className="w-40">
-    <SelectValue placeholder="全部状态" />
-  </SelectTrigger>
-  ...
-</Select>
-```
 
 ## API
 
-### Select (Root) Props
+### Select（门面）
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | — | Controlled selected value |
-| `defaultValue` | `string` | — | Initial value (uncontrolled) |
-| `onValueChange` | `(value: string) => void` | — | Callback when selection changes |
-| `disabled` | `boolean` | `false` | Disable the entire select |
-| `open` | `boolean` | — | Controlled open state |
-| `onOpenChange` | `(open: boolean) => void` | — | Callback when open state changes |
+| Prop | 类型 | 默认 | 说明 |
+| --- | --- | --- | --- |
+| `options` | `SelectOption[]` | — | `{ value, label, icon?, disabled? }`；value 不可为空串 |
+| `value` / `onValueChange` | `string` / `(v) => void` | — | 单选 |
+| `multiple` + `values` / `onValuesChange` | `boolean` + `string[]` | `false` | 多选（点选项不关浮层） |
+| `searchable` | `boolean` | 见说明 | 搜索框；提供 `onSearch`/`filterOption` 时自动开启 |
+| `onSearch` | `(q) => void` | — | 远程搜索（防抖 300ms），父方返回过滤后的 options |
+| `onLoadMore` / `hasMore` / `loading` | — | — | 滚动分页三件套（配 `useSelectOptions`） |
+| `clearable` | `boolean` | `false` | 清空按钮 |
+| `checkAlign` | `'left' \| 'right'` | `'left'` | 选中对钩位置 |
+| `renderOption` | `(opt, selected) => ReactNode` | — | 自定义选项渲染 |
+| `placeholder` / `disabled` / `width` / `className` | — | — | 常规 |
 
-### SelectTrigger Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `className` | `string` | — | Additional CSS classes |
-
-### SelectContent Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `position` | `'popper' \| 'item-aligned'` | `'popper'` | Positioning strategy |
-| `className` | `string` | — | Additional CSS classes |
-
-### SelectItem Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | — | The value returned on selection |
-| `disabled` | `boolean` | `false` | Disable this item |
-| `className` | `string` | — | Additional CSS classes |
+**props 白名单纪律**：只收中性能力。`tags` / `labelInValue` / 自由输入等一律不加；
+「数据从哪来」的业务语义归 `@riseaicloud/components`。

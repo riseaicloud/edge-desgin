@@ -5,7 +5,9 @@ import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "../utils"
 
-const Select = SelectPrimitive.Root
+// 组合式外壳。原名 `Select`——2026-08 让名给门面（select-facade.tsx 的一行用组件），
+// 组合式改叫 SelectRoot。当时全平台 import 数为 0，改名零破坏；此后不可再动。
+const SelectRoot = SelectPrimitive.Root
 
 const SelectGroup = SelectPrimitive.Group
 
@@ -112,17 +114,26 @@ SelectLabel.displayName = SelectPrimitive.Label.displayName
 
 const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
+    /** 选中对钩的位置。left=shadcn 传统（左钩+左缩进），right=对钩靠最右。默认 left。 */
+    checkAlign?: "left" | "right"
+  }
+>(({ className, children, checkAlign = "left", ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      checkAlign === "left" ? "pl-8 pr-2" : "pl-2 pr-8",
       className
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span
+      className={cn(
+        "absolute flex h-3.5 w-3.5 items-center justify-center",
+        checkAlign === "left" ? "left-2" : "right-2"
+      )}
+    >
       <SelectPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
@@ -146,7 +157,7 @@ const SelectSeparator = React.forwardRef<
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
-  Select,
+  SelectRoot,
   SelectGroup,
   SelectValue,
   SelectTrigger,

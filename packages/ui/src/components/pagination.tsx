@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Button } from "./button"
 import {
-  Select,
+  SelectRoot,
   SelectTrigger,
   SelectValue,
   SelectContent,
@@ -44,7 +44,7 @@ export function Pagination({
             {onPageSizeChange && (
               <label className="flex items-center space-x-2">
                 <span>每页显示：</span>
-                <Select
+                <SelectRoot
                   value={String(pageSize)}
                   onValueChange={(val) => {
                     const v = Number(val)
@@ -61,7 +61,7 @@ export function Pagination({
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
+                </SelectRoot>
                 <span>条</span>
               </label>
             )}
