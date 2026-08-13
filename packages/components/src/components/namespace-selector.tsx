@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SearchableSelect, SearchableSelectOption } from "@riseaicloud/ui"
+import { Select, SelectOption } from "@riseaicloud/ui"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -43,8 +43,8 @@ export interface NamespaceSelectorProps {
 function namespacesToOptions(
   namespaces: NamespaceData[],
   includeAll: boolean
-): SearchableSelectOption[] {
-  const options: SearchableSelectOption[] = []
+): SelectOption[] {
+  const options: SelectOption[] = []
 
   if (includeAll) {
     options.push({ value: 'all', label: '所有命名空间' })
@@ -105,7 +105,7 @@ export function NamespaceSelector({
   }, [])
 
   return (
-    <SearchableSelect
+    <Select
       value={value}
       onValueChange={onValueChange}
       options={options}

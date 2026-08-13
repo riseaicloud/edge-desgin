@@ -1,167 +1,20 @@
-# SearchableSelect 可搜索下拉框
+# SearchableSelect（已并入 Select）
 
-`SearchableSelect` 是平台统一的下拉选择组件。相比原生 `<select>`（弹出列表由操作系统渲染、无法定制样式），它渲染的是完全可控的内联下拉面板（不走 portal），并封装了搜索（本地 / 远程）、自定义过滤、下滑加载更多、选项左侧图标、清除、禁用等能力。
+`SearchableSelect` 已内化为 [Select](/components/data-entry/select) 门面的 combobox
+引擎，**不再从 `@riseaicloud/ui` 导出**（收编时全平台使用数为 0，无迁移成本）。
 
-> **选型准则**
-> - **固定少量枚举、不需要搜索** → 也可用 Radix 风格的 `Select`（更轻）。
-> - **需要搜索 / 远程数据 / 下滑分页 / 左侧图标** → 用 `SearchableSelect`。
+原有能力全部保留，在 `Select` 上通过 props 使用：
 
-## 引入
+| 原来 | 现在 |
+| --- | --- |
+| `<SearchableSelect options value onValueChange />` | `<Select searchable options value onValueChange />` |
+| `onSearch` 远程搜索 | 同名 props，直接搬 |
+| `onLoadMore` / `hasMore` / `loading` 滚动分页 | 同名 props，直接搬（推荐配 `useSelectOptions`） |
+| `clearable` / `renderOption` / `filterOption` | 同名 props，直接搬 |
+| `SearchableSelectOption` 类型 | 改名 `SelectOption` |
+| — | 新增：`multiple` 多选、`checkAlign` 对钩位置 |
 
-```tsx
-import { SearchableSelect } from '@riseaicloud/ui'
-import type { SearchableSelectOption, SearchableSelectProps } from '@riseaicloud/ui'
-```
+相对旧实现的升级：Radix Popover 底座（Dialog / overflow 容器内不再被剪裁）、
+完整键盘导航（↑↓ Enter Esc Home/End）、combobox ARIA。
 
-## 两种取数模式
-
-| 模式 | 触发方式 | 搜索 | 适用场景 |
-|------|---------|------|---------|
-| 一次性 | 直接传全量 `options`（或在 `onOpen` 里拉一次） | **本地**过滤（默认 label 包含匹配，或 `filterOption`） | 选项不多，一次拉全 |
-| 下滑分页 | `onLoadMore` + `hasMore`，滚到底触发；`onSearch` 做**远程**搜索 | **远程**（父组件按 query 返回过滤后的 `options`） | 后端分页，选项很多 |
-
-判据：**传了 `onSearch` 就是远程模式**（组件不再本地过滤，交给父组件返回结果）；未传则本地过滤。
-
-## Props
-
-### 基础
-
-| Prop | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `value` | `string` | 必填 | 当前选中值 |
-| `onValueChange` | `(value: string) => void` | 必填 | 选中变化回调（清除时回传 `''`） |
-| `options` | `SearchableSelectOption[]` | 必填 | 选项列表 |
-| `placeholder` | `string` | `'Select...'` | 未选中时的占位文字 |
-| `width` | `string \| number` | — | 宽度（如 `160` 或 `'100%'`） |
-| `disabled` | `boolean` | `false` | 禁用整个控件 |
-| `clearable` | `boolean` | `true` | 显示清除按钮 |
-| `className` | `string` | — | 附加类名 |
-
-### 搜索
-
-| Prop | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `searchable` | `boolean` | `true` | 是否显示搜索框。固定枚举可设 `false`（样式统一但无搜索框） |
-| `searchPlaceholder` | `string` | `'Search...'` | 搜索框占位 |
-| `filterOption` | `(input: string, option: T) => boolean` | 按 `label` 不区分大小写包含匹配 | **仅本地模式**生效的自定义过滤 |
-| `onSearch` | `(query: string) => void` | — | **传了即切远程模式**，防抖后触发（父组件返回过滤结果） |
-| `debounceMs` | `number` | `300` | `onSearch` 防抖毫秒 |
-
-### 数据加载 / 分页
-
-| Prop | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `onOpen` | `() => void` | — | 下拉展开时触发（可用于首次懒加载） |
-| `onLoadMore` | `() => void` | — | 列表滚到底触发（下滑加载更多） |
-| `hasMore` | `boolean` | `false` | 是否还有更多可加载 |
-| `loading` | `boolean` | `false` | 加载中状态 |
-
-### 展示定制
-
-| Prop | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `renderOption` | `(option: T, isSelected: boolean) => ReactNode` | — | 完全自定义单个选项的渲染 |
-| `emptyText` | `string` | `'No results found'` | 无结果文字 |
-| `loadingText` | `string` | `'Loading...'` | 加载中文字 |
-| `noMoreText` | `string` | `'No more data'` | 远程模式下加载完文字 |
-
-### 类型
-
-```typescript
-interface SearchableSelectOption {
-  value: string
-  label: string
-  icon?: React.ReactNode   // 选项 / 回显左侧图标
-  disabled?: boolean       // 禁用该选项
-}
-```
-
-## 示例
-
-### 本地搜索（一次性）
-
-```tsx
-<SearchableSelect
-  value={ws}
-  onValueChange={setWs}
-  options={workspaces.map(w => ({ value: w.name, label: w.aliasName }))}
-  searchable
-  width={180}
-  placeholder="选择工作空间"
-  searchPlaceholder="搜索工作空间..."
-  emptyText="无匹配工作空间"
-/>
-```
-
-### 固定枚举（关搜索，只要统一样式）
-
-```tsx
-<SearchableSelect
-  value={period}
-  onValueChange={setPeriod}
-  searchable={false}
-  clearable={false}
-  width="100%"
-  options={[
-    { value: '10', label: '10 分钟' },
-    { value: '30', label: '30 分钟' },
-    { value: '60', label: '60 分钟' },
-  ]}
-/>
-```
-
-### 自定义过滤（filterOption，本地）
-
-```tsx
-<SearchableSelect
-  value={value}
-  onValueChange={setValue}
-  options={options}
-  // 同时匹配 value 和 label
-  filterOption={(input, opt) =>
-    opt.label.includes(input) || opt.value.includes(input)}
-/>
-```
-
-### 远程搜索 + 下滑加载更多
-
-```tsx
-<SearchableSelect
-  value={value}
-  onValueChange={setValue}
-  options={options}            // 由父组件维护（累加分页结果）
-  onSearch={q => { setPage(1); fetchPage(1, q) }}   // 传了即远程模式
-  onLoadMore={() => fetchPage(page + 1, query)}     // 滚到底加载下一页（每页 10 条等）
-  hasMore={hasMore}
-  loading={loading}
-/>
-```
-
-### 联动（依赖上一个选择）
-
-父组件持有依赖关系：上游变化时重置下游 `value` 并重新计算/拉取下游 `options`。
-
-```tsx
-// 选了工作空间才有项目；工作空间变了清空项目
-<SearchableSelect value={ws} onValueChange={w => { setWs(w); setProject('') }} options={wsOptions} />
-<SearchableSelect
-  value={project}
-  onValueChange={setProject}
-  disabled={!ws}
-  options={projectsOf(ws)}     // 随 ws 变化
-/>
-```
-
-### 左侧图标
-
-```tsx
-<SearchableSelect
-  value={cluster}
-  onValueChange={setCluster}
-  options={clusters.map(c => ({
-    value: c.id,
-    label: c.name,
-    icon: <ServerIcon className="h-3.5 w-3.5 text-muted-foreground" />,
-  }))}
-/>
-```
+详见 [Select 文档](/components/data-entry/select)。

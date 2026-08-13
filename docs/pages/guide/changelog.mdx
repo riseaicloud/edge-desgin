@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.3.0 — 2026-08-13
+
+### Select 体系收口：单门面 + 双引擎
+
+平台散装下拉收敛（全平台调研：252 处原生 `<select>` + 7 种自造实现并存）的组件侧交付。
+
+**@riseaicloud/ui**（⚠️ 含 API 重排，收编时全平台外部采用数为 0，无迁移成本）
+- 新增 `Select` **门面** —— 下拉唯一推荐入口：单选 / `multiple` 多选 / `searchable` 搜索 /
+  `onSearch` 远程 / `onLoadMore` 滚动分页 / `clearable` / `checkAlign` 对钩位置 /
+  选项 icon，一个组件按 props 自动路由双引擎
+- 组合式外壳改名：`Select` → `SelectRoot`（好名字让给门面；积木家族其余不变）
+- `SearchableSelect` 不再导出，内化为门面的 combobox 引擎，并重做底座：
+  Radix Popover（Dialog/overflow 内不再被剪裁）、完整键盘导航（↑↓ Enter Esc Home/End）、
+  combobox ARIA；类型 `SearchableSelectOption` → `SelectOption`
+- `SelectItem` 新增 `checkAlign` prop
+- 补 Select 故事 ×7（此前有码无档，Storybook 不可见）
+
+**@riseaicloud/hooks**
+- 新增 `useSelectOptions(fetcher)` —— 远程下拉的平台唯一翻页状态机：页码/游标双模
+  自动识别、搜索重置、竞态丢弃、`reload()` 联动口；`{...x.selectProps}` 一行接入
+
+**@riseaicloud/components**
+- 4 个业务选择器（cluster/workspace/namespace/nodegroup）切换到新门面
+
+**文档**
+- `select.mdx` 重写：选型口诀、远程分页前后端参数字典、级联联动写法、白名单纪律
+- `searchable-select.mdx` 改为迁移对照页
+
 ## v0.1.0 — 2026-03-29
 
 ### 初始发布
