@@ -1,5 +1,13 @@
 # edge-design-docs
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [7588a22]
+  - @riseaicloud/ui@1.3.1
+  - @riseaicloud/components@1.3.1
+
 ## 0.1.2
 
 ### Patch Changes
