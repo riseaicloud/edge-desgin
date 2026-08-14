@@ -62,3 +62,9 @@ export const Disabled: Story = {
     disabled: true,
   },
 }
+
+export const Indeterminate: Story = {
+  args: {
+    checked: 'indeterminate',
+  },
+}

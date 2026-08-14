@@ -1,46 +1,42 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { cn } from '../utils'
+// shadcn/ui 原版实现（@radix-ui/react-switch 的皮）。
+// 曾是手搓 button role="switch"：只有 5 个 props，连 id 都传不进去
+// （Label htmlFor 无法关联），无 defaultChecked、无 forwardRef、无表单
+// 集成（name/value 不提交）。Radix 版是原 API 的超集，同名 props 兼容。
+// 尺寸保持原有 h-5 w-9（shadcn 默认 h-6 w-11，不跟——避免存量视觉变化）。
 
-export interface SwitchProps {
-  checked?: boolean
-  onCheckedChange?: (checked: boolean) => void
-  disabled?: boolean
-  className?: string
-}
+import * as React from "react"
+import * as SwitchPrimitives from "@radix-ui/react-switch"
+import { cn } from "../utils"
 
-export function Switch({
-  checked = false,
-  onCheckedChange,
-  disabled = false,
-  className
-}: SwitchProps) {
-  const handleClick = () => {
-    if (!disabled && onCheckedChange) {
-      onCheckedChange(!checked)
-    }
-  }
+export type SwitchProps = React.ComponentPropsWithoutRef<
+  typeof SwitchPrimitives.Root
+>
 
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      disabled={disabled}
-      onClick={handleClick}
+const Switch = React.forwardRef<
+  React.ElementRef<typeof SwitchPrimitives.Root>,
+  SwitchProps
+>(({ className, ...props }, ref) => (
+  <SwitchPrimitives.Root
+    className={cn(
+      "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+      "disabled:cursor-not-allowed disabled:opacity-50",
+      "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+      className
+    )}
+    {...props}
+    ref={ref}
+  >
+    <SwitchPrimitives.Thumb
       className={cn(
-        'peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
-        checked ? 'bg-primary' : 'bg-input',
-        className
+        "pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
+        "data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0"
       )}
-    >
-      <span
-        className={cn(
-          'pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform',
-          checked ? 'translate-x-4' : 'translate-x-0'
-        )}
-      />
-    </button>
-  )
-}
+    />
+  </SwitchPrimitives.Root>
+))
+Switch.displayName = SwitchPrimitives.Root.displayName
+
+export { Switch }

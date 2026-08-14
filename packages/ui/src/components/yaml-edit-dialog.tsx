@@ -3,7 +3,9 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { AlertCircle, FileText } from "lucide-react"
-import Editor from "@monaco-editor/react"
+// lazy 而非静态 import：@monaco-editor/react 是 barrel 里唯一的胖依赖，
+// 静态引用会让不消费 YamlEditDialog 的打包姿势（尤其 CJS）也背上它。
+const Editor = React.lazy(() => import("@monaco-editor/react"))
 import { load as parseYaml } from "js-yaml"
 import {
   Dialog,
@@ -151,13 +153,17 @@ export function YamlEditDialog({
             </div>
 
             {/* Editor area */}
-            <div
-              className="flex-1 overflow-auto p-4"
-              style={{ backgroundColor: "#EFF4F9" }}
-            >
+            <div className="flex-1 overflow-auto p-4 bg-surface-page">
               <div className="bg-card rounded border border-border h-full flex flex-col">
                 <div className="flex-1 p-4 flex flex-col space-y-4">
                   <div className="flex-1 border border-border rounded overflow-hidden">
+                    <React.Suspense
+                      fallback={
+                        <div className="flex items-center justify-center h-full text-muted-foreground">
+                          加载编辑器...
+                        </div>
+                      }
+                    >
                     <Editor
                       height="100%"
                       defaultLanguage="yaml"
@@ -191,6 +197,7 @@ export function YamlEditDialog({
                           'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                       }}
                     />
+                    </React.Suspense>
                   </div>
 
                   {error && (
