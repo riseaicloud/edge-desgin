@@ -1,0 +1,64 @@
+# shadcn/ui 对照表
+
+> 「我想用 shadcn 的某个组件」——先查这张表。
+>
+> **Edge Design 的基座就是 shadcn**：同一套技术栈（Radix + Tailwind + CVA），
+> `@riseaicloud/tokens` 用的就是 shadcn 的 CSS 变量契约（`primary` / `muted` /
+> `accent` / `destructive` / `border` / `ring`……，HSL 通道值格式也一致）。
+> 所以 shadcn 的组件质感与交互，`@riseaicloud/ui` 天然就有；差异只在主题值
+> （配色、圆角、字号）和页面级规范（surface 层次、`text-xs` 表格等）。
+
+## 使用规则
+
+1. **先查本表**：shadcn 目录里的组件，多数在 `@riseaicloud/ui` 已有等价或超集实现——直接用现成的。
+2. **禁止把 shadcn 源码 copy 进业务仓**：会产生两套 Button/Select，且 copy 进来的默认样式不跟 Edge 主题。多插件仓库形态下 copy-in 意味着 N 份拷贝各自漂移。
+3. **确认是真缺口**（见下文「真缺口」表）→ 到 [edge-desgin](https://github.com/riseaicloud/edge-desgin) 提 PR，用 shadcn CLI 把组件引入 `packages/ui`（token 契约兼容，基本零改造），发版后各消费方升级。
+
+## ✅ 已覆盖 —— 用 `@riseaicloud/ui` 现成的
+
+| 你想用的 shadcn 组件 | 用这个 | 说明 |
+|---|---|---|
+| Combobox | `Select`（门面） | shadcn 的 Combobox 不是组件，是 Popover + Command 拼的**模式**。`Select` 门面（v1.3.0 收口）是它的超集：`searchable` 本地/远程搜索、`multiple` 多选、滚动分页、`clearable`。远程数据配 `useSelectOptions` |
+| Select | `Select`（门面） | 纯枚举形态自动走 Radix Select 引擎，与 shadcn 同底 |
+| Drawer | `Sheet` | shadcn Drawer（vaul）面向移动端底部抽屉；桌面控制台场景 `Sheet` 全覆盖 |
+| Accordion | `Collapsible` / `CollapsibleSection` | 折叠语义已有两个组件承载，不再引入第三个 |
+| Toast（旧版） | 见「半缺口」的 Sonner | — |
+| Data Table (TanStack) | `DataTable` | 内置多字段搜索、按列筛选（`searchType: 'select'`）、分页 |
+| Date Picker | `DateRangePicker` | 底层同为 react-day-picker v9 |
+| Alert / Alert Dialog / Avatar / Badge / Button / Card / Chart / Checkbox / Collapsible / Dialog / Dropdown Menu / Form / Input / Label / Pagination / Popover / Progress / Radio Group / Scroll Area / Separator / Sheet / Skeleton / Switch / Table / Tabs / Textarea / Toggle / Toggle Group / Tooltip | 同名组件 | shadcn 基座原样在包里 |
+
+## 🚫 不引入 —— 与平台框架冲突
+
+| shadcn 组件 | 原因 |
+|---|---|
+| Sidebar | 侧边栏是 Console 框架层（chrome）的东西，`themes.ts` 的 6 套皮肤即为它设计；引入必然打架 |
+| Navigation Menu / Menubar | 同上，顶栏导航归平台 chrome |
+| Command | 单看是 ⌘K 命令面板，但 shadcn 官方文档教人用它拼 Combobox——引入后会绕过 `Select` 门面收口。出现真实的命令面板需求时再单独评估，并限定用途 |
+
+## ⚠️ 半缺口 —— 引入前需先对齐
+
+| shadcn 组件 | 情况 |
+|---|---|
+| Calendar | 真缺的只是**单日期选择**。`DateRangePicker` 内部已用 react-day-picker v9（依赖已在），引入时必须与它共用样式基座，不能并排两套日历皮 |
+| Sonner (Toast) | ui 包没有全局通知组件，但消费侧存在两套 toast 库并存的存量债。正确姿势是在 ui 包收口一个 Toast（选 sonner）、消费侧逐步清退另一套——这是「引入 + 清债」，不是简单加组件 |
+
+## 📭 真缺口 —— 无冲突，有页面需求即可引入
+
+| shadcn 组件 | 备注 |
+|---|---|
+| Breadcrumb | `PageHeader` 无面包屑，详情页导航用得上 |
+| Slider | `NumberField` 是步进器，语义不同，不冲突 |
+| Context Menu | 右键菜单，与 `DropdownMenu` 同属 Radix 家族但触发方式不同 |
+| Resizable | 分栏拖拽，日志/终端类页面可能用 |
+| Hover Card / Input OTP / Carousel / Aspect Ratio | 无冲突，但控制台场景需求弱 |
+
+> **原则：按需引入，不做全量对齐。** 「已覆盖」和「不引入」两表说明：全量引入
+> shadcn 目录不会带来能力，只会制造冲突。有真实页面要用某个「真缺口」组件时，
+> 再走引入流程。
+
+## 如果你喜欢的是 shadcn 官网的「长相」
+
+shadcn 官网 demo 的观感 = shadcn 组件 + 官网选的主题值。Edge Design 用同样的
+组件基座，但有自己的主题值与页面规范（「灰底白卡浮起」的 surface 层次、
+`text-xs` 表格、32px 控件高度）。想调整的是**主题值**而非组件时，请发起
+token 层的设计讨论（[Customization](/customization)），不要通过引入组件解决。
