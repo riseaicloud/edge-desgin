@@ -53,6 +53,7 @@ export function CollapsibleSection({
     <div className={cn("border border-border rounded-lg", className)}>
       <button
         type="button"
+        aria-expanded={isExpanded}
         onClick={handleToggle}
         className={cn(
           "w-full px-4 py-3 flex items-center justify-between",
