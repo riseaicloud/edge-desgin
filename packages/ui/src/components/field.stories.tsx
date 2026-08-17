@@ -76,8 +76,17 @@ export const RadioWithDescription: Story = {
   },
 }
 
-/** Choice Card：FieldLabel 包住整个 Field = 可点击卡片选择（对应 shadcn 文档同名示例） */
+/** Choice Card：FieldLabel 包住整个 Field = 可点击卡片选择（含整卡可点断言） */
 export const ChoiceCard: Story = {
+  play: async ({ canvasElement }) => {
+    const { expect, userEvent, within, waitFor } = await import('@storybook/test')
+    const canvas = within(canvasElement)
+    // 点卡片文字（非圆点本体）即可切换 —— FieldLabel 包卡的核心价值
+    await userEvent.click(canvas.getByText('For growing businesses.'))
+    await waitFor(() =>
+      expect(canvas.getByRole('radio', { name: /Pro/ })).toHaveAttribute('data-state', 'checked')
+    )
+  },
   render: function ChoiceCardStory() {
     const [plan, setPlan] = React.useState('plus')
     return (

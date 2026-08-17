@@ -36,7 +36,7 @@ export const Memory: Story = {
   },
 }
 
-/** CPU（单一单位显示为静态文本） */
+/** CPU（单一单位显示为静态文本；含交互断言：输入 999 blur 后钳制到 max=64） */
 export const Cpu: Story = {
   render: function CpuStory() {
     const [v, setV] = React.useState(2)
@@ -46,6 +46,16 @@ export const Cpu: Story = {
         <QuantityInput value={v} onValueChange={setV} units={['核']} min={0.5} max={64} step={0.5} className="w-full" />
       </div>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const { expect, userEvent, within, waitFor } = await import('@storybook/test')
+    const input = within(canvasElement).getByRole('textbox')
+    // 编辑时不拦（能输入越界值），blur 时钳制归一——NumberField 同款约定
+    await userEvent.clear(input)
+    await userEvent.type(input, '999')
+    await expect(input).toHaveValue('999')
+    await userEvent.tab()
+    await waitFor(() => expect(input).toHaveValue('64'))
   },
 }
 

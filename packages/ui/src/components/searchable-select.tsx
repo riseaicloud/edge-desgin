@@ -376,6 +376,7 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
               className="flex cursor-pointer items-center gap-2 border-b border-border px-3 py-1.5 text-sm hover:bg-accent/50"
             >
               <Checkbox
+                aria-hidden
                 tabIndex={-1}
                 className="pointer-events-none"
                 checked={

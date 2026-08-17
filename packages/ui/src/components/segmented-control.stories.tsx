@@ -19,11 +19,29 @@ const computeTypes = [
   { value: 'cpu', label: '仅 CPU' },
 ]
 
-/** 灰底容器 + 实心胶囊（CAMP 创建实例「架构/类型」同款） */
+/** 灰底容器 + 实心胶囊（CAMP 创建实例「架构/类型」同款；含键盘导航断言） */
 export const Pill: Story = {
   render: function PillStory() {
     const [v, setV] = React.useState('oversub_gpu')
     return <SegmentedControl variant="pill" options={computeTypes} value={v} onValueChange={setV} />
+  },
+  play: async ({ canvasElement }) => {
+    const { expect, userEvent, within, waitFor } = await import('@storybook/test')
+    const canvas = within(canvasElement)
+    // radio 语义：点选 + 方向键在选项间移动（Radix RadioGroup 底座）
+    const first = canvas.getByRole('radio', { name: '算力独享' })
+    await userEvent.click(first)
+    // 受控组件：等 onValueChange → setState → 重渲染落定
+    await waitFor(() => expect(first).toHaveAttribute('data-state', 'checked'))
+    // 键盘步前显式聚焦；按键用「按下→断言→抬起」——Radix 的 arrow-select 依赖
+    // document keyup 前的旗标，0ms 的合成 down+up 会踩竞态（真人按键无此问题，
+    // 实测 80ms 间隔即正常，纯测试层适配）
+    first.focus()
+    await userEvent.keyboard('{ArrowRight>}')
+    await waitFor(() =>
+      expect(canvas.getByRole('radio', { name: '算力超分' })).toHaveAttribute('data-state', 'checked')
+    )
+    await userEvent.keyboard('{/ArrowRight}')
   },
 }
 

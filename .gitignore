@@ -40,3 +40,6 @@ pnpm-debug.log*
 *.temp
 .cache/
 .gstack/
+
+# 视觉回归基线不入库（2026-08-17 决策）：会话级对比——改样式前 pnpm vr 生成本机基线，改完再跑看 diff
+packages/ui/__image_snapshots__/
