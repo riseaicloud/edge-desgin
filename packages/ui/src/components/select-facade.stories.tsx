@@ -168,7 +168,7 @@ export const Disabled: Story = {
   ),
 }
 
-/** 多选全选：本地全量，选中集齐后打勾 */
+/** 多选全选：本地全量，选中集齐后打勾（含交互断言：全选→打勾→再点清空） */
 export const MultipleSelectAll: Story = {
   render: function SelectAllStory() {
     const [vs, setVs] = useState<string[]>([])
@@ -183,6 +183,20 @@ export const MultipleSelectAll: Story = {
         width={260}
       />
     )
+  },
+  play: async ({ canvasElement }) => {
+    const { expect, userEvent, within, waitFor } = await import('@storybook/test')
+    const body = within(canvasElement.ownerDocument.body)
+    // 打开下拉（Radix Popover 渲染在 body Portal 里）
+    await userEvent.click(within(canvasElement).getByRole('combobox'))
+    const selectAllRow = await body.findByRole('checkbox')
+    // 初始未选 → 点全选 → 本地全量无 hasMore，应打勾（disabled 的榴莲被排除不影响打勾）
+    await expect(selectAllRow).toHaveAttribute('aria-checked', 'false')
+    await userEvent.click(selectAllRow)
+    await waitFor(() => expect(selectAllRow).toHaveAttribute('aria-checked', 'true'))
+    // 已全选再点 → 清空
+    await userEvent.click(selectAllRow)
+    await waitFor(() => expect(selectAllRow).toHaveAttribute('aria-checked', 'false'))
   },
 }
 

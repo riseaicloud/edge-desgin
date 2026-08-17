@@ -23,7 +23,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint src --ext .ts,.tsx",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "vr": "test-storybook --url http://localhost:6006 --maxWorkers=4"
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -70,10 +71,13 @@
     "@storybook/react": "^8.6.0",
     "@storybook/react-vite": "^8.6.0",
     "@storybook/test": "^8.6.0",
+    "@storybook/test-runner": "^0.24.4",
+    "@types/jest-image-snapshot": "^6.4.1",
     "@types/js-yaml": "^4.0.9",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
+    "jest-image-snapshot": "^6.5.2",
     "postcss": "^8.4.49",
     "storybook": "^8.6.0",
     "tailwindcss": "^3.4.0",
