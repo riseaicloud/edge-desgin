@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Spinner, Loading } from './spinner'
 
 const meta: Meta<typeof Spinner> = {
-  title: 'Components/Spinner',
+  title: '二次封装/Spinner',
+  parameters: { componentSubtitle: '自研 · 原生' },
   component: Spinner,
   tags: ['autodocs'],
   argTypes: {

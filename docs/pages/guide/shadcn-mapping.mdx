@@ -2,6 +2,11 @@
 
 > 「我想用 shadcn 的某个组件」——先查这张表。
 >
+> **⚠️ 抄组件认准 Radix 变体**：shadcn 官网现在同一组件有三种引擎变体
+> （Radix UI / Base UI / React Aria），URL 带 `/base/` 或 `/aria/` 的**都不是
+> 给本设计系统的**——我们全线 Radix 引擎，绝不混引擎（双份 bundle + 两套
+> 焦点/弹层行为打架）。只抄无前缀的经典 Radix 版。
+>
 > **Edge Design 的基座就是 shadcn**：同一套技术栈（Radix + Tailwind + CVA），
 > `@riseaicloud/tokens` 用的就是 shadcn 的 CSS 变量契约（`primary` / `muted` /
 > `accent` / `destructive` / `border` / `ring`……，HSL 通道值格式也一致）。
@@ -25,6 +30,9 @@
 | Toast（旧版） | 见「半缺口」的 Sonner | — |
 | Data Table (TanStack) | `DataTable` | 内置多字段搜索、按列筛选（`searchType: 'select'`）、分页 |
 | Date Picker | `DateRangePicker` | 底层同为 react-day-picker v9 |
+| Breadcrumb | `Breadcrumb` 家族 | v1.4.0 引入（shadcn 原版） |
+| Segmented Control（shadcn **没有**这个组件） | `SegmentedControl` | 自研补位（Radix RadioGroup 底座 + options 门面），对齐 el-radio-button 生态位。四 variant：pill/solid/outline/chips。**判据：值要提交 → RadioGroup/SegmentedControl；纯切视图 → Tabs；允许全不选的筛选 → ToggleGroup** |
+| **Field**（含 Choice Card 模式） | `Field*` 家族 | v1.4.0 引入（Tailwind v4→v3.4 降级适配版；`orientation="responsive"` 降级为 vertical）。**分工纪律：`Field*` = 布局层（label/描述/错误/选项卡片排版），`Form*` = 校验绑定层（id/error 传递），可嵌套、勿混用** |
 | Alert / Alert Dialog / Avatar / Badge / Button / Card / Chart / Checkbox / Collapsible / Dialog / Dropdown Menu / Form / Input / Label / Pagination / Popover / Progress / Radio Group / Scroll Area / Separator / Sheet / Skeleton / Switch / Table / Tabs / Textarea / Toggle / Toggle Group / Tooltip | 同名组件 | shadcn 基座原样在包里 |
 
 ## 🚫 不引入 —— 与平台框架冲突
@@ -46,7 +54,6 @@
 
 | shadcn 组件 | 备注 |
 |---|---|
-| Breadcrumb | `PageHeader` 无面包屑，详情页导航用得上 |
 | Slider | `NumberField` 是步进器，语义不同，不冲突 |
 | Context Menu | 右键菜单，与 `DropdownMenu` 同属 Radix 家族但触发方式不同 |
 | Resizable | 分栏拖拽，日志/终端类页面可能用 |

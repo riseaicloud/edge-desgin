@@ -1,0 +1,30 @@
+import { HoverCard, HoverCardTrigger, HoverCardContent, Button } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# HoverCard
+
+shadcn 原版悬停卡（Radix HoverCard，Portal 渲染不被 overflow 容器剪裁）。
+
+> **三兄弟分界**：Tooltip 放一句话提示；HoverCard 放富内容且**鼠标可移入浮层内交互**（选中复制文本等）；Popover 需要点击触发。
+
+## Import
+
+```tsx
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview>
+  <HoverCard>
+    <HoverCardTrigger asChild>
+      <Button variant="link">@rise-global</Button>
+    </HoverCardTrigger>
+    <HoverCardContent className="text-sm">
+      <p className="font-medium">Rise Global</p>
+      <p className="mt-1 text-muted-foreground">基于 Kubernetes 的插件化多租户管理平台。</p>
+    </HoverCardContent>
+  </HoverCard>
+</Preview>
+
+键值对详情场景请直接用组合封装 [PropertyHoverCard](/components/overlay/property-hover-card)。

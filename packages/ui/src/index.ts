@@ -9,6 +9,16 @@ export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './component
 export { PageHeader } from './components/page-header'
 export type { PageHeaderProps } from './components/page-header'
 
+export {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from './components/breadcrumb'
+
 // ─── General ─────────────────────────────────────────────────────────────────
 export { Button, buttonVariants } from './components/button'
 export type { ButtonProps } from './components/button'
@@ -25,6 +35,46 @@ export { Label } from './components/label'
 // SearchableSelect 已内化为门面的 combobox 引擎，不再公开导出（2026-08，当时采用数为 0）。
 export { Select } from './components/select-facade'
 export type { SelectProps, SelectOption } from './components/select-facade'
+
+// ── 单选家族：值要提交 → RadioGroup（圆点）/ SegmentedControl（按钮皮）；
+// 纯切视图 → Tabs；允许全不选的筛选 → ToggleGroup。
+export { SegmentedControl } from './components/segmented-control'
+export type { SegmentedControlProps, SegmentedOption } from './components/segmented-control'
+
+// ── Field* = 表单布局层（label/描述/错误/选项卡片的排版）；Form* = 校验绑定层。
+// 分工见 field.tsx 头注释，可嵌套组合，勿用 Field* 传值、勿用 Form* 排版。
+export {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldContent,
+  FieldTitle,
+} from './components/field'
+
+export { CodeEditor } from './components/code-editor'
+export type { CodeEditorProps } from './components/code-editor'
+
+export { QuantityInput } from './components/quantity-input'
+export type { QuantityInputProps, QuantityUnit } from './components/quantity-input'
+
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './components/hover-card'
+
+export { PropertyHoverCard } from './components/property-hover-card'
+export type { PropertyHoverCardProps } from './components/property-hover-card'
+
+export { UsageMeter } from './components/usage-meter'
+export type { UsageMeterProps, UsageMeterDetail } from './components/usage-meter'
+
+export { CopyButton } from './components/copy-button'
+export type { CopyButtonProps } from './components/copy-button'
+
+export { ResourceNameCell } from './components/resource-name-cell'
+export type { ResourceNameCellProps } from './components/resource-name-cell'
 
 export { DateRangePicker } from './components/date-range-picker'
 export type { DateRangePickerProps, DateRange, DateRangePreset } from './components/date-range-picker'

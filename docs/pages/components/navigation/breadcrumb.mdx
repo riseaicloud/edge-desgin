@@ -1,0 +1,37 @@
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# Breadcrumb
+
+shadcn 原版面包屑（`nav` 语义 + aria）。独立创建页规范要求「顶部返回 + 面包屑（列表页名 → 创建 X）」，即本组件的主战场。
+
+## Import
+
+```tsx
+import {
+  Breadcrumb, BreadcrumbList, BreadcrumbItem,
+  BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis,
+} from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview center={false}>
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">集群管理</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">ecs-001</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>节点详情</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</Preview>
+
+深色 chrome（顶栏/侧边栏）上使用时用 className 覆盖配色：默认的 `text-muted-foreground` 是为浅色内容区设计的（示例见 Storybook「Shadcn 原生/Breadcrumb」的 OnDarkChrome）。

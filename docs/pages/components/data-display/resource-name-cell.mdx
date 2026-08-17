@@ -1,0 +1,33 @@
+import { ResourceNameCell, CopyButton } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# ResourceNameCell
+
+表格「名称 + ID + 复制」首列单元格。详情跳转的**默认通道是点 ID**（CAMP 惯例）——可点击的 ID 视觉保持 muted 灰，悬停加深 + 下划线暗示。
+
+## Import
+
+```tsx
+import { ResourceNameCell, CopyButton } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview center={false}>
+  <div className="w-64 space-y-4">
+    <ResourceNameCell name="test" id="tk-0-217683d0-a3a4-4e5f-9702-2d28485104e3" onIdClick={() => {}} />
+    <ResourceNameCell name="算力容器" id="tk-0-fd881a5a-85f0-4e5f-9702-2d28485104e3" />
+  </div>
+</Preview>
+
+```tsx
+<ResourceNameCell
+  icon={<Container className="h-6 w-6" />}   // 可选
+  name="test"
+  id="tk-0-217683d0-…"                       // 截断显示，title 悬停全文
+  onIdClick={() => router.push(detailUrl)}   // 默认详情通道
+  // onNameClick 为备用通道；copyable 默认 true
+/>
+```
+
+`CopyButton` 可独立使用（任意文本旁挂复制）；内置 HTTP 非安全上下文的 `execCommand` 兜底（NodePort 直连面 `navigator.clipboard` 不存在），并 `stopPropagation` 避免触发表格整行点击。「别名(原名)」等拼装规则归消费方，组装后传入 `name`。

@@ -55,6 +55,12 @@ export interface SelectProps<T extends SelectOption = SelectOption> {
   multiple?: boolean
   values?: string[]
   onValuesChange?: (values: string[]) => void
+  /**
+   * 多选全选行（仅 multiple 生效）。true = 默认文案「全选」，string = 自定义。
+   * 远程分页未加载完（hasMore）时勾选框停留半选态并旁注「仅全选已加载」，
+   * 打勾只出现在全集确实已选中时——勾选框不撒谎。
+   */
+  selectAll?: boolean | string
   placeholder?: string
   disabled?: boolean
   className?: string

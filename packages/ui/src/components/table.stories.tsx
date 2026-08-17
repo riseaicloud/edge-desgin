@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
 
 const meta: Meta<typeof Table> = {
-  title: 'Components/Table',
+  title: 'Shadcn 原生/Table',
+  parameters: { componentSubtitle: 'shadcn 原版 · 原生' },
   component: Table,
   tags: ['autodocs'],
 }

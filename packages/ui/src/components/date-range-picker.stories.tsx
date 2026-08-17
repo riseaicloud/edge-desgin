@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { DateRangePicker, type DateRange } from './date-range-picker'
 
 const meta: Meta<typeof DateRangePicker> = {
-  title: 'Components/DateRangePicker',
+  title: '二次封装/DateRangePicker',
+  parameters: { componentSubtitle: '自研 · react-day-picker v9' },
   component: DateRangePicker,
   tags: ['autodocs'],
 }

@@ -1,6 +1,6 @@
 # Edge Design System — 状态
 
-> 最后更新 2026-07-17。
+> 最后更新 2026-08-17（封板冲刺期）。
 
 ## 架构
 
@@ -19,8 +19,11 @@
 
 | 项目 | 用了哪些层 |
 |---|---|
-| edge-console | 四层 |
 | rise-global | **仅 tokens + ui**（自己的 scope 模型是 Workspace/Project，与 `components`/`hooks` 假设的 Cluster/Namespace 对不上） |
+
+> **edge-console 不是消费方**（2026-08-14 LF 确认）：它是当年的提取源，组件全部本地内联
+> （`src/components/ui/*`），不装 `@riseaicloud/*`。协同升级（如 Tailwind peer bump）只涉及
+> 本仓 + rise-global 两处。
 
 ## 已完成
 
@@ -43,17 +46,38 @@ WorkspaceSelector / NodeGroupSelector（均 props 注入，不自己发请求）
 
 **基建** — Storybook、Nextra 文档站（3030）、Changesets、CI 发布（手动触发）。
 
-## 待办
+## 2026-08 大改（封板冲刺，PR 待合）
+
+51+ 组件全量审计 + 增补，工作分支 `feat/tw34-breadcrumb-field`（changeset 池 10+ 张，验收后一次发版，预计 2.0.0）：
+
+- **手搓债清零**：RadioGroup（1.3.2 前置修）/ Checkbox / Switch 换 Radix 原版；CollapsibleSection 换 Radix Collapsible 底座；PageHeader 手写 SVG → lucide
+- **浮层 Portal 化收尾**：HoverCard 补 Portal、DateRangePicker 手写 absolute 浮层整体迁 Radix Popover——全包再无不 Portal 的浮层
+- **Tailwind 3.4** + tokens peer `>=3.4`（消费方=仅 rise-global，需同批升级）
+- **新组件 12+**：Field 家族（TW 降级适配）、Breadcrumb、SegmentedControl（四 variant）、CodeEditor（monaco lazy）、QuantityInput、HoverCard/PropertyHoverCard、UsageMeter、CopyButton/ResourceNameCell、Select 门面 selectAll、Sheet size 档、surface-monitor token
+- **治理体系**：shadcn 对照表 + 组件血缘清单（docs/guide）、Storybook 按「Shadcn 原生 / 二次封装」双组重组 + 全量 story（59 组件）+ 血缘副标题、`pnpm lineage:lint` 三处一致性护栏
+- monaco 改 React.lazy（barrel 不再静态背 monaco）；伪主题色清零（bg-foreground 当强调色 ×2）
+
+## 待办（封板前）
 
 | 优先级 | 事项 | 说明 |
 |---|---|---|
-| 中 | **组件 i18n** | 69 个组件里 **22 个硬编码中文**（「确定」「取消」「暂无数据」），且零 i18n 机制。**方案待定** —— 需先确定组件库如何暴露 locale（候选方向：ConfigProvider 式的 context 注入，与「react-query 应由使用者注入」同一条原则；但具体契约未定，不写进 EXTRACTION_GUIDE） |
-| 中 | **组件去硬编码色** | 残留 `text-gray-700` / `bg-blue-600` / `border-gray-200` 等固定色，不跟主题。**与组件 i18n 是同一批文件，应在同一批 PR 做完** |
-| 中 | **视觉回归** | 改 69 个组件的颜色 × 明暗两套，没有视觉回归就是盲改。已有 `.stories.tsx` 打底 |
-| 中 | `sideEffects: false` + monaco 改 dynamic import | 包无 `sideEffects` 声明且 `dist/index.mjs` static import `@monaco-editor/react`，barrel import 可能拉入整个编辑器 |
-| 低 | `docs/tailwind.config.js` 改用 preset | 文档站自己没用 preset，手写了一份 extend —— 教别人配 preset，自己不用 |
-| 低 | `themes.ts` v2 | 6 套 chrome 主题目前是 Tailwind class 串（`bg-[#1e293b]`），与 CSS 变量体系并行。折叠进变量时**它是公开 API，须走 deprecate 路径** |
-| 低 | 源码 `"use client"` 补齐 | 整包已由 tsup `onSuccess` 统一加 banner；源码指令只影响直接 import `src/` 的场景 |
+| 高 | **暗色 + 偏好矩阵全量自检** | 新组件按 暗色 × 中性色主题 × 圆角 0 × 灰度 过一遍（A1） |
+| 中 | **视觉回归基线** | 封板态截一次基线存档（Storybook test-runner），此后改动有对照（B1） |
+| 中 | Story 交互态补强 | Select 全选 / QuantityInput 钳制 / Field 键盘导航等交互验证 story（B2） |
+
+## 待办（封板后 / 触发式）
+
+| 事项 | 触发条件 |
+|---|---|
+| **组件 i18n**（约 10 个组件可见中文，locale 注入契约未定） | 英文客户演示 / 海外交付；触发时预留 1 周设计契约 |
+| `themes.ts` v2（chrome 皮肤折叠进 CSS 变量，公开 API 须 deprecate 路径） | 2.x 议题 |
+| `docs/tailwind.config.js` 改用 preset | 顺手 |
+| 剩余 shadcn 缺口（Slider / Calendar 单日期 / Kbd / Command） | 出现真实消费方，见对照表 |
+| rise-global 消费侧收敛（散装 monaco→CodeEditor 等） | 封板发版后；**注意 monaco 离线 loader 约束**（内网禁 CDN，须 app 级 loader.config 先行） |
+
+## 发布检查清单
+
+发版前必跑：`pnpm lineage:lint`（血缘三处一致性）→ `pnpm --filter @riseaicloud/ui typecheck && build` → `pnpm build:docs` → Storybook 明暗两态抽查。
 
 ## 踩过的坑（避免重复发现）
 

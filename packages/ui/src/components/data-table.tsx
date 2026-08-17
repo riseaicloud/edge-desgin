@@ -561,7 +561,7 @@ export function DataTable<T = any>({
 
         {/* ── Toolbar ── */}
         {hasToolbar && (
-          <div style={{ backgroundColor: '#F9FBFD' }}>
+          <div className="bg-surface-toolbar">
             <div className="p-4 flex items-center gap-3">
               {/* Built-in search bar */}
               {hasSearch && (

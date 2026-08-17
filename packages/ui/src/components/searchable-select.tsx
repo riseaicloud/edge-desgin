@@ -23,6 +23,7 @@ import * as React from "react"
 import { useState, useEffect, useRef, useCallback, useId } from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { ChevronDown, Check, X, Search } from "lucide-react"
+import { Checkbox } from "./checkbox"
 import { cn } from "../utils"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -45,6 +46,12 @@ export interface SearchableSelectProps<T extends SearchableSelectOption = Search
   /** 多选值。 */
   values?: string[]
   onValuesChange?: (values: string[]) => void
+  /**
+   * 多选时在列表顶部显示全选行（true = 默认文案「全选」，string = 自定义文案）。
+   * 语义诚实原则：勾选框打勾 = 全集已选。远程分页未加载完（hasMore）时全选后
+   * 停留在半选态并旁注「仅全选已加载」——「已加载」即当前可见列表（含过滤后）。
+   */
+  selectAll?: boolean | string
   options: T[]
   placeholder?: string
   searchPlaceholder?: string
@@ -84,6 +91,7 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
   onValueChange,
   multiple = false,
   values = [],
+  selectAll,
   onValuesChange,
   options,
   placeholder = "请选择",
@@ -163,6 +171,25 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
     } else {
       onValueChange?.(v)
       setOpen(false)
+    }
+  }
+
+  // ── 全选（仅 multiple）──
+  // 作用域 = 当前可见列表（displayed，含过滤后）排除 disabled；已全选再点 = 只
+  // 摘掉可见项（过滤外的既有选中保留）。
+  const selectableValues = React.useMemo(
+    () => displayed.filter((o) => !o.disabled).map((o) => o.value),
+    [displayed]
+  )
+  const selectedVisibleCount = selectableValues.filter((v) => values.includes(v)).length
+  const allVisibleSelected =
+    selectableValues.length > 0 && selectedVisibleCount === selectableValues.length
+
+  const toggleSelectAll = () => {
+    if (allVisibleSelected) {
+      onValuesChange?.(values.filter((v) => !selectableValues.includes(v)))
+    } else {
+      onValuesChange?.([...new Set([...values, ...selectableValues])])
     }
   }
 
@@ -330,6 +357,41 @@ export function SearchableSelect<T extends SearchableSelectOption = SearchableSe
                   activeIndex >= 0 ? `${listboxId}-opt-${activeIndex}` : undefined
                 }
               />
+            </div>
+          )}
+
+          {multiple && selectAll && displayed.length > 0 && (
+            // 放在滚动区之外：列表再长全选行也不滚走。勾选框语义：
+            // ✓ = 全集已选（只有 !hasMore 才可能）；▬ = 选了一部分/仅已加载。
+            <div
+              role="checkbox"
+              aria-checked={
+                allVisibleSelected && !hasMore
+                  ? true
+                  : selectedVisibleCount > 0
+                    ? "mixed"
+                    : false
+              }
+              onClick={toggleSelectAll}
+              className="flex cursor-pointer items-center gap-2 border-b border-border px-3 py-1.5 text-sm hover:bg-accent/50"
+            >
+              <Checkbox
+                tabIndex={-1}
+                className="pointer-events-none"
+                checked={
+                  allVisibleSelected && !hasMore
+                    ? true
+                    : selectedVisibleCount > 0
+                      ? "indeterminate"
+                      : false
+                }
+              />
+              <span className="flex-1">
+                {typeof selectAll === "string" ? selectAll : "全选"}
+              </span>
+              {hasMore && (
+                <span className="text-xs text-muted-foreground/70">仅全选已加载</span>
+              )}
             </div>
           )}
 

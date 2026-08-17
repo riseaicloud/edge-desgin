@@ -14,7 +14,8 @@
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
-    "clean": "rm -rf node_modules **/node_modules **/dist **/.turbo"
+    "clean": "rm -rf node_modules **/node_modules **/dist **/.turbo",
+    "lineage:lint": "node scripts/lineage-lint.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",

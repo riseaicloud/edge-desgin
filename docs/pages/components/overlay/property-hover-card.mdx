@@ -1,0 +1,41 @@
+import { PropertyHoverCard } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# PropertyHoverCard
+
+悬停显示键值对详情卡（CAMP 实例列表显卡型号悬浮详情同款）：触发文字虚线下划线暗示，浮层为「左标签右值 + 行分隔线」详情卡。组合封装：HoverCard + `PropertyItem` 数据形状。
+
+## Import
+
+```tsx
+import { PropertyHoverCard } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview>
+  <div className="p-10 text-sm">
+    <PropertyHoverCard items={[
+      { label: '厂商', value: 'Ascend' },
+      { label: '型号', value: 'Ascend910B4-32G' },
+      { label: '算力', value: '280TFLOPS' },
+      { label: '显存', value: '32GiB' },
+      { label: '设备 ID', value: '39A12A64-010074F2-6632A633-87D28485' },
+    ]}>
+      Ascend910B4-32G
+    </PropertyHoverCard>
+  </div>
+</Preview>
+
+```tsx
+<PropertyHoverCard
+  items={[{ label: '厂商', value: 'Ascend' }, ...]}  // 复用 PropertyList 的 PropertyItem 形状
+  underline={false}     // 关闭虚线下划线触发样式
+  side="right"          // 弹出方向
+  openDelay={200}
+>
+  {triggerNode}
+</PropertyHoverCard>
+```
+
+与页面属性区的 `PropertyList` 共享 `PropertyItem` 类型——同一份 items 两处复用；value 收 ReactNode（厂商 logo、状态点均可）。长值自动 `break-all` 不溢出。

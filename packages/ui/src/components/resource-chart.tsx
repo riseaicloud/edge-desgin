@@ -53,7 +53,7 @@ export interface ResourceChartProps {
  *   currentValue="2.4 cores"
  *   percentage={62.5}
  *   timeSeries={cpuTimeSeries}
- *   color="#3b82f6"
+ *   color="hsl(var(--primary))"
  *   unit="%"
  * />
  * ```
@@ -63,7 +63,8 @@ export function ResourceChart({
   currentValue,
   percentage,
   timeSeries,
-  color = '#3b82f6',
+  // 默认跟主题（旧默认 blue-500 固定色）；显式传 color 的调用方不受影响
+  color = 'hsl(var(--primary))',
   unit = '%',
   showGrid = true,
   className,
@@ -115,20 +116,20 @@ export function ResourceChart({
             {showGrid && (
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="#e5e7eb"
+                stroke="hsl(var(--border))"
                 vertical={false}
               />
             )}
             <XAxis
               dataKey="time"
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+              tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
+              axisLine={{ stroke: 'hsl(var(--border))' }}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+              tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
+              axisLine={{ stroke: 'hsl(var(--border))' }}
               tickFormatter={(v) => `${v}${unit}`}
             />
             <ChartTooltip>

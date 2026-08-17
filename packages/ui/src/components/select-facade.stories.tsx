@@ -12,9 +12,9 @@ import { Select, type SelectOption } from './select-facade'
  *   用 `@riseaicloud/components`，别在页面里拼
  */
 const meta = {
-  title: 'UI/Select',
+  title: '二次封装/Select',
   component: Select,
-  parameters: { layout: 'centered' },
+  parameters: { componentSubtitle: '自研（双引擎门面，v1.3.0 收口） · Radix Select + Popover', layout: 'centered' },
   tags: ['autodocs'],
 } satisfies Meta<typeof Select>
 
@@ -166,4 +166,48 @@ export const Disabled: Story = {
       <Select options={FRUITS} placeholder="榴莲不可选" width={220} />
     </div>
   ),
+}
+
+/** 多选全选：本地全量，选中集齐后打勾 */
+export const MultipleSelectAll: Story = {
+  render: function SelectAllStory() {
+    const [vs, setVs] = useState<string[]>([])
+    return (
+      <Select
+        multiple
+        selectAll
+        options={FRUITS}
+        values={vs}
+        onValuesChange={setVs}
+        placeholder="选择水果"
+        width={260}
+      />
+    )
+  },
+}
+
+/** 远程分页 + 全选：未加载完时半选态 + 「仅全选已加载」旁注；滚动到底追加后自动回到半选 */
+export const RemotePagedSelectAll: Story = {
+  render: function RemoteSelectAllStory() {
+    const ALL = Array.from({ length: 30 }, (_, i) => ({
+      value: `node-${i}`,
+      label: `worker-node-${String(i).padStart(2, '0')}`,
+    }))
+    const [loaded, setLoaded] = useState(ALL.slice(0, 10))
+    const [vs, setVs] = useState<string[]>([])
+    const hasMore = loaded.length < ALL.length
+    return (
+      <Select
+        multiple
+        selectAll
+        options={loaded}
+        values={vs}
+        onValuesChange={setVs}
+        hasMore={hasMore}
+        onLoadMore={() => setLoaded(ALL.slice(0, loaded.length + 10))}
+        placeholder="选择节点"
+        width={280}
+      />
+    )
+  },
 }

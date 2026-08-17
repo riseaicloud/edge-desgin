@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Textarea } from './textarea'
 
 const meta: Meta<typeof Textarea> = {
-  title: 'Components/Textarea',
+  title: 'Shadcn 原生/Textarea',
+  parameters: { componentSubtitle: 'shadcn 原版 · 原生' },
   component: Textarea,
   tags: ['autodocs'],
 }

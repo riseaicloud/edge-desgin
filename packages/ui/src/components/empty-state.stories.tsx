@@ -3,7 +3,8 @@ import { EmptyState } from './empty-state'
 import { FolderOpen, Users, Search, Database } from 'lucide-react'
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'Components/EmptyState',
+  title: '二次封装/EmptyState',
+  parameters: { componentSubtitle: '自研 · 原生' },
   component: EmptyState,
   tags: ['autodocs'],
   argTypes: {

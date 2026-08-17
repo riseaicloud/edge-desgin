@@ -1,0 +1,35 @@
+import { UsageMeter } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# UsageMeter
+
+资源用量行：标签 + 迷你进度条 + 百分比 + 悬停明细（CAMP 资源池 vGPU/算力/显存 列表同款）。组合封装：Progress + Tooltip。
+
+## Import
+
+```tsx
+import { UsageMeter } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview center={false}>
+  <div className="w-56">
+    <UsageMeter label="vGPU" percent={50} details={[
+      { label: '总量', value: '32 卡' },
+      { label: '已分配', value: '16 卡' },
+      { label: '剩余', value: '16 卡' },
+    ]} />
+    <UsageMeter label="CPU" percent={45} tone="auto" />
+    <UsageMeter label="内存" percent={78} tone="auto" />
+    <UsageMeter label="显存" percent={96} tone="auto" />
+  </div>
+</Preview>
+
+```tsx
+<UsageMeter label="算力" percent={50} details={[{ label: '总量', value: '2240 TFLOPS' }]} />
+<UsageMeter label="内存" percent={92} tone="auto" />         // 水位语义：<70 绿、70–90 黄、≥90 红
+<UsageMeter label="Ascend" percent={50} color="#c7000b" />   // 运行时动态色（CSS 变量注入）
+```
+
+配色规则：默认 `primary` 跟主题；`auto` 档取固定语义色相（绿=充裕/红=告急，不随主题反转）；`color` 收任意 CSS 颜色值用于接口下发的动态色——**不要动态拼 Tailwind 类名**（JIT 不生成）。

@@ -1,0 +1,28 @@
+import { CopyButton } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# CopyButton
+
+一键复制小按钮：点击复制 + ✓ 反馈 1.5s。
+
+## Import
+
+```tsx
+import { CopyButton } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview>
+  <div className="flex items-center gap-1 text-sm">
+    <span className="text-muted-foreground">39A12A64-010074F2-6632A633</span>
+    <CopyButton text="39A12A64-010074F2-6632A633" />
+  </div>
+</Preview>
+
+两个内置的平台级处理：
+
+- **HTTP 兜底**：`navigator.clipboard` 仅存在于安全上下文（HTTPS/localhost）——平台存在 NodePort 直连的 HTTP 部署面，自动降级 `execCommand` 路径
+- **`stopPropagation`**：表格行常挂整行点击跳转，点复制不会触发它
+
+表格首列的「名称 + ID + 复制」整体形态请用 [ResourceNameCell](/components/data-display/resource-name-cell)。

@@ -1,0 +1,62 @@
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle, FieldSet, FieldLegend, RadioGroup, RadioGroupItem, Input } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# Field
+
+shadcn 2025 新增的表单布局原语家族（TW v4 → v3.4 降级适配版）。
+
+> **与 `Form*` 的分工纪律**：`Field*` = 布局层（label / 描述 / 错误文案 / 选项卡片的排版）；`Form*` = 校验绑定层（id / error 传递）。两者可嵌套，勿混用。
+
+## Import
+
+```tsx
+import {
+  Field, FieldLabel, FieldContent, FieldTitle, FieldDescription,
+  FieldError, FieldGroup, FieldSet, FieldLegend, FieldSeparator,
+} from '@riseaicloud/ui'
+```
+
+## 基础：label + 控件 + 描述
+
+<Preview center={false}>
+  <div className="w-96">
+    <Field>
+      <FieldLabel htmlFor="doc-username">用户名</FieldLabel>
+      <Input id="doc-username" placeholder="rise-user" />
+      <FieldDescription>3–63 个字符，小写字母、数字与连字符。</FieldDescription>
+    </Field>
+  </div>
+</Preview>
+
+## Choice Card：可点击卡片选择
+
+`FieldLabel` 包住整个 `Field` = 整卡可点；选中卡片自动 primary 描边 + 淡底。
+
+<Preview center={false}>
+  <div className="w-96">
+    <RadioGroup defaultValue="plus">
+      <FieldLabel>
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Plus</FieldTitle>
+            <FieldDescription>For individuals and small teams.</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="plus" />
+        </Field>
+      </FieldLabel>
+      <FieldLabel>
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>Pro</FieldTitle>
+            <FieldDescription>For growing businesses.</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="pro" />
+        </Field>
+      </FieldLabel>
+    </RadioGroup>
+  </div>
+</Preview>
+
+## 适配说明
+
+Tailwind v4 → v3.4 降级：`has-data-[...]` 改写为 `has-[[...]]`、`nth-last-2` 改写 arbitrary variant、容器查询移除（`orientation="responsive"` 降级为 vertical）。升 TW v4 后可还原 shadcn 原版写法。

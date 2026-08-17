@@ -4,10 +4,10 @@ import { Button } from './button'
 import { LayoutDashboard } from 'lucide-react'
 
 const meta: Meta<typeof PageHeader> = {
-  title: 'Components/PageHeader',
+  title: '二次封装/PageHeader',
   component: PageHeader,
   tags: ['autodocs'],
-  parameters: { layout: 'fullscreen' },
+  parameters: { componentSubtitle: '自研 · 原生', layout: 'fullscreen' },
 }
 
 export default meta

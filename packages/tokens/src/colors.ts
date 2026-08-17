@@ -43,6 +43,9 @@ export const lightColors = {
   'surface-toolbar': '210 50% 98.4%',
   'surface-section': '216 33.3% 97.1%',
   'surface-dialog-header': '220 100% 98.8%',
+  // 监控页主背景（= #F3F4F6 / gray-100）。与列表页的 surface-page（#EFF4F9）是
+  // 有意区分的两个值——此前是 console 规范里「暂无对应 token」的例外条款，就此补齐。
+  'surface-monitor': '220 14.3% 95.9%',
 } as const
 
 export const darkColors = {
@@ -79,6 +82,8 @@ export const darkColors = {
   'surface-toolbar': '217 33% 11%',
   'surface-section': '217 33% 9%',
   'surface-dialog-header': '217 33% 11%',
+  // 镜像浅色的「略异于 page」关系：暗色下比 page(6%) 微亮一档、色相中性化
+  'surface-monitor': '220 14% 7%',
 } as const
 
 // ---------------------------------------------------------------------------
