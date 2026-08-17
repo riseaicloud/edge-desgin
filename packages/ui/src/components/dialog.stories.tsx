@@ -13,10 +13,11 @@ import {
 } from './dialog'
 
 const meta: Meta<typeof Dialog> = {
-  title: 'Components/Dialog',
-  component: Dialog,
+  title: 'Shadcn 原生/Dialog',
+    component: Dialog,
   tags: ['autodocs'],
   parameters: {
+    componentSubtitle: 'shadcn 原版 · Radix Dialog',
     layout: 'centered',
   },
 }

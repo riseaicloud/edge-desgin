@@ -1,0 +1,37 @@
+# CodeEditor
+
+内嵌式代码编辑器（表单字段级），对齐 CAMP `lumi-code-mirror-ide` 生态位——启动命令、脚本、JSON/YAML 片段编辑。monaco 底座，经 `React.lazy` 按需加载（不消费本组件的打包不背 monaco）。
+
+> 与 `YamlEditDialog` 的分工：本组件是可嵌进任意表单的**字段级**中性编辑器；YamlEditDialog 是「全屏弹窗 + YAML 校验」的组合封装。
+
+## Import
+
+```tsx
+import { CodeEditor } from '@riseaicloud/ui'
+```
+
+## 用法
+
+```tsx
+// 启动命令（每行一条的业务提示归消费方）
+<CodeEditor value={cmd} onChange={setCmd} language="shell" height={120} placeholder="/bin/bash" />
+
+// 只读 YAML 查看
+<CodeEditor readOnly language="yaml" height={180} value={yamlText} />
+
+// 浅色主题（与表单融合）
+<CodeEditor value={v} onChange={setV} language="json" theme="light" />
+```
+
+| Prop | 类型 | 说明 |
+|---|---|---|
+| `value` / `onChange` | `string` / `(v: string) => void` | 受控值 |
+| `language` | `string` | monaco 语言 id，默认 `shell` |
+| `height` | `number \| string` | 落在外层容器上，默认 160；`"100%"` 交由父容器决定 |
+| `theme` | `'dark' \| 'light'` | 默认 dark（命令行场景惯例） |
+| `readOnly` | `boolean` | 只读 |
+| `placeholder` | `string` | 空值占位（覆盖层实现，monaco 无原生支持） |
+
+> ⚠️ **离线环境**：monaco 本体默认由 `@monaco-editor/react` 从 CDN 加载。内网/离线部署需在 **app 级**做一次 `loader.config({ monaco })` 本地化配置（全局单例，配一次全局生效），不要在组件层各自配置。
+
+交互示例见 Storybook「二次封装/CodeEditor」。

@@ -3,7 +3,8 @@ import { Alert, AlertTitle, AlertDescription } from './alert'
 import { AlertCircle } from 'lucide-react'
 
 const meta: Meta<typeof Alert> = {
-  title: 'Components/Alert',
+  title: 'Shadcn 原生/Alert',
+  parameters: { componentSubtitle: 'shadcn 原版 · 原生' },
   component: Alert,
   tags: ['autodocs'],
   argTypes: {

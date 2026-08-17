@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Separator } from './separator'
 
 const meta: Meta<typeof Separator> = {
-  title: 'Components/Separator',
+  title: 'Shadcn 原生/Separator',
+  parameters: { componentSubtitle: 'shadcn 原版 · Radix Separator' },
   component: Separator,
   tags: ['autodocs'],
   argTypes: {

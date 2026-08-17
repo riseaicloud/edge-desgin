@@ -3,7 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { RadioGroup, RadioGroupItem } from './radio-group'
 
 const meta: Meta<typeof RadioGroup> = {
-  title: 'Components/RadioGroup',
+  title: 'Shadcn 原生/RadioGroup',
+  parameters: { componentSubtitle: 'shadcn 原版 · Radix RadioGroup' },
   component: RadioGroup,
   tags: ['autodocs'],
 }

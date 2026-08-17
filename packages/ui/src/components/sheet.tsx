@@ -41,6 +41,16 @@ const sheetVariants = cva(
         right:
           "inset-y-0 right-0 h-full w-3/4  border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
       },
+      // 语义宽度档位（rise-global 交互形态规范 · 继承 console-ui #1730）：
+      // sm 单字段小表单 / md 标准表单（推荐默认）/ lg 只读详情 / 2xl 宽编辑器对比。
+      // 仅对 side=left|right 有意义；不传 = 维持历史宽度（w-3/4 sm:max-w-sm）。
+      // 宽度冲突由使用侧 cn 的 tailwind-merge 消解（size 类在 side 类之后，后者胜）。
+      size: {
+        sm: "w-[480px] max-w-full sm:max-w-none",
+        md: "w-[600px] max-w-full sm:max-w-none",
+        lg: "w-1/2 min-w-[600px] sm:max-w-[1000px]",
+        "2xl": "w-3/4 min-w-[800px] max-w-full sm:max-w-none",
+      },
     },
     defaultVariants: {
       side: "right",
@@ -57,12 +67,12 @@ export interface SheetContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, showCloseButton = true, ...props }, ref) => (
+>(({ side = "right", size, className, children, showCloseButton = true, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
       ref={ref}
-      className={cn(sheetVariants({ side }), className)}
+      className={cn(sheetVariants({ side, size }), className)}
       {...props}
     >
       {children}

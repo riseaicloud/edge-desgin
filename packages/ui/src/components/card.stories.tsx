@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card'
 
 const meta: Meta<typeof Card> = {
-  title: 'Components/Card',
+  title: 'Shadcn 原生/Card',
+  parameters: { componentSubtitle: 'shadcn 原版 · 原生' },
   component: Card,
   tags: ['autodocs'],
 }

@@ -22,8 +22,10 @@ export function ProgressRing({
   value,
   size = 65,
   strokeWidth = 6,
-  color = "#52c41a",
-  trackColor = "#e5e7eb",
+  // 默认跟主题：SVG stroke 收 CSS 变量字符串即可。旧默认 #52c41a（AntD 绿）/
+  // #e5e7eb 是外来固定色，暗色与换主题都不跟随；显式传 color 的调用方不受影响。
+  color = "hsl(var(--primary))",
+  trackColor = "hsl(var(--muted))",
   children,
   className,
 }: ProgressRingProps) {

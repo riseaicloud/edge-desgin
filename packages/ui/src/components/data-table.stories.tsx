@@ -31,10 +31,10 @@ const columns: ColumnDef<Node>[] = [
 ]
 
 const meta: Meta<typeof DataTable> = {
-  title: 'Components/DataTable',
+  title: '二次封装/DataTable',
   component: DataTable,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: { componentSubtitle: '自研 · Table + Select 门面', layout: 'padded' },
 }
 
 export default meta

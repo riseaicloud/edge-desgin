@@ -1,0 +1,54 @@
+import { SegmentedControl } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# SegmentedControl
+
+radio 语义的按钮化外观（对齐 el-radio-button 生态位，shadcn 无此组件）。Radix RadioGroup 底座：必选、不可取消、方向键导航、`name` 表单集成。
+
+> **判据**：值要作为参数提交 → RadioGroup / SegmentedControl；纯切视图不提交 → Tabs；允许「全不选」的筛选 → ToggleGroup。
+
+## Import
+
+```tsx
+import { SegmentedControl } from '@riseaicloud/ui'
+```
+
+## 四种形态
+
+<Preview center={false}>
+  <div className="space-y-4">
+    <SegmentedControl variant="pill" defaultValue="oversub_gpu" options={[
+      { value: 'private_gpu', label: '算力独享' },
+      { value: 'oversub_gpu', label: '算力超分' },
+      { value: 'shared_gpu', label: '算力共享' },
+      { value: 'cpu', label: '仅 CPU' },
+    ]} />
+    <SegmentedControl variant="solid" defaultValue="private_gpu" options={[
+      { value: 'private_gpu', label: '算力独享' },
+      { value: 'oversub_gpu', label: '算力超分' },
+      { value: 'cpu', label: '仅 CPU' },
+    ]} />
+    <SegmentedControl variant="outline" defaultValue="private_gpu" options={[
+      { value: 'private_gpu', label: '算力独享' },
+      { value: 'oversub_gpu', label: '算力超分' },
+      { value: 'cpu', label: '仅 CPU' },
+    ]} />
+    <SegmentedControl variant="chips" defaultValue="all" options={[
+      { value: 'all', label: '全部' },
+      { value: 'v100', label: 'nvidia-v100-sxm2-16gb' },
+      { value: 'a100', label: 'nvidia-a100-sxm4-80gb' },
+    ]} />
+  </div>
+</Preview>
+
+```tsx
+<SegmentedControl
+  variant="pill"            // pill | solid | outline | chips
+  options={[{ value: 'a', label: '选项A', icon: <Icon/>, disabled: false }]}
+  value={v}
+  onValueChange={setV}
+  name="computeType"        // 可选：原生表单提交
+/>
+```
+
+选中态一律 primary 配对——跟随 6 档主题（含近黑中性色）与暗色；圆角走 var 档（用户偏好拨 0 即方角）。`chips` 变体超宽自动换行，其余连体不换行。

@@ -1,4 +1,5 @@
 import React from 'react'
+import { ChevronLeft } from 'lucide-react'
 
 export interface PageHeaderProps {
   title: string
@@ -16,9 +17,7 @@ export function PageHeader({ title, icon, onBack, extra }: PageHeaderProps) {
             onClick={onBack}
             className="text-muted-foreground hover:text-foreground bg-transparent border-0 cursor-pointer mr-1 flex items-center"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="h-4 w-4" />
           </button>
         )}
         {icon && <span className="flex-shrink-0">{icon}</span>}

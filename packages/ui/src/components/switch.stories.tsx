@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Switch } from './switch'
 
 const meta: Meta<typeof Switch> = {
-  title: 'Components/Switch',
+  title: 'Shadcn 原生/Switch',
+  parameters: { componentSubtitle: 'shadcn 适配（尺寸 h-5 w-9） · Radix Switch' },
   component: Switch,
   tags: ['autodocs'],
   argTypes: {

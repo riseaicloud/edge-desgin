@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Input } from './input'
 
 const meta = {
-  title: 'UI/Input',
-  component: Input,
+  title: 'Shadcn 原生/Input',
+    component: Input,
   parameters: {
+    componentSubtitle: 'shadcn 原版 · 原生',
     layout: 'centered',
   },
   tags: ['autodocs'],

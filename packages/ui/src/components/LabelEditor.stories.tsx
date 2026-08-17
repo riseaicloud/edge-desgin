@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { LabelEditor } from './LabelEditor'
 
 const meta = {
-  title: 'Components/LabelEditor',
+  title: '二次封装/LabelEditor',
   component: LabelEditor,
   parameters: {
+    componentSubtitle: '自研 · 原生',
     layout: 'centered',
   },
   tags: ['autodocs'],

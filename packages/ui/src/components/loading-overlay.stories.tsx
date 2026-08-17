@@ -3,7 +3,8 @@ import { LoadingOverlay } from './loading-overlay'
 import { useState } from 'react'
 
 const meta: Meta<typeof LoadingOverlay> = {
-  title: 'Components/LoadingOverlay',
+  title: '二次封装/LoadingOverlay',
+  parameters: { componentSubtitle: '自研 · 原生' },
   component: LoadingOverlay,
   tags: ['autodocs'],
   argTypes: {

@@ -3,7 +3,8 @@ import { Checkbox } from './checkbox'
 import { Label } from './label'
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'Components/Checkbox',
+  title: 'Shadcn 原生/Checkbox',
+  parameters: { componentSubtitle: 'shadcn 适配（onCheckedChange 收窄 boolean） · Radix Checkbox' },
   component: Checkbox,
   tags: ['autodocs'],
   argTypes: {

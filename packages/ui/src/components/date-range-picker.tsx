@@ -7,7 +7,8 @@
 // panel), so it renders correctly even when a remote plugin mounts it through
 // `SDK.components` (no react-dom dependency in the plugin bundle).
 import * as React from "react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { DayPicker } from "react-day-picker"
 import { format, addMonths, subMonths, addYears, subYears, startOfMonth, startOfDay, endOfDay } from "date-fns"
 import { Calendar } from "lucide-react"
@@ -98,16 +99,7 @@ export function DateRangePicker({
   const [to, setTo] = useState<Date>(new Date(value.end))
   const [startTime, setStartTime] = useState(format(new Date(value.start), "HH:mm:ss"))
   const [endTime, setEndTime] = useState(format(new Date(value.end), "HH:mm:ss"))
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const h = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener("mousedown", h)
-    return () => document.removeEventListener("mousedown", h)
-  }, [open])
+  // 外点关闭 / Esc 由 Radix Popover 托管，不再手挂 document 监听
 
   const shownPresets = maxDays > 0 ? presets.filter((p) => p.ms <= maxDays * 864e5) : presets
 
@@ -179,7 +171,7 @@ export function DateRangePicker({
         className={cn(
           "h-9 w-9 text-sm inline-flex items-center justify-center transition-colors",
           isEnd
-            ? "bg-foreground text-background rounded-full font-medium"
+            ? "bg-primary text-primary-foreground rounded-full font-medium"
             : isMiddle
               ? "text-foreground"
               : modifiers.disabled
@@ -195,19 +187,25 @@ export function DateRangePicker({
   }
 
   return (
-    <div className={cn("relative flex items-center gap-2", className)} ref={ref}>
+    <div className={cn("flex items-center gap-2", className)}>
       {label && <span className="text-xs text-muted-foreground whitespace-nowrap">{label}</span>}
-      <button
-        onClick={() => (open ? setOpen(false) : openPanel())}
-        className="h-8 pl-2.5 pr-3 inline-flex items-center gap-2 bg-background border border-border rounded text-xs text-foreground hover:border-muted-foreground"
+      <PopoverPrimitive.Root
+        open={open}
+        onOpenChange={(o) => (o ? openPanel() : setOpen(false))}
       >
-        <Calendar className="h-4 w-4 text-muted-foreground" />
-        <span className="tabular-nums">{triggerText}</span>
-      </button>
-
-      {open && (
-        <div
-          className="absolute top-full left-0 mt-1 z-50 bg-background border border-border rounded shadow-lg flex"
+        <PopoverPrimitive.Trigger asChild>
+          <button className="h-8 pl-2.5 pr-3 inline-flex items-center gap-2 bg-background border border-border rounded text-xs text-foreground hover:border-muted-foreground">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <span className="tabular-nums">{triggerText}</span>
+          </button>
+        </PopoverPrimitive.Trigger>
+        {/* Portal 渲染：手写 absolute 浮层在 overflow 容器（表格/Dialog/Storybook 画布）
+            里必被剪裁——与 searchable-select 引擎同一教训。 */}
+        <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          align="start"
+          sideOffset={4}
+          className="z-50 bg-background border border-border rounded shadow-lg flex outline-none"
           style={{ minWidth: numberOfMonths > 1 ? 720 : 380 }}
         >
           {shownPresets.length > 0 && (
@@ -284,14 +282,15 @@ export function DateRangePicker({
             <div className="flex justify-end mt-2">
               <button
                 onClick={confirm}
-                className="h-8 px-5 text-sm rounded bg-foreground text-background hover:bg-foreground/90"
+                className="h-8 px-5 text-sm rounded bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 确定
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
     </div>
   )
 }

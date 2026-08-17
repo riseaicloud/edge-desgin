@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { NumberField } from './number-field'
 
 const meta: Meta<typeof NumberField> = {
-  title: 'Components/NumberField',
+  title: '二次封装/NumberField',
+  parameters: { componentSubtitle: '自研 · 原生' },
   component: NumberField,
   tags: ['autodocs'],
   argTypes: {

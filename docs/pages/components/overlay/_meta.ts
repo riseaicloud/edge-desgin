@@ -1,4 +1,6 @@
 export default {
+  'hover-card': 'HoverCard',
+  'property-hover-card': 'PropertyHoverCard',
   'alert-dialog': 'AlertDialog',
   'confirm-delete-dialog': 'ConfirmDeleteDialog',
   'name-confirm-delete-dialog': 'NameConfirmDeleteDialog',

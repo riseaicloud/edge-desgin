@@ -1,0 +1,125 @@
+# 组件血缘清单
+
+> 「这个组件是哪来的、坏了该怎么修」——维护者视角的总账。消费方找组件请按
+> Storybook / 文档站的**功能域**导航；本页回答的是另一个维度：**血缘**。
+>
+> 与 [shadcn/ui 对照表](/guide/shadcn-mapping) 的分工：对照表管「shadcn 的 X
+> 在我们这叫什么」（找替代品），本页管「我们的 X 是哪来的」（定改法）。
+
+## 血缘四档与改法纪律
+
+| 血缘档 | 含义 | 改法纪律 |
+|---|---|---|
+| **shadcn 原版** | 与上游逐字一致（或仅 import 路径差异） | 去 ui.shadcn.com 对 diff 同步，**禁止加私货**；要加能力先考虑独立文件 |
+| **shadcn 适配** | 原版 + 文件头注释列明的改写 | 对上游同步 + 维护适配层注释；适配原因消失时（如升 TW v4）还原原版 |
+| **自研** | shadcn 没有的组件 | 全责自管，需求与 bug 都进本仓 |
+| **组合封装** | 拼现有组件的业务壳 | 改壳不改底座；底座问题去对应基础件修 |
+
+> 抄新组件的纪律见对照表头部：**只抄 Radix 变体**（URL 无 `/base/`、`/aria/` 前缀）。
+>
+> **自研 vs 组合封装的硬判据**：看文件 import——拼装了**包内其它组件**当底座（如
+> ConfirmDialog → AlertDialog）= 组合封装，底座问题去底座修；只用原生元素 / Radix
+> 原语 / 三方库（如 PageHeader 纯 markup、DateRangePicker → react-day-picker）= 自研，
+> 全责自管。「底座」列即答案：列里是包内组件名的就是组合封装。
+
+## General
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Button | button.tsx | shadcn 原版 | Radix Slot + CVA |
+| Badge | badge.tsx | shadcn 原版 | 原生 |
+| Avatar 家族 | avatar.tsx | shadcn 原版 | Radix Avatar |
+| Separator | separator.tsx | shadcn 原版 | Radix Separator |
+
+## Data Entry
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Input | input.tsx | shadcn 原版 | 原生 input |
+| Textarea | textarea.tsx | shadcn 原版 | 原生 textarea |
+| Label | label.tsx | shadcn 原版 | Radix Label |
+| Checkbox | checkbox.tsx | shadcn 适配（onCheckedChange 收窄为 boolean，indeterminate 视觉横杠） | Radix Checkbox |
+| RadioGroup / RadioGroupItem | radio-group.tsx | shadcn 原版 | Radix RadioGroup |
+| **SegmentedControl** | segmented-control.tsx | **自研**（shadcn 无此组件；el-radio-button 生态位；options 门面 + 四 variant） | Radix RadioGroup |
+| Switch | switch.tsx | shadcn 适配（尺寸 h-5 w-9，上游默认 h-6 w-11） | Radix Switch |
+| Toggle | toggle.tsx | shadcn 原版 | Radix Toggle |
+| ToggleGroup | toggle-group.tsx | shadcn 原版 | Radix ToggleGroup |
+| **Select**（门面） | select-facade.tsx | **自研**（双引擎门面，v1.3.0 收口） | 下两行 |
+| SelectRoot 组合式 | select.tsx | shadcn 原版（原名 Select，让名给门面后改名） | Radix Select |
+| （不导出）combobox 引擎 | searchable-select.tsx | 自研（搜索/滚动分页/多选） | Radix Popover |
+| Field 家族（10 个） | field.tsx | shadcn 适配（TW v4→v3.4 降级：has-data→has-[[…]]、nth-last-2 改写、容器查询移除） | 原生 + Label |
+| Form 家族 | form.tsx | **自研**（⚠ 与 shadcn 同名但**不是** react-hook-form 版，是轻量 id/error context；与 Field* 分工：Form*=校验绑定，Field*=布局） | 原生 form |
+| NumberField | number-field.tsx | 自研 | 原生 input |
+| **CodeEditor** | code-editor.tsx | **自研**（内嵌式代码编辑器，对齐 CAMP lumi-code-mirror-ide 生态位；monaco 经 React.lazy 按需加载；与 YamlEditDialog 分工：字段级 vs 弹窗级） | @monaco-editor/react |
+| **QuantityInput** | quantity-input.tsx | **组合封装**（K8s 资源量：步进 + 数值 + 单位下拉；单位换算归消费方；输入行为同 NumberField 的「编辑不拦、提交钳制」） | SelectRoot + 原生 input |
+| DateRangePicker | date-range-picker.tsx | 自研 | react-day-picker v9 |
+| LabelEditor | LabelEditor.tsx | 自研（K8s 标签编辑） | 原生 |
+
+## Data Display
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Table 家族 | table.tsx | shadcn 原版 | 原生 table |
+| **DataTable** | data-table.tsx | **自研**（多字段搜索/列筛选/分页，983 行旗舰件） | Table + 门面 Select |
+| Card 家族 | card.tsx | shadcn 原版 | 原生 |
+| KPICard | kpi-card.tsx | 自研 | 原生 |
+| PropertyList | property-list.tsx | 自研 | 原生 |
+| StatusIndicator | status-indicator.tsx | 自研（⚠ 状态色故意固定色相：绿=健康；info 蓝点是唯一残留固定色，属语义色不算债） | 原生 |
+| EmptyState / Loading | empty-state.tsx | 自研 | 原生 |
+| ChartContainer 家族 | chart.tsx | shadcn 适配（裁剪版，~165 行 vs 上游 ~365） | recharts |
+| ResourceChart | resource-chart.tsx | 自研 | recharts |
+| ProgressRing | progress-ring.tsx | 自研 | SVG |
+| **UsageMeter** | usage-meter.tsx | **组合封装**（资源用量行：标签+迷你进度条+百分比+悬停明细；tone=primary 跟主题 / auto 按水位取绿黄红固定语义色；color 收运行时动态色） | Progress + Tooltip |
+| **CopyButton** | copy-button.tsx | **自研**（一键复制 + ✓ 反馈；含 HTTP 非安全上下文的 execCommand 兜底——与 SDK generateUUID 同坑） | 原生 clipboard |
+| **ResourceNameCell** | resource-name-cell.tsx | **组合封装**（表格「名称+ID+复制」首列单元格；跳转经 onNameClick 交还消费方，别名拼装规则归消费方） | CopyButton |
+
+## Navigation
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Breadcrumb 家族 | breadcrumb.tsx | shadcn 原版 | 原生 nav + Radix Slot |
+| Tabs 家族 | tabs.tsx | shadcn 原版 | Radix Tabs |
+| Pagination | pagination.tsx | **自研**（⚠ 与 shadcn 同名不同物：这是数据分页条「每页显示 N 条」，shadcn 的是链接式页码导航） | 原生 |
+| PageHeader | page-header.tsx | 自研 | 原生 |
+
+## Feedback
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Alert 家族 | alert.tsx | shadcn 原版 | 原生 |
+| Progress | progress.tsx | shadcn 原版 | Radix Progress |
+| Skeleton | skeleton.tsx | shadcn 原版 | 原生 |
+| Spinner | spinner.tsx | 自研 | 原生 |
+| LoadingOverlay | loading-overlay.tsx | 自研 | 原生 |
+
+## Overlay
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Dialog 家族 | dialog.tsx | shadcn 原版 | Radix Dialog |
+| AlertDialog 家族 | alert-dialog.tsx | shadcn 原版 | Radix AlertDialog |
+| Sheet 家族 | sheet.tsx | shadcn 原版 | Radix Dialog |
+| Popover 家族 | popover.tsx | shadcn 原版 | Radix Popover |
+| Tooltip 家族 | tooltip.tsx | shadcn 原版 | Radix Tooltip |
+| HoverCard 家族 | hover-card.tsx | shadcn 原版（与 Tooltip 分界：Tooltip 放一句话，HoverCard 放富内容且浮层可交互） | Radix HoverCard |
+| **PropertyHoverCard** | property-hover-card.tsx | **组合封装**（悬停显示键值对详情卡：虚线下划线触发 + 左标签右值分隔行；复用 PropertyItem 形状） | HoverCard |
+| DropdownMenu 家族 | dropdown-menu.tsx | shadcn 原版 | Radix DropdownMenu |
+| ConfirmDialog | confirm-dialog.tsx | 组合封装 | AlertDialog |
+| ConfirmDeleteDialog | confirm-delete-dialog.tsx | 组合封装 | AlertDialog |
+| NameConfirmDeleteDialog | name-confirm-delete-dialog.tsx | 组合封装 | AlertDialog + Checkbox |
+| CreateResourceDialog | create-resource-dialog.tsx | 组合封装 | Dialog |
+| YamlEditDialog | yaml-edit-dialog.tsx | 组合封装（monaco 经 React.lazy 动态加载） | Dialog + @monaco-editor/react |
+
+## Layout
+
+| 导出 | 文件 | 血缘 | 底座 |
+|---|---|---|---|
+| Collapsible 家族 | collapsible.tsx | shadcn 原版 | Radix Collapsible |
+| CollapsibleSection | collapsible-section.tsx | 自研（2026-08-17 已换 Radix Collapsible 底座，aria/键盘由原语托管，data-state 可挂动画） | Radix Collapsible |
+| ScrollArea | scroll-area.tsx | shadcn 原版 | Radix ScrollArea |
+
+## 统计与待决问题
+
+- 计 61 文件：shadcn 原版 **27**、shadcn 适配 **4**（Checkbox / Switch / Field / Chart）、自研 **21**、组合封装 **9**
+- ⚠ 待决：**Spinner 归 Feedback 还是 General**（本页暂归 Feedback）；**Form 与 Pagination 与 shadcn 同名不同物**，改名有破坏性、暂保留并靠本页注记
+- 新组件入库时**必须**同步本页 + 按功能域写 story `title` + `componentSubtitle` 血缘标注

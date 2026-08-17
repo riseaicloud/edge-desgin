@@ -1,4 +1,8 @@
 export default {
+  'segmented-control': 'SegmentedControl',
+  'field': 'Field',
+  'code-editor': 'CodeEditor',
+  'quantity-input': 'QuantityInput',
   input: 'Input',
   textarea: 'Textarea',
   select: 'Select',

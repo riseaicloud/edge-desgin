@@ -1,0 +1,36 @@
+import { QuantityInput } from '@riseaicloud/ui'
+import { Preview } from '../../../components/Preview'
+
+# QuantityInput
+
+K8s 资源量输入：左侧上下步进 + 居中数值 + 右侧单位下拉（如 `6 Gi`、`500 毫核`）。输入行为与 NumberField 同约定——**编辑时不拦、blur/Enter 时钳制归一**；键盘 ↑↓ 步进。
+
+## Import
+
+```tsx
+import { QuantityInput } from '@riseaicloud/ui'
+```
+
+## 用法
+
+<Preview center={false}>
+  <div className="space-y-3 w-56">
+    <QuantityInput value={6} onValueChange={() => {}} unit="Gi" units={['Mi', 'Gi', 'Ti']} className="w-full" />
+    <QuantityInput value={2} onValueChange={() => {}} units={['核']} className="w-full" />
+  </div>
+</Preview>
+
+```tsx
+// 内存：数值 + 单位下拉
+<QuantityInput
+  value={v} onValueChange={setV}
+  unit={u} onUnitChange={setU}
+  units={['Mi', 'Gi', 'Ti']}
+  min={0}
+/>
+
+// CPU：单一单位 → 显示为静态文本；units 为空 → 纯数值步进
+<QuantityInput value={v} onValueChange={setV} units={['核']} step={0.5} min={0.5} max={64} />
+```
+
+单位换算（6 Gi ↔ 6144 Mi）是业务语义，归消费方；组件只报告 `(value, unit)`，拼成 `"6Gi"` 由调用方决定格式。交互示例见 Storybook「二次封装/QuantityInput」。

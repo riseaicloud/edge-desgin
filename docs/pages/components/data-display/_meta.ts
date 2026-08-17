@@ -1,4 +1,6 @@
 export default {
+  'usage-meter': 'UsageMeter',
+  'resource-name-cell': 'ResourceNameCell',
   'property-list': 'PropertyList',
   card: 'Card',
   table: 'Table',
